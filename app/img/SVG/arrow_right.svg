@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>arrow_right</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Customer-New" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="arrow_right">
+            <g id="Group-11-Copy-2">
+                <rect id="Rectangle-6" x="0" y="0" width="30" height="30"></rect>
+                <path d="M13.0076478,9.19206358 L17.8675604,14.6575037 C17.9559127,14.756836 18,14.8785013 18,15 C18,15.1216653 17.9559127,15.243164 17.8675604,15.3421629 L13.0076478,20.8079364 C12.8064106,21.0344339 12.4467793,21.0651003 12.2053658,20.8759357 C11.9630635,20.6864378 11.9307091,20.3506081 12.132124,20.1239439 L16.6885809,15 L12.132124,9.87638942 C11.9310646,9.64922524 11.9637746,9.31289559 12.2053658,9.12406432 C12.4467793,8.93489973 12.8064106,8.96556606 13.0076478,9.19206358 Z" id="Shape" fill="#505050" fill-rule="nonzero"></path>
+            </g>
+        </g>
+    </g>
+</svg>

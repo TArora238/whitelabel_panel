@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="93px" height="100px" viewBox="0 0 93 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>platinum_graphic</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Customer-New" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="platinum_graphic" fill-rule="nonzero">
+            <g id="Group-39-Copy" transform="translate(1.000000, 0.000000)">
+                <path d="M90.6612409,54.8013245 L90.6612409,0 L0,0 L0,54.8013245 C0.300468322,79.5486565 20.5074085,99.4529004 45.3306204,99.4529004 C70.1538323,99.4529004 90.3607726,79.5486565 90.6612409,54.8013245 Z" id="Shape" fill="#D9D6CD"></path>
+                <path d="M45.5265693,91.0860927 C25.5278895,91.0641937 9.3212346,74.9058958 9.29927007,54.9668874 L9.29927007,9.27152318 L81.7472263,9.27152318 L81.7472263,54.9668874 C81.725269,74.9033138 65.5226551,91.0605452 45.5265693,91.0860927 Z" id="Shape" fill="#C4BFA9"></path>
+                <polygon id="Shape" fill="#E3E1DB" points="81.5545985 9.0794702 90.6612409 0 0 0 9.10664234 9.0794702"></polygon>
+                <g id="Group-38" transform="translate(32.547445, 54.966887)">
+                    <polygon id="Shape" fill="#F2F1ED" points="13.1673834 0.00958688111 9.09820477 8.26628824 13.1673834 13.8674235"></polygon>
+                    <polygon id="Shape" fill="#D9D6CD" points="13.1745643 13.8770104 17.2365621 8.26628824 13.1673834 0.00958688111 13.1673834 13.8674235"></polygon>
+                    <polygon id="Shape" fill="#F2F1ED" points="26.3371605 9.58927783 17.2365621 8.26628824 13.1745643 13.8770104"></polygon>
+                    <polygon id="Shape" fill="#D9D6CD" points="19.752272 16.0172816 26.3371605 9.58927783 13.1745643 13.8770104"></polygon>
+                    <polygon id="Shape" fill="#F2F1ED" points="13.1673834 13.8865973 13.1673834 20.8059287 21.3081344 25.0912646 13.1745643 13.8770104"></polygon>
+                    <polygon id="Shape" fill="#D9D6CD" points="13.1745643 13.8770104 21.3081344 25.0912646 19.752272 16.0172816"></polygon>
+                    <polygon id="Shape" fill="#F2F1ED" points="13.1673834 13.8674235 9.09820477 8.26628824 0 9.58927783 13.1673834 13.8746137"></polygon>
+                    <polygon id="Shape" fill="#FFFFFF" opacity="0.200000003" style="mix-blend-mode: screen;" points="13.1673834 13.8674235 9.09820477 8.26628824 0 9.58927783 13.1673834 13.8746137"></polygon>
+                    <polygon id="Shape" fill="#D9D6CD" points="5.02902611 25.0912646 13.1673834 20.8059287 13.1673834 13.8865973"></polygon>
+                    <polygon id="Shape" fill="#F2F1ED" points="13.1673834 13.8794071 6.58488854 16.0172816 5.02902611 25.0912646 13.1673834 13.8865973"></polygon>
+                    <polygon id="Shape" fill="#D9D6CD" points="13.1673834 13.8746137 0 9.58927783 6.58488854 16.0172816 13.1673834 13.8794071"></polygon>
+                </g>
+                <g id="Group-38-Copy" transform="translate(58.452555, 52.980132)">
+                    <polygon id="Shape" fill="#F2F1ED" points="9.87553758 0.00706401766 6.82365358 6.09094923 9.87553758 10.2181015"></polygon>
+                    <polygon id="Shape" fill="#D9D6CD" points="9.88092326 10.2251656 12.9274216 6.09094923 9.87553758 0.00706401766 9.87553758 10.2181015"></polygon>
+                    <polygon id="Shape" fill="#F2F1ED" points="19.7528704 7.06578366 12.9274216 6.09094923 9.88092326 10.2251656"></polygon>
+                    <polygon id="Shape" fill="#D9D6CD" points="14.814204 11.8022075 19.7528704 7.06578366 9.88092326 10.2251656"></polygon>
+                    <polygon id="Shape" fill="#F2F1ED" points="9.87553758 10.2322296 9.87553758 15.3306843 15.9811008 18.4883002 9.88092326 10.2251656"></polygon>
+                    <polygon id="Shape" fill="#D9D6CD" points="9.88092326 10.2251656 15.9811008 18.4883002 14.814204 11.8022075"></polygon>
+                    <polygon id="Shape" fill="#F2F1ED" points="9.87553758 10.2181015 6.82365358 6.09094923 0 7.06578366 9.87553758 10.2233996"></polygon>
+                    <polygon id="Shape" fill="#FFFFFF" opacity="0.200000003" style="mix-blend-mode: screen;" points="9.87553758 10.2181015 6.82365358 6.09094923 0 7.06578366 9.87553758 10.2233996"></polygon>
+                    <polygon id="Shape" fill="#D9D6CD" points="3.77176958 18.4883002 9.87553758 15.3306843 9.87553758 10.2322296"></polygon>
+                    <polygon id="Shape" fill="#F2F1ED" points="9.87553758 10.2269316 4.9386664 11.8022075 3.77176958 18.4883002 9.87553758 10.2322296"></polygon>
+                    <polygon id="Shape" fill="#D9D6CD" points="9.87553758 10.2233996 0 7.06578366 4.9386664 11.8022075 9.87553758 10.2269316"></polygon>
+                </g>
+                <g id="Group-38-Copy-2" transform="translate(12.620438, 52.980132)">
+                    <polygon id="Shape" fill="#F2F1ED" points="9.87553758 0.00706401766 6.82365358 6.09094923 9.87553758 10.2181015"></polygon>
+                    <polygon id="Shape" fill="#D9D6CD" points="9.88092326 10.2251656 12.9274216 6.09094923 9.87553758 0.00706401766 9.87553758 10.2181015"></polygon>
+                    <polygon id="Shape" fill="#F2F1ED" points="19.7528704 7.06578366 12.9274216 6.09094923 9.88092326 10.2251656"></polygon>
+                    <polygon id="Shape" fill="#D9D6CD" points="14.814204 11.8022075 19.7528704 7.06578366 9.88092326 10.2251656"></polygon>
+                    <polygon id="Shape" fill="#F2F1ED" points="9.87553758 10.2322296 9.87553758 15.3306843 15.9811008 18.4883002 9.88092326 10.2251656"></polygon>
+                    <polygon id="Shape" fill="#D9D6CD" points="9.88092326 10.2251656 15.9811008 18.4883002 14.814204 11.8022075"></polygon>
+                    <polygon id="Shape" fill="#F2F1ED" points="9.87553758 10.2181015 6.82365358 6.09094923 0 7.06578366 9.87553758 10.2233996"></polygon>
+                    <polygon id="Shape" fill="#FFFFFF" opacity="0.200000003" style="mix-blend-mode: screen;" points="9.87553758 10.2181015 6.82365358 6.09094923 0 7.06578366 9.87553758 10.2233996"></polygon>
+                    <polygon id="Shape" fill="#D9D6CD" points="3.77176958 18.4883002 9.87553758 15.3306843 9.87553758 10.2322296"></polygon>
+                    <polygon id="Shape" fill="#F2F1ED" points="9.87553758 10.2269316 4.9386664 11.8022075 3.77176958 18.4883002 9.87553758 10.2322296"></polygon>
+                    <polygon id="Shape" fill="#D9D6CD" points="9.87553758 10.2233996 0 7.06578366 4.9386664 11.8022075 9.87553758 10.2269316"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

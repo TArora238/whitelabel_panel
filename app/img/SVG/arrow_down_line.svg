@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>arrow_down_line</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Customer-New" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="arrow_down_line">
+            <g id="Group-11-Copy">
+                <rect id="Rectangle-6" x="0" y="0" width="24" height="24"></rect>
+                <path d="M17.8079364,14.9923522 L12.3424963,10.1324396 C12.243164,10.0440873 12.1214987,10 12,10 C11.8783347,10 11.756836,10.0440873 11.6578371,10.1324396 L6.19206358,14.9923522 C5.96556606,15.1935894 5.93489973,15.5532207 6.12406432,15.7946342 C6.31356225,16.0369365 6.6493919,16.0692909 6.87605609,15.867876 L12,11.3114191 L17.1236106,15.867876 C17.3507748,16.0689354 17.6871044,16.0362254 17.8759357,15.7946342 C18.0651003,15.5532207 18.0344339,15.1935894 17.8079364,14.9923522 Z" id="Shape" fill="#FFFFFF" fill-rule="nonzero" transform="translate(12.000000, 13.000000) scale(1, -1) translate(-12.000000, -13.000000) "></path>
+            </g>
+        </g>
+    </g>
+</svg>

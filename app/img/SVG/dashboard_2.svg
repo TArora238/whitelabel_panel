@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 44 (41411) - http://www.bohemiancoding.com/sketch -->
+    <title>Icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="PDP" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="dashboard" transform="translate(-696.000000, -249.000000)" fill="#9D90E4">
+            <g id="Group-5" transform="translate(646.000000, 190.000000)">
+                <g id="Icon" transform="translate(30.000000, 40.000000)">
+                    <path d="M34,25 C34,22.794 32.206,21 30,21 C27.794,21 26,22.794 26,25 C26,27.206 27.794,29 30,29 C32.206,29 34,27.206 34,25 L34,25 Z M40,39 L35,39 L35,37 L37.784,37 C36.958,33.214 33.785,31 30,31 C26.215,31 23.042,33.214 22.216,37 L25,37 L25,39 L20,39 C20,34.445 22.583,31.048 26.242,29.673 C24.876,28.574 24,26.89 24,25 C24,21.686 26.686,19 30,19 C33.314,19 36,21.686 36,25 C36,26.89 35.124,28.574 33.758,29.673 C37.417,31.048 40,34.445 40,39 L40,39 Z M32.414,33.757 L33.828,35.172 L30,39 L27.172,36.172 L28.586,34.757 L30,36.172 L32.414,33.757 Z"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="140px" height="140px" viewBox="0 0 140 140" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 44.1 (41455) - http://www.bohemiancoding.com/sketch -->
+    <title>plans</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="PDP" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="plans">
+            <g>
+                <rect id="Rectangle-16-Copy" x="0" y="0" width="140" height="140"></rect>
+                <g id="Page-1" transform="translate(10.000000, 10.000000)">
+                    <polygon id="Stroke-1" points="0 0 120.000002 0 120.000002 120.000002 0 120.000002"></polygon>
+                    <polygon id="Fill-2" fill="#C2CDDC" points="106.875 28.125 114.375 28.125 114.375 39.375 106.875 39.375"></polygon>
+                    <polygon id="Fill-4" fill="#FFFFFF" points="13.125 3 106.875 3 106.875 40.5 13.125 40.5"></polygon>
+                    <polygon id="Fill-5" fill="#E6ECF2" points="33.984375 39.375 30 28.125 1.875 28.125 1.875 118.125 118.125 118.125 118.125 39.375"></polygon>
+                    <path d="M86.25,75 C86.25,82.2487305 83.6871814,88.4359144 78.5615514,93.5615443 C73.4359215,98.6871742 67.2487376,101.249993 60,101.25 C52.7512584,101.249993 46.5640747,98.6871742 41.4384412,93.5615443 C36.3128113,88.4359144 33.7499963,82.2487305 33.75,75 C33.7499963,67.7512622 36.3128113,61.564071 41.4384412,56.4384412 C46.5640747,51.3128078 52.7512584,48.7499963 60,48.75 C67.2487376,48.7499963 73.4359215,51.3128078 78.5615514,56.4384412 C83.6871814,61.564071 86.25,67.7512622 86.25,75 Z" id="Fill-6" fill="#FFFFFF"></path>
+                    <polygon id="Fill-7" fill="#C2CDDC" points="65.625 69.375 65.625 60 54.375 60 54.375 69.375 45 69.375 45 80.625 54.375 80.625 54.375 90 65.625 90 65.625 80.625 75 80.625 75 69.375"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
