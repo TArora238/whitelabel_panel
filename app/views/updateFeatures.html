@@ -1,0 +1,16 @@
+<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+
+  <h3 class="col-lg-12 col-md-12 col-xs-12 col-sm-12 " ng-if="pfDivs.length==0">More exciting things on the way... Stay Tuned</h3>
+  <h3 class="col-lg-12 col-md-12 col-xs-12 col-sm-12 " ng-if="pfDivs.length>0">Patient Financing Subscriptions</h3>
+  <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12 m-t-20 " ng-repeat="pfDiv in pfDivs">
+    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 subscriptionDiv text-center" ng-class="{'subscriptionDiv1':pfDiv.pf_months==1,'subscriptionDiv2':pfDiv.pf_months==12}">
+      <img src="img/PNG/most_popular.png" ng-if="pfDiv.type=='Yearly'" style="position:absolute;top:-16px;left:-16px" />
+      <h4><strong>{{pfDiv.name}}</strong></h4>
+      <h2>{{pfDiv.amount}}</h2>
+      <button class="m-t-20 btn btn-block btn-primary mt-lg btnDefault" ng-disabled="hitInProgress" style="float:none" ng-click="payNow(pfDiv)">
+                Pay Now
+              </button>
+      <h5 style="margin-top:40px">{{pfDiv.note}}</h5>
+    </div>
+  </div>
+</div>

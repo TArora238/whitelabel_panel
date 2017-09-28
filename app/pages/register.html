@@ -3,7 +3,7 @@
      <nav class="navbar topnavbar" role="navigation">
         <!-- START navbar header-->
         <a ng-click="loginRedirect()" >
-            <img src="app/img/SVG/logo.svg" alt="App Logo" width="125px" class="block-center img-responsive img-logo" />
+            <img src="app/img/SVG/logo_white.svg" style="padding: 15px 0;" alt="App Logo" width="125px" class="block-center img-responsive img-logo" />
         </a>
     </nav>
     <section>
@@ -67,9 +67,10 @@
                   <input type="text" ng-model="register.referral_code" class="form-control" />
                 </div>
               </div>
-              <div class="col-lg-12 specialitySelect">
+              <div class="form-group col-lg-12 ">
+                <!-- specialitySelect -->
                 <label>Speciality</label>
-                <select ng-model="register.speciality_type" ng-change="specialitySelect(register.speciality_type)" style="height:40px;">
+                <select ng-model="register.speciality_type" class="form-control" ng-change="specialitySelect(register.speciality_type)" style="height:40px;">
                   <option ng-value="speciality_type.doctor_speciality" ng-repeat="speciality_type in specialityList" ng-selected="{{ $index==0 }}">{{speciality_type.speciality_name}}
                   </option>
                 </select>

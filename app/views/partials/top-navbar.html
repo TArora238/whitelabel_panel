@@ -10,7 +10,7 @@
       </button>
       <a class="navbar-brand" href="#/">
          <div class="brand-logo">
-            <img class="img-responsive" src="app/img/logo.png" alt="App Logo" />
+            <img class="img-responsive" src="app/img/SVG/logo_white.svg" alt="App Logo" />
          </div>
          <div class="brand-logo-collapsed">
             <img class="img-responsive" src="app/img/logo-single.png" alt="App Logo" />
@@ -22,8 +22,8 @@
    <div class="collapse navbar-collapse" uib-collapse="navCollapsed">
       <!-- Navbar Menu -->
       <ul class="nav navbar-nav" ng-controller="SidebarController">
-         <li ng-repeat="item in menuItems " ng-class="{'dropdown': item.submenu}" uib-dropdown="!!item.submenu">
-            <a ng-if="!item.heading &amp;&amp; !item.submenu" ng-href="{{$state.href(item.sref)}}" title="{{item.text}}">
+         <li ng-repeat="item in menuItems " ng-class="{'dropdown': item.submenu,'active':$state.includes(item.sref)}" uib-dropdown="!!item.submenu" >
+            <a ng-if="!item.heading &amp;&amp; !item.submenu" ng-href="{{$state.href(item.sref)}}" title="{{item.text}}" ng-class="{'active':$state.includes(item.sref)}">
                <span>{{item.text}}</span>
                <!-- (item.translate | translate) ||  -->
             </a>

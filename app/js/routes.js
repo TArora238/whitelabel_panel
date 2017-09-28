@@ -141,8 +141,8 @@
               resolve: helper.resolveFor('modernizr', 'icons'),
               templateUrl: 'app/pages/newPassword.html'
           })
-          .state('terms', {
-              url: '/terms',
+          .state('doctorTerms', {
+              url: '/doctorTerms',
               title: 'Terms & Conditions',
               resolve: helper.resolveFor('modernizr', 'icons'),
               templateUrl: 'app/pages/terms.html'
@@ -159,6 +159,17 @@
               templateUrl: helper.basepath('dashboard.html'),
               resolve: helper.resolveFor('flot-chart','flot-chart-plugins', 'weather-icons')
           })
+          .state('app.support', {
+              url: '/support',
+              title: 'Support',
+              templateUrl: helper.basepath('support.html')
+          })
+
+          .state('app.updateFeatures', {
+                url: '/updateFeatures',
+                title: 'Update Featuers',
+                templateUrl: helper.basepath('updateFeatures.html')
+            })
           .state('app.dashboard_v2', {
               url: '/dashboard_v2',
               title: 'Dashboard v2',

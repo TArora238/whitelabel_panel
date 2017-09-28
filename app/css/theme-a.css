@@ -86,6 +86,12 @@ body,
   .topnavbar .navbar-nav > .open > a:focus {
     color: #117391;
   }
+  .topnavbar .navbar-nav > li.active{
+    background: #117391
+  }
+  .topnavbar .navbar-nav > li > a.active{
+    color: #fff;
+  }
 }
 /* ========================================================================
    Component: sidebar

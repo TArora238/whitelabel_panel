@@ -747,8 +747,8 @@ a,button{
 {
     color: white!important;
     /*border: 1px solid #47d2f4;*/
-    background-image: linear-gradient(to bottom, #18add2, #47d2f4);
-    /*background-image: linear-gradient(to bottom, #47d2f4, #18add2);*/
+    background-image: linear-gradient(to right, #23b7e5 0%, #51c6ea 100%);
+    /*background-image: linear-gradient(to right, #23b7e5 0%, #51c6ea 100%);*/
     /*background-color: #293138!important;*/
     /*background-color: #205bc5!important;*/
 }
@@ -758,7 +758,7 @@ a,button{
 .btnDefault{
     border-radius: 4px;
     /*background-image: linear-gradient(to bottom, #65a9ea, #4582BC);*/
-    background-image: linear-gradient(to bottom, #47d2f4, #18add2);
+    background-image: linear-gradient(to right, #23b7e5 0%, #51c6ea 100%);
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.07);
     color: white;
     padding: 10px 20px;
@@ -1224,7 +1224,7 @@ md-select.md-default-theme:not([disabled]):focus .md-select-label{
     height: 40px;
     border-radius: 4px;
     /*background-color: #18add2;*/
-    background-image: linear-gradient(to bottom, #47d2f4, #18add2);
+    background-image: linear-gradient(to right, #23b7e5 0%, #51c6ea 100%);
     font-family: 'Lato', sans-serif!important;
     font-weight: 400;
     color: #ffffff;
@@ -1633,13 +1633,13 @@ md-checkbox.md-default-theme.md-checked .md-icon{
     /*border: solid 1px #65a9ea;*/
     font-weight: bold;
     /*background-image: linear-gradient(to bottom, #65a9ea, #4582BC);*/
-    background-image: linear-gradient(to bottom, #47d2f4, #18add2);
+    background-image: linear-gradient(to right, #23b7e5 0%, #51c6ea 100%);
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.07);
 }
 .btn-pop:hover{
     /*border: solid 1px #65a9ea;*/
     /*background-image: linear-gradient(to bottom, #4582BC, #65a9ea);*/
-    background-image: linear-gradient(to bottom, #18add2, #47d2f4);
+    background-image: linear-gradient(to right, #23b7e5 0%, #51c6ea 100%);
 }
 .ngdialog-header{
     border-bottom: 1px solid #dce5eb;
