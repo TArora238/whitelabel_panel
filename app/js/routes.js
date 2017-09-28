@@ -129,6 +129,13 @@
               resolve: helper.resolveFor('modernizr', 'icons'),
               templateUrl: 'app/pages/register.html'
           })
+
+          .state('upgrade', {
+              url: '/upgrade',
+              title: 'Upgrade',
+              resolve: helper.resolveFor('modernizr', 'icons'),
+              templateUrl: 'app/pages/upgrade.html'
+          })
           .state('forgot', {
               url: '/forgot',
               title: 'Forgot Password',
