@@ -516,52 +516,6 @@ p,h1,h2,h3,h5,h6,label,span,a,button,input,textarea{
   }
 }
 
-/* Main Sections */
-
-#main{
-  padding-top: 60px;
-  /*display: table;*/
-}
-#content{
-  /*display: table;*/
-  overflow-x: hidden;
-  min-height: calc(85vh - 70px);
-  /*margin-left: 268px;*/
-  /*padding: 0 15px!important;*/
-}
-.toggledContent{max-width: 1170px;margin: auto;}
-/* HEADER */
-#header .logo a {
-    padding: 0!important;
-    margin: -15px 5px;
-}
-/* SIDEBAR */
-#sidebar{
-  background: #293138;
-}
-#mCSB_1_container{
-  top:20px!important;
-}
-.main-menu{
-  margin: 0;
-}
-.sub-menu ul > li > a,.main-menu > li > a{
-  color: #c3c3c3;
-  font-size: 14px;
-}
-.sub-menu ul > li > a.active, .sub-menu ul > li > a:hover{
-  color: #7f7f7f;
-}
-.main-menu > li.active > a,.main-menu > li:hover{
-  color: #c3c3c3;
-  background: rgba(255,255,255,0.1);
-}
-.main-menu > li a:hover{
-  /*color: #4582BC;*/
-  color: #c3c3c3;
-  background: rgba(255,255,255,0.1);
-}
-
 /* BUTTONS INPUT */
 a {
     color: #293138;

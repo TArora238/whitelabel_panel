@@ -1,7 +1,7 @@
-<div class="DenefitsLogin  ng-zoomBackDown ng-fluid">
+<div class="DenefitsLogin  ng-zoomBackDown ng-fluid" data-ng-controller="UpgradeController as upgrade">
   <nav class="navbar topnavbar" role="navigation">
     <!-- START navbar header-->
-    <a ng-click="loginRedirect()">
+    <a ng-click="mCtrl.loginRedirect()">
          <img src="app/img/SVG/logo_white.svg" style="padding: 15px 0;" alt="App Logo" width="125px" class="block-center img-responsive img-logo" />
      </a>
   </nav>
@@ -13,17 +13,20 @@
       <h3 class="pageH3 p-0 m-t-30 m-b-20 text-center">Upgrade for Guaranteed Payments</h3>
       <h4 class="text-center hide">No credit card needed</h4>
       <h4 class="text-center col-lg-8 col-sm-8 col-md-8 col-xs-12 col-lg-offset-2  col-md-offset-2  col-sm-offset-2">Denefits provides you the flexibility to choose between Guaranteed payments & Non-guaranteed payments for each patient.</h4>
-      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m-t-20">
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-repeat="type in upgrade.guarantee_types" ng-click="guaranteeSelect(type.guarantee_type)">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m-t-20 text-center">
+        <div  style="max-width:800px;margin:auto">
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-repeat="type in upgrade.upgrade.guarantee_types" ng-click="upgrade.guaranteeSelect(type.guarantee_type)">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bdr-4 p-20 text-center" style="border:1px solid #dce5eb">
             <h3 ng-if="type.guarantee_type==2" class="m-t-30 m-b-30"><strong>Guarantee all your <br />Payments for $149 </strong></h3>
             <h3 ng-if="type.guarantee_type==1" class="m-t-30 m-b-30"><strong>Free account for <br />non guaranteed payments </strong></h3>
             <h3 class="m-30 hide"><strong>{{type.guarantee_percent}} %</strong></h3>
-            <button class="btn btnDefault m-r-10 m-t-30 w-100" ng-if="type.guarantee_type==1" ng-click="continueToDashboard()">Continue</button>
-            <button class="btn btnDefault m-r-10 m-t-30 w-100" ng-if="type.guarantee_type==2" ng-click="payNow(amount)">Pay</button>
+            <button class="btn btnDefault m-r-10 m-t-30 w-100" ng-if="type.guarantee_type==1" ng-click="mCtrl.continueToDashboard()">Continue</button>
+            <button class="btn btnDefault m-r-10 m-t-30 w-100" ng-if="type.guarantee_type==2" ng-click="upgrade.payNow(amount)">Pay</button>
           </div>
         </div>
 
+        </div>
       </div>
 
       </div>

@@ -93,10 +93,10 @@
     angular
         .module('doctorPanel').constant("api", {
             // Live
-            // "url": "https://apilive.denefits.com:3000/"
+            // "url": "https://apilive.denefits.com:3003/"
             // Dev
             // "url": "http://34.213.160.134:3003/"
-            "url": "https://api.denefits.com:3000/"
+            "url": "https://api.denefits.com:3003/"
         })
 })();
 (function() {
@@ -4780,7 +4780,7 @@
     'use strict';
 
     angular
-        .module('app.forms')
+        .module('app.mainCtrl')
         .directive('masked', masked);
 
     function masked () {

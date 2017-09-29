@@ -208,6 +208,9 @@ now {
   border-radius: 0;
   padding: 10px 20px;
 }
+.nav-tabs > li.active{
+  background: #117391;
+}
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:hover,
 .nav-tabs > li.active > a:focus {

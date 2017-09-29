@@ -132,7 +132,7 @@
           .state('register', {
               url: '/register',
               title: 'Register',
-              resolve: helper.resolveFor('modernizr', 'icons','ngDialog'),
+              resolve: helper.resolveFor('modernizr', 'icons','ngDialog','inputmask'),
               templateUrl: 'app/pages/register.html'
           })
 
