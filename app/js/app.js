@@ -19,6 +19,7 @@
         .module('doctorPanel', [
             'app.core',
             'app.routes',
+            'app.mainCtrl',
             'app.sidebar',
             'app.navsearch',
             'app.preloader',
@@ -40,8 +41,11 @@
             'app.tables',
             'app.extras',
             'app.mailbox',
-            'app.utils'
+            'app.utils',
+            'ngDialog',
+            'toaster'
         ]);
+    // console.log("inside app");
 })();
 
 
@@ -82,6 +86,24 @@
             'tmh.dynamicLocale',
             'ui.utils'
         ]);
+        // console.clear();
+})();
+(function() {
+    'use strict';
+    angular
+        .module('doctorPanel').constant("api", {
+            // Live
+            // "url": "https://apilive.denefits.com:3000/"
+            // Dev
+            // "url": "http://34.213.160.134:3003/"
+            "url": "https://api.denefits.com:3000/"
+        })
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.mainCtrl', []);
 })();
 (function() {
     'use strict';
@@ -167,6 +189,8 @@
     angular
         .module('app.pages', []);
 })();
+
+
 (function() {
     'use strict';
 
@@ -2196,9 +2220,9 @@
         .module('app.core')
         .run(appRun);
 
-    appRun.$inject = ['$rootScope', '$state', '$stateParams', '$window', '$templateCache', 'Colors'];
+    appRun.$inject = ['$rootScope', '$state', '$stateParams', '$window', '$templateCache', 'Colors', '$timeout'];
 
-    function appRun($rootScope, $state, $stateParams, $window, $templateCache, Colors) {
+    function appRun($rootScope, $state, $stateParams, $window, $templateCache, Colors, $timeout) {
 
         // Hook into ocLazyLoad to setup AngularGrid before inject into the app
         // See "Creating the AngularJS Module" at
@@ -2216,12 +2240,55 @@
         $rootScope.$storage = $window.localStorage;
 
         // Uncomment this to disable template cache
-        /*$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-            if (typeof(toState) !== 'undefined'){
-              $templateCache.remove(toState.templateUrl);
+        $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+            // if (typeof(toState) !== 'undefined'){
+            //   $templateCache.remove(toState.templateUrl);
+            // }
+            if(toState.name=="app.updateAccount"&&fromState.name=="app.dashboard"){
+            if($rootScope.showAccount==0){
+              event.preventDefault();
+              $state.go('app.dashboard');
             }
-        });*/
-
+          }
+          if(toState.name=="app.updateAccount"&&fromState.name=="app.pfFinanceInfo"){
+            if($rootScope.showAccount==0){
+              event.preventDefault();
+              $state.go('app.pfFinanceInfo');
+            }
+          }
+          if(toState.name=="app.updateFeatures"&&fromState.name=="app.pfNewPatient"){
+            if($rootScope.is_guaranteed==1){
+              event.preventDefault();
+              $state.go('app.pfNewPatient');
+            }
+          }
+          if(toState.name=="upgrade"&&fromState.name=="app.dashboard"){
+            event.preventDefault();
+            $state.go('app.dashboard');
+          }
+          if(toState.name=="app.pfPatientContract"&&fromState.name=="app.pfPatients"){
+            $scope.clearPFData();
+            event.preventDefault();
+            $state.go('app.pfPatients');
+          }
+          if(toState.name=="app.pfPatientPayment"&&fromState.name=="app.pfPatientContract"){
+            $scope.clearPFData();
+            event.preventDefault();
+            $state.go('app.pfPatientContract');
+          }
+          if(toState.name=="app.pfPatientContract"&&fromState.name=="app.pfFinanceInfo"){
+            event.preventDefault();
+            $state.go('app.pfFinanceInfo');
+          }
+          if(toState.name=="app.pfAddedPatient"&&fromState.name=="app.pfFinanceInfo"){
+            event.preventDefault();
+            $state.go('app.pfFinanceInfo');
+          }
+          if(toState.name=="register"&&fromState.name=="upgrade"){
+            event.preventDefault();
+            $state.go('upgrade');
+          }
+        });
         // Allows to use branding color with interpolation
         // {{ colorByName('primary') }}
         $rootScope.colorByName = Colors.byName;
@@ -5321,7 +5388,7 @@
                                    'vendor/flot/jquery.flot.time.js',
                                    'vendor/flot/jquery.flot.categories.js',
                                    'vendor/flot-spline/js/jquery.flot.spline.min.js'],
-            'moment' :            ['vendor/moment/min/moment-with-locales.min.js'],
+            'moment' :            ['vendor/moment/min/moment.min.js','vendor/moment/min/moment-with-locales.min.js'],
             'inputmask':          ['vendor/jquery.inputmask/dist/jquery.inputmask.bundle.js'],
             'flatdoc':            ['vendor/flatdoc/flatdoc.js'],
             'codemirror':         ['vendor/codemirror/lib/codemirror.js',
@@ -6878,14 +6945,15 @@
 
             var remaining = 100 - counter;
             counter = counter + (0.015 * Math.pow(1 - Math.sqrt(remaining), 2));
+            // counter = counter + 10;
 
             scope.loadCounter = parseInt(counter, 10);
-
+            // if(scope.loadCounter == 100) endCounter;
             timeout = $timeout(startCounter, 20);
           }
 
           function endCounter() {
-
+            scope.loadCounter = 100
             $timeout.cancel(timeout);
 
             scope.loadCounter = 100;
@@ -7503,8 +7571,8 @@
         .module('custom')
         .controller('Controller', Controller);
 
-    Controller.$inject = ['$log'];
-    function Controller($log) {
+    Controller.$inject = ['$log','toaster'];
+    function Controller($log,toaster) {
         // for controllerAs syntax
         // var vm = this;
 

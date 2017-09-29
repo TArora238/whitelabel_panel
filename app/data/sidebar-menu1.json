@@ -1,0 +1,46 @@
+,
+{
+  "title":"Patients",
+  "icon": "zmdi zmdi-trending-up",
+  "sref":"app.pt",
+  "submenu":[
+    {
+      "title": "Manage Patients",
+      "sref": "app.prospects1",
+      "icon": "zmdi zmdi-accounts-alt"
+    },
+    {
+      "title": "Add Patients",
+      "sref": "app.addprospects",
+      "icon": "zmdi zmdi-device-hub"
+    },
+    {
+      "title": "Finance Your Copay!",
+      "sref": "app.addprospectsFC",
+      "icon": "zmdi zmdi-device-hub"
+    }
+  ]
+},
+{
+  "title":"Dental Plan",
+  "icon": "zmdi zmdi-trending-up",
+  "sref":"app.pdp",
+  "submenu":[
+    {
+      "title":"Manage Patients",
+      "sref":"app.pdpPatients"
+    },
+    {
+      "title": "Add Patients",
+      "sref": "app.addPatientPDP",
+      "icon": "zmdi zmdi-device-hub"
+    },
+    {
+      "title":"Manage Plans",
+      "sref":"app.pdpPlans"
+    },
+    {
+      "title":"Add Plan",
+      "sref":"app.pdpAddPlan"
+          }]
+},

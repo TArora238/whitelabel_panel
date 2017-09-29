@@ -17,7 +17,7 @@
 
     angular.module('toaster', []).constant(
         'toasterConfig', {
-            'limit': 0,                   // limits max number of toasts
+            'limit': 1,                   // limits max number of toasts
             'tap-to-dismiss': true,
             'close-button': false,
             'close-html': '<button class="toast-close-button" type="button">&times;</button>',
@@ -74,6 +74,7 @@
                 }());
 
                 this.pop = function(type, title, body, timeout, bodyOutputType, clickHandler, toasterId, showCloseButton, toastId, onHideCallback) {
+                  console.log(type,title,body);
                     if (angular.isObject(type)) {
                         var params = type; // Enable named parameters as pop argument
                         this.toast = {
@@ -111,7 +112,7 @@
                     }
 
                     $rootScope.$emit('toaster-newToast', toasterId, this.toast.toastId);
-                    
+
                     return {
                         toasterId: toasterId,
                         toastId: this.toast.toastId
@@ -329,7 +330,7 @@
                                             break;
                                         }
                                     }
-                                    
+
                                     if (dupFound) return;
                                 }
                             }
@@ -489,8 +490,8 @@
                             $scope.click = function(event, toast, isCloseButton) {
                                 event.stopPropagation();
 
-                                var tapToDismiss = typeof toast.tapToDismiss === "boolean" 
-                                                        ? toast.tapToDismiss 
+                                var tapToDismiss = typeof toast.tapToDismiss === "boolean"
+                                                        ? toast.tapToDismiss
                                                         : $scope.config.tap;
                                 if (tapToDismiss === true || (toast.showCloseButton === true && isCloseButton === true)) {
                                     var removeToast = true;

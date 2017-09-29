@@ -15,18 +15,31 @@
    <!-- Application styles-->
    <link rel="stylesheet" href="app/css/app.css" data-ng-if="!app.layout.isRTL">
    <link rel="stylesheet" href="app/css/custom.css" />
+
+   <link rel="stylesheet" href="vendor/angularjs-toaster/toaster.css" >
+   <link rel="stylesheet" href="vendor/ngDialog/css/ngDialog.min.css" >
+   <link rel="stylesheet" href="vendor/ngDialog/css/ngDialog-theme-default.min.css" >
    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700">
    <!-- <link rel="stylesheet" href="app/css/app-rtl.css" data-ng-if="app.layout.isRTL"> -->
    <!-- Themes-->
    <link rel="stylesheet" ng-href="{{app.layout.theme}}" data-ng-if="app.layout.theme">
 </head>
-<body data-ng-class="{ 'layout-fixed' : app.layout.isFixed, 'aside-collapsed' : app.layout.isCollapsed, 'layout-boxed' : app.layout.isBoxed, 'layout-fs': app.useFullLayout, 'hidden-footer': app.hiddenFooter, 'layout-h': app.layout.horizontal, 'aside-float': app.layout.isFloat, 'offsidebar-open': app.offsidebarOpen, 'aside-toggled': app.asideToggled, 'aside-collapsed-text': app.layout.isCollapsedText}" class="layout-h
+<body data-ng-controller="mainController as mCtrl" data-ng-class="{ 'layout-fixed' : app.layout.isFixed, 'aside-collapsed' : app.layout.isCollapsed, 'layout-boxed' : app.layout.isBoxed, 'layout-fs': app.useFullLayout, 'hidden-footer': app.hiddenFooter, 'layout-h': app.layout.horizontal, 'aside-float': app.layout.isFloat, 'offsidebar-open': app.offsidebarOpen, 'aside-toggled': app.asideToggled, 'aside-collapsed-text': app.layout.isCollapsedText}" class="layout-h
 ">
    <div data-preloader></div>
-   <div class="wrapper" data-ui-view="" data-autoscroll="false"></div>
+   <toaster-container toaster-options="{'position-class': 'toast-bottom-center', 'close-button':false}"></toaster-container>
+   <div class="wrapper" data-ui-view="" data-autoscroll="false" >
+
+   </div>
    <script src="app/js/base.js"></script>
+   <script src="vendor/moment/min/moment.min.js"></script>
+   <script src="vendor/ngDialog/js/ngDialog.min.js"></script>
+   <script src="vendor/angularjs-toaster/toaster.js"></script>
    <script src="app/js/app.js"></script>
+   <script type="text/javascript" src="//cdn.jsdelivr.net/fingerprintjs2/1.5.1/fingerprint2.min.js"></script>
+   <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
    <script src="app/js/settings.js"></script>
+   <script src="app/js/mainCtrl.js"></script>
    <script src="app/js/routes.js"></script>
    <script src="app/js/sidebar.js"></script>
    <script src="app/js/controllers.js"></script>

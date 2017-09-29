@@ -1,0 +1,42 @@
+[
+  {
+    "title": "Update Account Info",
+    "sref": "app.updateAccount",
+    "icon": "zmdi zmdi-assignment-account"
+  },
+  {
+    "title": "Dashboard",
+    "sref": "app.dashboard",
+    "icon": "zmdi zmdi-graphic-eq"
+  },
+  {
+    "title": "Patient Financing",
+    "icon": "zmdi zmdi-graphic-eq",
+    "sref":"app.pf",
+    "submenu":[
+      {
+        "title":"Manage Patients",
+        "sref":"app.pfPatients"
+      },
+      {
+        "title": "Finance Patient",
+        "sref": "app.pfFinanceInfo",
+        "icon": "zmdi zmdi-device-hub"
+      }]
+  },
+  {
+    "title": "Update Features",
+    "sref": "app.updateFeatures",
+    "icon": "zmdi zmdi-trending-up"
+  },
+  {
+    "title": "Emails",
+    "sref": "app.email",
+    "icon": "zmdi zmdi-mail"
+  },
+  {
+    "title": "Support",
+    "sref": "app.support",
+    "icon": "zmdi zmdi-headset-mic"
+  }
+]

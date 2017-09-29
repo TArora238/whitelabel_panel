@@ -1692,10 +1692,10 @@ _:-ms-lang(x),
   display: block;
 }
 .preloader-hidden-add .preloader-progress {
-  -webkit-transition: -webkit-transform 0.4s ease;
-  -moz-transition: -moz-transform 0.4s ease;
-  -o-transition: -o-transform 0.4s ease;
-  transition: transform 0.4s ease;
+  -webkit-transition: -webkit-transform 0.5s ease;
+  -moz-transition: -moz-transform 0.5s ease;
+  -o-transition: -o-transform 0.5s ease;
+  transition: transform 0.5s ease;
   -webkit-transform: scale(0);
   -ms-transform: scale(0);
   -o-transform: scale(0);

@@ -117,6 +117,12 @@
           //           $rootScope.app.layout.isBoxed = false;
           //       }]
           //   })
+          .state('main', {
+                url: '',
+                abstract: true,
+                resolve: helper.resolveFor('modernizr', 'icons','moment','ngDialog','toaster'),
+                controller: 'mainController'
+            })
           .state('login', {
               url: '/login',
               title: 'Login',
@@ -126,14 +132,14 @@
           .state('register', {
               url: '/register',
               title: 'Register',
-              resolve: helper.resolveFor('modernizr', 'icons'),
+              resolve: helper.resolveFor('modernizr', 'icons','ngDialog'),
               templateUrl: 'app/pages/register.html'
           })
 
           .state('upgrade', {
               url: '/upgrade',
               title: 'Upgrade',
-              resolve: helper.resolveFor('modernizr', 'icons'),
+              resolve: helper.resolveFor('modernizr', 'icons','ngDialog'),
               templateUrl: 'app/pages/upgrade.html'
           })
           .state('forgot', {
@@ -158,7 +164,7 @@
               url: '/app',
               abstract: true,
               templateUrl: helper.basepath('app.html'),
-              resolve: helper.resolveFor('fastclick', 'modernizr', 'icons', 'screenfull', 'animo', 'sparklines', 'slimscroll', 'easypiechart', 'toaster', 'whirl')
+              resolve: helper.resolveFor('fastclick', 'modernizr', 'ngDialog', 'icons', 'screenfull', 'animo', 'sparklines', 'slimscroll', 'easypiechart', 'toaster', 'whirl')
           })
           .state('app.dashboard', {
               url: '/dashboard',

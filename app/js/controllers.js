@@ -8,39 +8,34 @@
 
     angular
         .module('app.pages')
-        .controller('LoginFormController', LoginFormController);
+        .controller('LoginController', LoginController);
 
-    LoginFormController.$inject = ['$http', '$state'];
-    function LoginFormController($http, $state) {
+    LoginController.$inject = ['$http', '$state','$rootScope','toaster','$scope'];
+    function LoginController($http, $state,$rootScope,toaster,$scope) {
         var vm = this;
 
-        activate();
+        $rootScope.$on('init', function () {
+          activate();
+        });
 
         ////////////////
 
         function activate() {
           // bind here all data from the form
-          vm.account = {};
-          // place the message if something goes wrong
-          vm.authMsg = '';
-
+          vm.login = {};
+          console.log("loginCtrl");
           vm.login = function() {
-            vm.authMsg = '';
-
             if(vm.loginForm.$valid) {
 
-              $http
-                .post('api/account/login', {email: vm.account.email, password: vm.account.password})
-                .then(function(response) {
+              $.post('api/account/login', {email: vm.login.email, password: vm.login.password})
+                .success(function(data) {
                   // assumes if ok, response is an object with some data, if not, a string with error
                   // customize according to your api
-                  if ( !response.account ) {
-                    vm.authMsg = 'Incorrect credentials.';
+                  if ( !data.is_error ) {
+
                   }else{
-                    $state.go('app.dashboard');
+
                   }
-                }, function() {
-                  vm.authMsg = 'Server Request Error';
                 });
             }
             else {
@@ -66,11 +61,13 @@
         .module('app.pages')
         .controller('RegisterFormController', RegisterFormController);
 
-    RegisterFormController.$inject = ['$http', '$state'];
-    function RegisterFormController($http, $state) {
+    RegisterFormController.$inject = ['$http', '$state','$rootScope'];
+    function RegisterFormController($http, $state,$rootScope) {
         var vm = this;
 
-        activate();
+        $rootScope.$on('init', function () {
+          activate();
+        });
 
         ////////////////
 

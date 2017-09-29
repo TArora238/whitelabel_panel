@@ -8,10 +8,10 @@
 
     angular
         .module('app.pages')
-        .controller('LoginFormController', LoginFormController);
+        .controller('LoginController', LoginController);
 
-    LoginFormController.$inject = ['$http', '$state'];
-    function LoginFormController($http, $state) {
+    LoginController.$inject = ['$http', '$state'];
+    function LoginController($http, $state) {
         var vm = this;
 
         activate();
