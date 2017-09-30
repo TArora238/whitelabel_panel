@@ -126,6 +126,11 @@
     vm.closePop = function() {
       ngDialog.close();
     }
+    vm.continueToUpgrade = function() {
+      ngDialog.close();
+      // $rootScope.get_settings();
+      $state.go('upgrade');
+    }
     $.post(api.url + 'doctor_speciality_list', {
         'access_token': localStorage.getItem('doctorToken')
       })
@@ -290,8 +295,8 @@
     vm.amount = 149;
     vm.payNow = function(payment) {
       console.log(payment);
-      $scope.card = {};
-      $scope.ngDialogPop('cardPop', 'cardSmallPop');
+      vm.card = {};
+      vm.ngDialogPop('cardPop', 'cardSmallPop');
     }
     vm.count=0;
     vm.makePayment = function() {
@@ -314,7 +319,7 @@
           cfpLoadingBar.complete();
           vm.count=0;
           $scope.mCtrl.hitInProgress = false;
-          $rootScope.openToast('error', response.error.message, '');
+          toaster.pop('error', response.error.message, '');
         } else {
           var data = {
             access_token: localStorage.getItem('doctorToken'),
@@ -333,7 +338,7 @@
               if (data.is_error == 1) {
                 if (data.override_text) {
                   cfpLoadingBar.complete();
-                  $rootScope.openToast('error', data.override_text, '');
+                  toaster.pop('error', data.override_text, '');
                 } else {
                   $scope.mCtrl.flagPopUps(data.flag, data.is_error);
                 }
@@ -479,6 +484,128 @@
         }
       }
   })();
+
+
+  /**=========================================================
+   * Module: Dashboard
+  =========================================================*/
+
+  (function() {
+      'use strict';
+
+      angular
+        .module('app.dashboard')
+        .controller('DashboardController', DashboardController);
+
+      DashboardController.$inject = ['$http', '$state', '$rootScope', 'toaster', '$scope','cfpLoadingBar','api','$timeout'];
+
+      function DashboardController($http, $state, $rootScope, toaster, $scope,cfpLoadingBar,api,$timeout) {
+        var vm = this;
+
+        //$rootScope.$on('init', function() {
+          activate();
+         // });
+
+        ////////////////
+
+        function activate() {
+          $scope.mCtrl.checkToken();
+    $scope.mCtrl.checkDoctorToken();
+  vm.dashboard = {
+      total: {},
+      pf: {}
+    };
+    $.post(api.url + 'doctor_dashboard', {
+        access_token: localStorage.getItem('doctorToken')
+      })
+      .success(function(data, status) {
+        if (typeof data === 'string')
+          var data = JSON.parse(data);
+        console.log(data);
+        if (data.is_error == 0) {
+          vm.dashboard.total.amount_to_be_deposited = 0;
+          vm.dashboard.total.revenue_made = 0;
+          vm.dashboard.total.number_of_patients = 0;
+          if (data.pf) {
+            vm.dashboard.pf = data.pf;
+            if (data.pf.amount_to_be_deposited != 0 || data.pf.amount_to_be_deposited != "0.00") vm.dashboard.total.amount_to_be_deposited += vm.dashboard.pf.amount_to_be_deposited.toFixed(2);
+            vm.dashboard.total.revenue_made += parseFloat(vm.dashboard.pf.revenue_made);
+            vm.dashboard.total.number_of_patients += vm.dashboard.pf.number_of_patients;
+          }
+        console.log(vm.dashboard);
+          var revenue_made = vm.dashboard.total.revenue_made.toFixed(2);
+          vm.dashboard.total.revenue_made = revenue_made;
+          revenue_made = vm.dashboard.pf.revenue_made.toFixed(2);
+          vm.dashboard.pf.revenue_made = revenue_made;
+
+          var amount_to_be_deposited = vm.dashboard.total.amount_to_be_deposited.toFixed(2);
+          vm.dashboard.total.amount_to_be_deposited = amount_to_be_deposited;
+
+          if (data.pf.amount_to_be_deposited != 0 || data.pf.amount_to_be_deposited != "0.00") {
+            amount_to_be_deposited = vm.dashboard.pf.amount_to_be_deposited.toFixed(2);
+            vm.dashboard.pf.amount_to_be_deposited = amount_to_be_deposited;
+          }
+          console.log(vm.dashboard);
+        }
+      });
+        }
+      }
+  })();
+
+
+  /**=========================================================
+   * Module: Forgot Password
+  =========================================================*/
+
+  // (function() {
+  //     'use strict';
+  //
+  //     angular
+  //       .module('app.pages')
+  //       .controller('RegisterFormController', RegisterFormController);
+  //
+  //     RegisterFormController.$inject = ['$http', '$state', '$rootScope', 'toaster', '$scope','cfpLoadingBar','api','$timeout'];
+  //
+  //     function RegisterFormController($http, $state, $rootScope, toaster, $scope,cfpLoadingBar,api,$timeout) {
+  //       var vm = this;
+  //
+  //       //$rootScope.$on('init', function() {
+  //         activate();
+  //        // });
+  //
+  //       ////////////////
+  //
+  //       function activate() {}
+  //     }
+  // })();
+
+
+  /**=========================================================
+   * Module: Forgot Password
+  =========================================================*/
+
+  // (function() {
+  //     'use strict';
+  //
+  //     angular
+  //       .module('app.pages')
+  //       .controller('RegisterFormController', RegisterFormController);
+  //
+  //     RegisterFormController.$inject = ['$http', '$state', '$rootScope', 'toaster', '$scope','cfpLoadingBar','api','$timeout'];
+  //
+  //     function RegisterFormController($http, $state, $rootScope, toaster, $scope,cfpLoadingBar,api,$timeout) {
+  //       var vm = this;
+  //
+  //       //$rootScope.$on('init', function() {
+  //         activate();
+  //        // });
+  //
+  //       ////////////////
+  //
+  //       function activate() {}
+  //     }
+  // })();
+
 
 
   /**=========================================================

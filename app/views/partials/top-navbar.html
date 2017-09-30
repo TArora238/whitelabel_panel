@@ -51,110 +51,27 @@
          </li>
          <!-- END lock screen-->
          <li class="dropdown pull-right" uib-dropdown>
-          <a uib-dropdown-toggle>
+          <a uib-dropdown-toggle style="padding:13px;display:table">
             <!-- <i class="zmdi zmdi-more-vert"></i> -->
-            <img class="pull-left img-circle" style="width:30px;;height:30px" ng-src="{{profilePicThumb}}">
-            <i class="pull-right zmdi zmdi-chevron-down zmdi-hc-2x" style="color: white;padding-top: 6px;margin-left: 20px;margin-right:5px;font-size: 18px;"></i>
-            <p class="pull-right profileName hidden-xs">{{doctor_name}}</p>
+            <img class="pull-left img-circle" style="width:30px;;height:30px" ng-src="{{mCtrl.profilePicThumb}}">
+            <i class="pull-right fa fa-chevron-down zmdi-hc-2x" style="color: white;padding-top: 6px;margin-left: 20px;margin-right:5px;font-size: 18px;"></i>
+            <p class="pull-right profileName hidden-xs">{{mCtrl.doctor_name}}</p>
 
           </a>
           <ul class="dropdown-menu">
             <li>
-              <a data-ui-sref="app.profile" data-ng-click="mactrl.sidebarStat($event)">View Profile</a>
+              <a data-ui-sref="app.profile">View Profile</a>
             </li>
             <li>
-              <a ng-click="changePasswordFn()">Change Password</a>
+              <a ng-click="mCtrl.changePasswordFn()">Change Password</a>
             </li>
             <li>
-              <!--  ng-click="ngDialogPop('logout_modal','smallPop')" -->
-              <a data-ui-sref="login">Logout</a>
+              <!-- data-ui-sref="login"  -->
+              <a ng-click="mCtrl.ngDialogPop('logout_modal','smallPop')">Logout</a>
             </li>
           </ul>
         </li>
-         <!-- Search icon-->
-         <li>
-            <a href="" search-open="search-open">
-               <em class="icon-magnifier"></em>
-            </a>
-         </li>
-         <!-- Fullscreen (only desktops)-->
-         <li class="visible-lg">
-            <a href="" toggle-fullscreen="toggle-fullscreen">
-               <em class="fa fa-expand"></em>
-            </a>
-         </li>
-         <!-- START Alert menu-->
-         <li class="dropdown dropdown-list" uib-dropdown="">
-            <a uib-dropdown-toggle="">
-               <em class="icon-bell"></em>
-               <div class="label label-danger">11</div>
-            </a>
-            <!-- START Dropdown menu-->
-            <ul class="dropdown-menu animated flipInX">
-               <li>
-                  <!-- START list group-->
-                  <div class="list-group">
-                     <!-- list item-->
-                     <a class="list-group-item" href="">
-                        <div class="media-box">
-                           <div class="pull-left">
-                              <em class="fa fa-twitter fa-2x text-info"></em>
-                           </div>
-                           <div class="media-box-body clearfix">
-                              <p class="m0">New followers</p>
-                              <p class="m0 text-muted">
-                                 <small>1 new follower</small>
-                              </p>
-                           </div>
-                        </div>
-                     </a>
-                     <!-- list item-->
-                     <a class="list-group-item" href="">
-                        <div class="media-box">
-                           <div class="pull-left">
-                              <em class="fa fa-envelope fa-2x text-warning"></em>
-                           </div>
-                           <div class="media-box-body clearfix">
-                              <p class="m0">New e-mails</p>
-                              <p class="m0 text-muted">
-                                 <small>You have 10 new emails</small>
-                              </p>
-                           </div>
-                        </div>
-                     </a>
-                     <!-- list item-->
-                     <a class="list-group-item" href="">
-                        <div class="media-box">
-                           <div class="pull-left">
-                              <em class="fa fa-tasks fa-2x text-success"></em>
-                           </div>
-                           <div class="media-box-body clearfix">
-                              <p class="m0">Pending Tasks</p>
-                              <p class="m0 text-muted">
-                                 <small>11 pending task</small>
-                              </p>
-                           </div>
-                        </div>
-                     </a>
-                     <!-- last list item -->
-                     <a class="list-group-item" href="">
-                        <small translate="topbar.notification.MORE">More notifications</small>
-                        <span class="label label-danger pull-right">14</span>
-                     </a>
-                  </div>
-                  <!-- END list group-->
-               </li>
-            </ul>
-            <!-- END Dropdown menu-->
-         </li>
-         <!-- END Alert menu-->
-         <!-- START Contacts button-->
-         <li>
-            <a href="" ng-click="app.offsidebarOpen = !app.offsidebarOpen">
-               <em class="icon-notebook"></em>
-            </a>
-         </li>
-         <!-- END Contacts menu-->
+
       </ul>
       <!-- END Right Navbar-->
    </div>
@@ -168,5 +85,144 @@
       <button class="hidden btn btn-default" type="submit">Submit</button>
    </form>
    <!-- END Search form-->
+   <script type="text/ng-template" ng-show="visible" id="logout_modal">
+              <div class="ngdialog-message logoutpopo">
+
+                  <div class="ngdialog-header">
+                      <p>Logout Confirmation</p>
+                  </div>
+                  <div class="ngdialog-body">
+                      <p>Do you want to Logout ? </p>
+                      <button type="button" ng-click="closeThisDialog('button')"
+                      class="btn btn-default pull-left btn-cancel">Cancel
+                      </button>
+                      <button type="button" ng-click="mCtrl.logout()"
+                              class="btn btn-primary pull-right btn-pop">Confirm
+                      </button>
+                  </div>
+              </div>
+          </script>
+          <script type="text/ng-template" ng-show="visible" id="cancelConfirmFirst">
+            <div class="ngdialog-message logoutpopo">
+                <div class="ngdialog-header">
+                    <p>Cancel Confirmation</p>
+                </div>
+                <div class="ngdialog-body">
+                    <p>Are you sure you want to cancel ? </p>
+                    <button type="button" ng-click="closeThisDialog('button')"
+                    class="btn btn-default pull-left btn-cancel">Cancel
+                    </button>
+                    <button type="button" ng-click="mCtrl.cancelYes()"
+                            class="btn btn-primary pull-right btn-pop">Confirm
+                    </button>
+                </div>
+            </div>
+        </script>
+          <script type="text/ng-template" ng-show="visible" id="change_password_modal">
+            <div class="ngdialog-message logoutpopo">
+                <div class="ngdialog-header">
+                    <p>Change Password</p>
+                </div>
+                <div class="ngdialog-body">
+                  <form role="form" class="mb-lg" name="mCtrl.changePassword"
+                  ng-submit="mCtrl.change.newPassword&&mCtrl.change.oldPassword&&mCtrl.change.confirmPassword
+                  &&mCtrl.change.oldPassword!=mCtrl.change.newPassword&&mCtrl.change.confirmPassword==mCtrl.change.newPassword
+                  &&mCtrl.changePassword.$submitted&&mCtrl.changePasswordApi()">
+                    <md-input-container class="col-lg-12">
+                        <label>Current Password</label>
+                        <input type="password" ng-model="mCtrl.change.oldPassword" class="form-control" required  minlength="6" maxlength="25"/>
+                    </md-input-container>
+                    <span ng-show="mCtrl.change.oldWrong"
+                          class="alert errorSpanPop" style="margin-left: 7px">Password is wrong</span>
+                    <md-input-container class="col-lg-12">
+                        <label>New Password</label>
+                        <input type="password" ng-model="mCtrl.change.newPassword" class="form-control" required minlength="6" maxlength="25"/>
+                    </md-input-container>
+                    <span ng-show="mCtrl.change.newPassword&&mCtrl.change.oldPassword&&mCtrl.change.newPassword==mCtrl.change.oldPassword"
+                          class="alert errorSpanPop" style="margin-left: 7px">New password can't be same as old password</span>
+                    <md-input-container class="col-lg-12">
+                        <label>Confirm Password</label>
+                        <input name="mCtrl.confirmPassword" type="password" ng-model="mCtrl.change.confirmPassword"  minlength="6" maxlength="25" ng-pattern="(mCtrl.change.newPassword)" class="form-control" required/>
+                    </md-input-container>
+                    <span ng-show="mCtrl.changePassword.confirmPassword.$error.pattern"
+                          class="alert errorSpanPop" style="margin-left: 7px">Passwords don't match</span>
+                    <div style="clear:both"></div>
+                    <button type="button" ng-click="closeThisDialog('button')"
+                    class="btn btn-default pull-left btn-cancel">Cancel
+                    </button>
+                    <button type="submit"
+                            class="btn btn-primary pull-right btn-pop">Confirm
+                    </button>
+                  </form>
+
+                </div>
+            </div>
+        </script>
+      <script type="text/ng-template" ng-show="visible" id="showAccountPop">
+          <div class="ngdialog-message">
+              <div class="ngdialog-body">
+                  <div class="m-t-30 m-b-30 col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                    <img src="app/img/SVG/new_pop.svg"/>
+                  </div>
+                  <h4 class="col-lg-12 col-sm-12 col-xs-12 col-md-12 text-center"><strong>Want to add your bank details!</strong></h4>
+                  <div class="col-lg-12 col-md-12 col-sm-12">
+                    <p class="text-center">Adding your account details to your Denefits account helps you enroll patients and allows us to send your weekly/monthly payments to your account directly.</p>
+                  </div>
+                  <hr class="popHR">
+                  <div class="p-0 col-lg-12">
+                    <button type="button" ng-click="mCtrl.later()" class="btn btn-default pull-left btn-cancel">Later</button>
+                    <button type="button" style="overflow:visible"  ui-sref="app.updateAccount" class="btn btn-primary pull-right btn-pop">
+                      Add
+                    </button>
+              </div>
+          </div>
+      </script>
+
+            <script type="text/ng-template" ng-show="visible" id="showAccountPopForce">
+                <div class="ngdialog-message">
+                    <div class="ngdialog-body">
+                        <div class="m-t-30 m-b-30 col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                          <img src="app/img/SVG/new_pop.svg"/>
+                        </div>
+                        <h4 class="col-lg-12 col-sm-12 col-xs-12 col-md-12 text-center"><strong>Need to add your bank details!</strong></h4>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                          <p class="text-center">To collect a down payment today, please update your banking information.</p>
+                        </div>
+                        <hr class="popHR">
+                        <div class="p-0 col-lg-12 text-center">
+                          <button type="button" style="overflow:visible"  ng-click="mCtrl.bankFromFinance()" class="btn btn-primary btn-pop pull-right">
+                            Add
+                          </button>
+                          <button type="button" style="overflow:visible"  ng-click="closeThisDialog('button')" class="btn btn-default pull-left btn-cancel">
+                            Later
+                          </button>
+
+                        </div>
+                    </div>
+                </div>
+            </script>
+            <script type="text/ng-template" ng-show="visible" id="showAccountPopReminder">
+                <div class="ngdialog-message">
+                    <div class="ngdialog-body">
+                        <div class="m-t-30 m-b-30 col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                          <img src="app/img/SVG/new_pop.svg"/>
+                        </div>
+                        <h4 class="col-lg-12 col-sm-12 col-xs-12 col-md-12 text-center"><strong>Need to add your bank details!</strong></h4>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                          <p class="text-center">Please add the banking information where you would like your deposits to be made</p>
+                        </div>
+                        <hr class="popHR">
+                        <div class="p-0 col-lg-12 text-center">
+                          <button type="button" style="overflow:visible"  ng-click="mCtrl.continueToBank()" class="btn btn-primary btn-pop pull-right">
+                            Add
+                          </button>
+                          <button type="button" style="overflow:visible"  ng-click="closeThisDialog('button')" class="btn btn-default pull-left btn-cancel">
+                            Later
+                          </button>
+
+                        </div>
+                    </div>
+                </div>
+            </script>
 </nav>
 <!-- END Top Navbar-->

@@ -74,7 +74,7 @@
                 }());
 
                 this.pop = function(type, title, body, timeout, bodyOutputType, clickHandler, toasterId, showCloseButton, toastId, onHideCallback) {
-                  console.log(type,title,body);
+                  // console.log(type,title,body);
                     if (angular.isObject(type)) {
                         var params = type; // Enable named parameters as pop argument
                         this.toast = {

@@ -153,10 +153,10 @@
     .module('app.mainCtrl')
     .controller('mainController', mainController)
 
-  mainController.$inject = ['$http', '$state', '$timeout', 'api', 'cfpLoadingBar', '$interval', '$rootScope', 'ngDialog', 'toaster'];
+  mainController.$inject = ['$http', '$state', '$scope', '$timeout', 'api', 'cfpLoadingBar', '$interval', '$rootScope', 'ngDialog', 'toaster'];
   // 'toaster', 'toastrConfig',
   // toaster, toastrConfig,
-  function mainController($http, $state, $timeout, api, cfpLoadingBar, $interval, $rootScope, ngDialog, toaster) {
+  function mainController($http, $state, $scope, $timeout, api, cfpLoadingBar, $interval, $rootScope, ngDialog, toaster) {
     var vm = this;
 
     // $rootScope.$on('init', function() {
@@ -212,7 +212,7 @@
         ngDialog.openConfirm({
           template: template,
           className: 'ngdialog-theme-default ' + className,
-          scope: vm
+          scope: $scope
         }).then(function(value) {}, function(reason) {});
 
       }
@@ -232,11 +232,7 @@
         //     },200);
         // }
       }
-      vm.continueToUpgrade = function() {
-        // ngDialog.close();
-        $rootScope.get_settings();
-        $state.go('upgrade');
-      }
+
 
       vm.continueToBank = function() {
         // ngDialog.close();
@@ -640,7 +636,7 @@
           }
           if (data.doctor_profile.doctor_image)
             vm.profilePicThumb = data.doctor_profile.doctor_image;
-          else vm.profilePicThumb = 'img/SVG/profile_placeholder.svg';
+          else vm.profilePicThumb = 'app/img/SVG/profile_placeholder.svg';
           if (data.amount) {
             localStorage.setItem('subscriptionAmount', JSON.stringify(data.amount));
           }
@@ -703,7 +699,7 @@
             ngDialog.close();
             vm.clearPFData();
             localStorage.removeItem('doctorToken');
-            vm.openToast('success', 'Logged Out Successfully', '');
+            toaster.pop('success', 'Logged Out Successfully', '');
             $state.go('login');
             cfpLoadingBar.complete();
           });

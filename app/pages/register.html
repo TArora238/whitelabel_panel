@@ -92,5 +92,79 @@
         </div>
        </div>
     </section>
+    <script type="text/ng-template" ng-show="visible" id="register_done_modal">
+      <div class="ngdialog-message">
+          <div class="ngdialog-body">
+              <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+                <img src="app/img/SVG/doc_regis.svg"/>
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-md-12 text-center">
+                <h4 class="m-t-30 m-b-10 col-lg-12 col-sm-12 col-xs-12 col-md-12"><strong>Congratulations!  You are now successfully enrolled for denefits.</strong></h4>
+                <h4 class="m-t-10 m-b-30 col-lg-12 col-sm-12 col-xs-12 col-md-12"><strong>
+                  Now never let a patient leave without using your dental services and earn monthly recurring revenue from every Patient.
+                </strong></h4>
+              </div>
+              <div class="p-0 col-lg-12 text-center">
+                <button type="button" ng-click="reg.continueToUpgrade()" class="btn btn-primary btn-pop">Continue
+                </button>
+              </div>
+          </div>
+      </div>
+  </script>
 
+  <script type="text/ng-template" ng-show="visible" id="register_pop_modal">
+      <div class="ngdialog-message m-b-0">
+          <div class="ngdialog-body p-0 brd-4">
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 p-0" style="display:flex">
+              <div class="col-lg-5 col-md-5 col-xs-12 col-sm-5 dentistRegBlueDiv text-center" style="display:flex">
+                <img src="app/img/SVG/teeth_brush.svg" style="margin:auto"/>
+              </div>
+              <div class="col-lg-7 col-md-7 col-xs-12 col-sm-7 p-0 dentistRegDiv">
+                <div class="col-lg-12 col-md-12 col-sm-12 text-center signUpGraphicDiv">
+                  <h3>Enroll for free with Denefits & start generating revenue!</h3>
+                  <!-- <img src="img/SVG/sign_up_graphic.svg" width="100%"/> -->
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-t-30">
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 hide">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 analyticsDivs">
+                      <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 p-20 pdpDivReg">
+                        <label><strong>Dental Plans</strong></label>
+                      </div>
+                      <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 p-20 brd-top pdpDivReg">
+                        <label style="color:black"><strong>15% Per Transaction </strong></label>
+                        <label>Monthly Cashflow</label>
+                        <label>Customized Dental Plans</label>
+                        <label>Automated Collections</label>
+                        <label>Patient Relationship Manager</label>
+                        <label>Weekly Payouts</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-md-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-md-12 analyticsDivs text-center">
+                      <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 p-20 pfDivReg">
+                        <label><strong>Patient Financing</strong></label>
+                      </div>
+                      <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 p-20 brd-top pfDivReg">
+                        <label style="color:black"><strong>5% to 10% per Transaction</strong></label>
+                        <label>Monthly Payments</label>
+                        <label>Guaranteed Payments</label>
+                        <label>Hassle-free Financing</label>
+                        <label>Customized Financing</label>
+                        <label>Weekly Payouts</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="p-0 col-lg-12 text-center m-b-20">
+                  <button type="button" ng-click="reg.closePop()" class=" m-t-0 btn btn-primary btnDefault">Get Started
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+      </div>
+  </script>
 </div>
