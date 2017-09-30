@@ -1,16 +1,72 @@
-<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12" data-ng-controller="UpdateFeaturesController as feature">
 
-  <h3 class="col-lg-12 col-md-12 col-xs-12 col-sm-12 " ng-if="pfDivs.length==0">More exciting things on the way... Stay Tuned</h3>
-  <h3 class="col-lg-12 col-md-12 col-xs-12 col-sm-12 " ng-if="pfDivs.length>0">Patient Financing Subscriptions</h3>
-  <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12 m-t-20 " ng-repeat="pfDiv in pfDivs">
+  <h3 class="col-lg-12 col-md-12 col-xs-12 col-sm-12 " ng-if="feature.pfDivs.length==0">More exciting things on the way... Stay Tuned</h3>
+  <h3 class="col-lg-12 col-md-12 col-xs-12 col-sm-12 " ng-if="feature.pfDivs.length>0">Patient Financing Subscriptions</h3>
+  <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12 m-t-20 " ng-repeat="pfDiv in feature.pfDivs">
     <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 subscriptionDiv text-center" ng-class="{'subscriptionDiv1':pfDiv.pf_months==1,'subscriptionDiv2':pfDiv.pf_months==12}">
-      <img src="img/PNG/most_popular.png" ng-if="pfDiv.type=='Yearly'" style="position:absolute;top:-16px;left:-16px" />
+      <img src="app/img/PNG/most_popular.png" ng-if="pfDiv.type=='Yearly'" style="position:absolute;top:-16px;left:-16px" />
       <h4><strong>{{pfDiv.name}}</strong></h4>
       <h2>{{pfDiv.amount}}</h2>
-      <button class="m-t-20 btn btn-block btn-primary mt-lg btnDefault" ng-disabled="hitInProgress" style="float:none" ng-click="payNow(pfDiv)">
+      <button class="m-t-20 btn btn-block btn-primary mt-lg btnDefault" ng-disabled="mCtrl.hitInProgress" style="float:none" ng-click="feature.payNow(pfDiv)">
                 Pay Now
               </button>
       <h5 style="margin-top:40px">{{pfDiv.note}}</h5>
     </div>
   </div>
+  <script type="text/ng-template" ng-show="visible" id="upgrade_pf_modal">
+      <div class="ngdialog-message">
+          <div class="ngdialog-body">
+              <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+                <img src="app/img/SVG/pf_upgrade.svg"/>
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-md-12 text-center">
+                <h4 class="m-t-30 m-b-30 col-lg-12 col-sm-12 col-xs-12 col-md-12"><strong>Congratulations ! You have successfully upgraded your patient financing plan with Denefits</strong></h4>
+                <!-- <p class="text-left">Finding it risky to finance a Patient ? You are currently going to finance the patient for the amount of $ {{finance.financed_amount}}</p> -->
+              </div>
+              <div class="p-0 col-lg-12 text-center">
+                <button type="button" ng-click="feature.continueToPF()" class="btn btn-primary btn-pop">Continue
+                </button>
+              </div>
+          </div>
+      </div>
+  </script>
+  <script type="text/ng-template" id="cardPop">
+      <div class="ngdialog-message">
+        <div class="ngdialog-header">
+          <h4>Make Payment - ${{feature.payment.amountInt}}</h4>
+        </div>
+        <form name="feature.cardForm" ng-submit="feature.cardForm.$submitted&&feature.makePayment()">
+          <div class="ngdialog-body prospectDiv">
+              <div class="form-group col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                  <label>Card Number</label>
+                  <input type="text" masked="" data-inputmask="'mask': '9999 9999 9999 9999'" onkeypress="return isNumberKey(event)" ng-model="feature.card.cardNumber" class="form-control" required/>
+              </div>
+            <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                <label>Expiry Month</label>
+                <input type="text" maxlength=2 minlength=1  onkeypress="return isNumberKey(event)" ng-model="feature.card.cardMonth" class="form-control" required/>
+            </div>
+            <!-- <span class="col-lg-1 col-md-1 col-sm-1 col-xs-1">/</span> -->
+            <div class=" p-0 col-lg-2 col-md-2 col-sm-2 col-xs-2">
+              <label style="padding:32px 25px 0">/</label>
+            </div>
+            <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                <label>Expiry Year</label>
+                <input type="text" maxlength=2 minlength=1  onkeypress="return isNumberKey(event)" ng-model="feature.card.cardYear" class="form-control" required/>
+            </div>
+            <div class="form-group col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <label>CVV</label>
+                <input type="text" maxlength=4 minlength=3  onkeypress="return isNumberKey(event)" ng-model="feature.card.cardCVV" class="form-control" required/>
+            </div>
+
+            <hr class="popHR">
+            <div class="p-0 col-lg-12">
+              <button type="button" ng-click="closeThisDialog('button')" class="btn btn-default pull-left btn-cancel">Cancel
+                  </button>
+              <button type="submit" class="btn btn-primary pull-right btn-pop">Pay
+                  </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </script>
 </div>

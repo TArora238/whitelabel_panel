@@ -139,7 +139,7 @@
           .state('upgrade', {
               url: '/upgrade',
               title: 'Upgrade',
-              resolve: helper.resolveFor('modernizr', 'icons','ngDialog'),
+              resolve: helper.resolveFor('modernizr', 'icons','ngDialog','inputmask'),
               templateUrl: 'app/pages/upgrade.html'
           })
           .state('forgot', {
@@ -164,7 +164,7 @@
               url: '/app',
               abstract: true,
               templateUrl: helper.basepath('app.html'),
-              resolve: helper.resolveFor('fastclick', 'modernizr', 'ngDialog', 'icons', 'screenfull', 'animo', 'sparklines', 'slimscroll', 'easypiechart', 'toaster', 'whirl')
+              resolve: helper.resolveFor('fastclick', 'modernizr','inputmask', 'ngDialog', 'icons', 'screenfull', 'animo', 'sparklines', 'slimscroll', 'easypiechart', 'toaster', 'whirl')
           })
           .state('app.dashboard', {
               url: '/dashboard',

@@ -554,57 +554,230 @@
 
 
   /**=========================================================
-   * Module: Forgot Password
+   * Module: Update Features
   =========================================================*/
 
-  // (function() {
-  //     'use strict';
-  //
-  //     angular
-  //       .module('app.pages')
-  //       .controller('RegisterFormController', RegisterFormController);
-  //
-  //     RegisterFormController.$inject = ['$http', '$state', '$rootScope', 'toaster', '$scope','cfpLoadingBar','api','$timeout'];
-  //
-  //     function RegisterFormController($http, $state, $rootScope, toaster, $scope,cfpLoadingBar,api,$timeout) {
-  //       var vm = this;
-  //
-  //       //$rootScope.$on('init', function() {
-  //         activate();
-  //        // });
-  //
-  //       ////////////////
-  //
-  //       function activate() {}
-  //     }
-  // })();
+  (function() {
+      'use strict';
+
+      angular
+        .module('app.feature')
+        .controller('UpdateFeaturesController', UpdateFeaturesController);
+
+      UpdateFeaturesController.$inject = ['$http', '$state', '$rootScope', 'toaster', '$scope','cfpLoadingBar','api','$timeout', 'ngDialog'];
+
+      function UpdateFeaturesController($http, $state, $rootScope, toaster, $scope,cfpLoadingBar,api,$timeout,ngDialog) {
+        var vm = this;
+
+        //$rootScope.$on('init', function() {
+          activate();
+         // });
+
+        ////////////////
+
+        function activate() {
+          $scope.mCtrl.checkToken();
+    $scope.mCtrl.checkDoctorToken();
+    vm.ngDialogPop = function(template, className) {
+      vm.visible = true;
+      ngDialog.openConfirm({
+        template: template,
+        className: 'ngdialog-theme-default ' + className,
+        scope: $scope
+      }).then(function(value) {}, function(reason) {});
+
+    }
+    vm.continueToPF = function() {
+      $state.go('app.pfNewPatient');
+    }
+    $.post(api.url + "check_doctor_upgrade", {
+        access_token: localStorage.getItem('doctorToken')
+      })
+      .success(function(data, status) {
+        if (typeof data === 'string')
+          var data = JSON.parse(data);
+        $scope.mCtrl.flagPopUps(data.flag, data.is_error);
+        // ngDialog.close();
+        if (data.is_error == 0) {
+          if (data.show_pf == 0 && data.is_guaranteed == 1) {
+            $scope.mCtrl.is_guaranteed = 1;
+            var redirect = localStorage.getItem('financeSaveRedirect');
+            console.log(redirect);
+            if (redirect == 1) {
+              localStorage.setItem('financeSaveRedirect', 0);
+              vm.visible = true;
+              ngDialog.openConfirm({
+                template: 'upgrade_pf_modal',
+                className: 'ngdialog-theme-default bigPop',
+                scope: $scope,
+                showClose: false
+              }).then(function(value) {}, function(reason) {});
+              $('#ngdialog1').find('div.ngdialog-content').attr('ng-show', 'visible');
+
+            }
+          }
+          console.log(data);
+          vm.upgrade = {};
+          vm.upgrade.show_pf = data.show_pf;
+          // vm.upgrade.show_pdp=data.show_pdp;
+          vm.upgrade.is_guaranteed = data.is_guaranteed;
+          // vm.upgrade.pdp_monthly=data.pdp_monthly;
+          // vm.upgrade.pdp_yearly=data.pdp_yearly;
+          vm.upgrade.pf_monthly = data.pf_monthly || '';
+          vm.upgrade.pf_yearly = data.pf_yearly;
+          vm.pfDivs = [];
+          // vm.pdpDivs=[];
+
+          if (vm.upgrade.pf_monthly) {
+
+
+            if (vm.upgrade.show_pf == 1 || vm.upgrade.is_guaranteed == 0) {
+              vm.pfDivs[0] = {};
+              vm.pfDivs[1] = {};
+
+              vm.pfDivs[0].name = "Patient Financing Monthly";
+              vm.pfDivs[0].type = "Monthly";
+              vm.pfDivs[0].amount = "$ " + vm.upgrade.pf_monthly;
+              vm.pfDivs[0].amountInt = vm.upgrade.pf_monthly;
+              vm.pfDivs[0].show = vm.upgrade.show_pf;
+              vm.pfDivs[0].pf_months = 1;
+              vm.pfDivs[0].is_guaranteed = 1;
+              vm.pfDivs[0].note = '';
+
+              vm.pfDivs[1].name = "Patient Financing Yearly";
+              vm.pfDivs[1].type = "Yearly";
+              vm.pfDivs[1].amount = "$ " + vm.upgrade.pf_yearly;
+              vm.pfDivs[1].amountInt = vm.upgrade.pf_yearly;
+              vm.pfDivs[1].show = vm.upgrade.show_pf;
+              vm.pfDivs[1].pf_months = 12;
+              vm.pfDivs[1].is_guaranteed = 1;
+              vm.pfDivs[1].note = ''
+              // Guaranteed/Non-Guaranteed Payment Option for each patient
+            }
+          } else {
+            vm.pfDivs[0] = {};
+            vm.pfDivs[0].name = "Patient Financing Yearly";
+            vm.pfDivs[0].type = "Yearly";
+            vm.pfDivs[0].amount = "$ " + vm.upgrade.pf_yearly;
+            vm.pfDivs[0].amountInt = vm.upgrade.pf_yearly;
+            vm.pfDivs[0].show = vm.upgrade.show_pf;
+            vm.pfDivs[0].pf_months = 12;
+            vm.pfDivs[0].is_guaranteed = 1;
+            vm.pfDivs[0].note = ''
+          }
+        }
+      });
+    vm.payNow = function(payment) {
+      vm.payment = payment;
+      console.log(payment);
+      vm.card = {};
+      vm.ngDialogPop('cardPop', 'cardSmallPop');
+    }
+    vm.count=0;
+    vm.makePayment = function() {
+      if(vm.count==1){
+        return false;
+      }
+      vm.count=1;
+      $scope.mCtrl.hitInProgress = true;
+      cfpLoadingBar.start();
+      console.log(vm.card);
+      Stripe.card.createToken({
+        number: vm.card.cardNumber,
+        cvc: vm.card.cardCVV,
+        exp_month: vm.card.cardMonth,
+        exp_year: vm.card.cardYear
+      }, stripeCardResponseHandler);
+
+      function stripeCardResponseHandler(status, response) {
+        if (response.error) {
+          cfpLoadingBar.complete();
+            vm.count=0;
+          $scope.mCtrl.hitInProgress = false;
+          toaster.pop('error', response.error.message, '');
+        } else {
+          var data = {
+            access_token: localStorage.getItem('doctorToken'),
+            stripe_token: response.id,
+            amount: vm.payment.amountInt,
+            pay_later: 0,
+            is_guaranteed: vm.payment.is_guaranteed
+          }
+
+          if (vm.upgrade.show_pf == 1 || vm.upgrade.is_guaranteed == 0) {
+            data.pf_months = vm.payment.pf_months;
+          } else {
+            data.pf_months = 0;
+          }
+          $.post(api.url + "pay_doctor_upgrade", data)
+            .success(function(data, status) {
+              if (typeof data === 'string')
+                var data = JSON.parse(data);
+                vm.count=0;
+              $scope.mCtrl.hitInProgress = false;
+              if (data.is_error == 1) {
+                if (data.override_text) {
+                  cfpLoadingBar.complete();
+                  toaster.pop('error', data.override_text, '');
+                } else {
+                  $scope.mCtrl.flagPopUps(data.flag, data.is_error);
+                }
+              }
+              if (data.is_error == 0) {
+                ngDialog.close();
+                $scope.mCtrl.flagPopUps(data.flag, data.is_error);
+                // $state.reload();
+                var redirect = localStorage.getItem('financeSaveRedirect');
+                console.log(redirect);
+                if (redirect == 1) {
+                  localStorage.setItem('financeSaveRedirect', 0);
+                  vm.visible = true;
+                  ngDialog.openConfirm({
+                    template: 'upgrade_pf_modal',
+                    className: 'ngdialog-theme-default bigPop',
+                    scope: $scope,
+                    showClose: false
+                  }).then(function(value) {}, function(reason) {});
+                  $('#ngdialog1').find('div.ngdialog-content').attr('ng-show', 'visible');
+
+                } else
+                  $state.go('app.dashboard')
+              }
+            });
+        }
+      }
+
+    }
+        }
+      }
+  })();
 
 
   /**=========================================================
-   * Module: Forgot Password
+   * Module: Support
   =========================================================*/
 
-  // (function() {
-  //     'use strict';
-  //
-  //     angular
-  //       .module('app.pages')
-  //       .controller('RegisterFormController', RegisterFormController);
-  //
-  //     RegisterFormController.$inject = ['$http', '$state', '$rootScope', 'toaster', '$scope','cfpLoadingBar','api','$timeout'];
-  //
-  //     function RegisterFormController($http, $state, $rootScope, toaster, $scope,cfpLoadingBar,api,$timeout) {
-  //       var vm = this;
-  //
-  //       //$rootScope.$on('init', function() {
-  //         activate();
-  //        // });
-  //
-  //       ////////////////
-  //
-  //       function activate() {}
-  //     }
-  // })();
+  (function() {
+      'use strict';
+
+      angular
+        .module('app.support')
+        .controller('SupportController', SupportController);
+
+      SupportController.$inject = ['$http', '$state', '$rootScope', 'toaster', '$scope','cfpLoadingBar','api','$timeout'];
+
+      function SupportController($http, $state, $rootScope, toaster, $scope,cfpLoadingBar,api,$timeout) {
+        var vm = this;
+
+        //$rootScope.$on('init', function() {
+          activate();
+         // });
+
+        ////////////////
+
+        function activate() {}
+      }
+  })();
 
 
 

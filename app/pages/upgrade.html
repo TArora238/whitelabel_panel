@@ -57,28 +57,28 @@
       <div class="ngdialog-header">
         <h4>Make Payment - ${{amount}}</h4>
       </div>
-      <form name="cardForm" ng-submit="cardForm.$submitted&&makePayment()">
+      <form name="upgrade.cardForm" ng-submit="upgrade.cardForm.$submitted&&upgrade.makePayment()">
         <div class="ngdialog-body prospectDiv">
-            <md-input-container class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-                <label>Card Number</label>
-                <input type="text" data-input-mask="{mask: '0000 0000 0000 0000'}" onkeypress="return isNumberKey(event)" ng-model="card.cardNumber" class="form-control" required/>
-            </md-input-container>
-          <md-input-container class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
-              <label>Expiration Month</label>
-              <input type="text" maxlength=2 minlength=1  onkeypress="return isNumberKey(event)" ng-model="card.cardMonth" class="form-control" required/>
-          </md-input-container>
-          <!-- <span class="col-lg-1 col-md-1 col-sm-1 col-xs-1">/</span> -->
-          <md-input-container class=" p-0 col-lg-1 col-md-1 col-sm-1 col-xs-1">
-            <label class="p-10">/</label>
-          </md-input-container>
-          <md-input-container class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
-              <label>Expiration Year</label>
-              <input type="text" maxlength=2 minlength=1  onkeypress="return isNumberKey(event)" ng-model="card.cardYear" class="form-control" required/>
-          </md-input-container>
-          <md-input-container class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-              <label>CVV</label>
-              <input type="text" maxlength=4 minlength=3  onkeypress="return isNumberKey(event)" ng-model="card.cardCVV" class="form-control" required/>
-          </md-input-container>
+          <div class="form-group col-md-12 col-lg-12 col-sm-12 col-xs-12">
+              <label>Card Number</label>
+              <input type="text" masked="" data-inputmask="'mask': '9999 9999 9999 9999'" onkeypress="return isNumberKey(event)" ng-model="upgrade.card.cardNumber" class="form-control" required/>
+          </div>
+        <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-5">
+            <label>Expiry Month</label>
+            <input type="text" maxlength=2 minlength=1  onkeypress="return isNumberKey(event)" ng-model="upgrade.card.cardMonth" class="form-control" required/>
+        </div>
+        <!-- <span class="col-lg-1 col-md-1 col-sm-1 col-xs-1">/</span> -->
+        <div class=" p-0 col-lg-2 col-md-2 col-sm-2 col-xs-2">
+          <label style="padding:32px 25px 0">/</label>
+        </div>
+        <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-5">
+            <label>Expiry Year</label>
+            <input type="text" maxlength=2 minlength=1  onkeypress="return isNumberKey(event)" ng-model="upgrade.card.cardYear" class="form-control" required/>
+        </div>
+        <div class="form-group col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <label>CVV</label>
+            <input type="text" maxlength=4 minlength=3  onkeypress="return isNumberKey(event)" ng-model="upgrade.card.cardCVV" class="form-control" required/>
+        </div>
 
           <hr class="popHR">
           <div class="p-0 col-lg-12">
