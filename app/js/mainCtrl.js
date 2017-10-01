@@ -70,25 +70,7 @@
       });
     }
     $rootScope.deviceId();
-    $http.get('app/data/countryCodes.json').then(function(items) {
-      // items.sort(function(a, b){
-      //     return a.Code - b.Code;
-      // });
-      if (!items) {
-        console.log('Failure loading countries');
-      } else {
-        $rootScope.countryList = [];
-        for (var i = 0; i < items.length; i++) {
-          for (var j = 0; j < $rootScope.countryList.length; j++) {
-            if ($rootScope.countryList[j].Code == items[i].Code) {
-              break;
-            }
-          }
-          if (j == $rootScope.countryList.length) $rootScope.countryList.push(items[i]);
-        }
-        $rootScope.countries = $rootScope.countryList;
-      }
-    })
+    
     $rootScope.days = [];
     $rootScope.months = [];
     $rootScope.birthYears = [];

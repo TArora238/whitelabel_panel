@@ -1,6 +1,6 @@
 <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12" data-ng-controller="UpdateFeaturesController as feature">
 
-  <h3 class="col-lg-12 col-md-12 col-xs-12 col-sm-12 " ng-if="feature.pfDivs.length==0">More exciting things on the way... Stay Tuned</h3>
+  <h3 class="col-lg-12 col-md-12 col-xs-12 col-sm-12 text-center" ng-if="feature.pfDivs.length==0">More exciting things on the way... Stay Tuned</h3>
   <h3 class="col-lg-12 col-md-12 col-xs-12 col-sm-12 " ng-if="feature.pfDivs.length>0">Patient Financing Subscriptions</h3>
   <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12 m-t-20 " ng-repeat="pfDiv in feature.pfDivs">
     <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 subscriptionDiv text-center" ng-class="{'subscriptionDiv1':pfDiv.pf_months==1,'subscriptionDiv2':pfDiv.pf_months==12}">

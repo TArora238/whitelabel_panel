@@ -3,7 +3,8 @@
  ========================================================================== */
 body,
 .wrapper > section {
-  background-color: #f5f7fa;
+  /*background-color: #f5f7fa;*/
+  background-color: transparent;
 }
 .wrapper > .aside {
   background-color: #fff;

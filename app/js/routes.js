@@ -170,7 +170,7 @@
               url: '/dashboard',
               title: 'Dashboard',
               templateUrl: helper.basepath('dashboard.html'),
-              resolve: helper.resolveFor('flot-chart','flot-chart-plugins', 'weather-icons')
+              resolve: helper.resolveFor('ngDialog')
           })
           .state('app.support', {
               url: '/support',
@@ -182,16 +182,18 @@
                 url: '/updateFeatures',
                 title: 'Update Featuers',
                 templateUrl: helper.basepath('updateFeatures.html')
-            })
-          .state('app.dashboard_v2', {
-              url: '/dashboard_v2',
-              title: 'Dashboard v2',
-              templateUrl: helper.basepath('dashboard_v2.html'),
-              controller: 'DashboardV2Controller',
-              controllerAs: 'dash2',
-              resolve: helper.resolveFor('flot-chart','flot-chart-plugins')
           })
-
+          .state('app.updateAccount', {
+                url: '/updateAccount',
+                title: 'Update Account',
+                templateUrl: helper.basepath('updateAccount.html'),
+                resolve: helper.resolveFor('ui.select')
+          })
+          .state('app.email', {
+                url: '/email',
+                title: 'Email',
+                templateUrl: helper.basepath('email.html')
+          })
           //
           // CUSTOM RESOLVES
           //   Add your own resolves properties

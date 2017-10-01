@@ -1,0 +1,229 @@
+<div class="row col-md-12 col-xs-12 col-sm-12 col-lg-12" data-ng-controller="UpdateAccountController as account">
+  <script type="text/ng-template" ng-show="visible" id="register_done_modal">
+      <div class="ngdialog-message">
+          <div class="ngdialog-body">
+              <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+                <img src="app/img/SVG/doc_regis.svg"/>
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-md-12 text-center">
+                <h4 class="m-t-30 m-b-10 col-lg-12 col-sm-12 col-xs-12 col-md-12"><strong>Congratulations, you have successfully registered your bank details.</strong></h4>
+                <h4 class="m-t-10 m-b-30 col-lg-12 col-sm-12 col-xs-12 col-md-12"><strong>
+                   For any changes in your bank details please contact our customer support
+                </strong></h4>
+                <!-- <p class="text-left">Finding it risky to finance a Patient ? You are currently going to finance the patient for the amount of $ {{finance.financed_amount}}</p> -->
+              </div>
+              <div class="p-0 col-lg-12 text-center">
+                <button type="button" ng-click="mCtrl.continueToDashboard(1)" class="btn btn-primary btn-pop">Continue
+                </button>
+              </div>
+          </div>
+      </div>
+  </script>
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-right m-t-20 m-b-20" style="display:flex;justify-content: flex-end">
+            <!-- col-lg-4 col-md-4 col-sm-4 col-xs-4 -->
+            <div class="p-0" style="display:flex">
+              <div class="accountStepSpan VHAlign" style="display:flex;float:left" ng-class="{'active':account.accountStep==1}">
+                1
+              </div>
+              <label class="accountStepLabel pull-right p-r-0" ng-class="{'active':account.accountStep==1}">Practice Info</label>
+            </div>
+            <div class="p-0" >
+              <hr class="accountHR"/>
+            </div>
+            <div class="p-0" style="display:flex">
+              <div class="accountStepSpan VHAlign" style="display:flex;float:left"  ng-class="{'active':account.accountStep==2}">
+                2
+              </div>
+              <label class="accountStepLabel pull-right" ng-class="{'active':account.accountStep==2}">Account Info</label>
+            </div>
+          </div>
+        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 panel panel-default" ng-show="account.accountStep==1">
+            <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12  p-t-20">
+              <form name="account.practiceForm" ng-submit="account.practiceForm.$submitted&&account.goToStep()">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <label>Practice Name</label>
+                  <input type="text" maxlength="25" ng-model="account.practice.practice_name" required class="form-control" aria-label="" />
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <label>Practice Email</label>
+                  <input type="email" ng-model="account.practice.practice_email" class="form-control" ng-pattern="mCtrl.emailPattern" required/>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>Practice Phone Number</label>
+                    <div class="input-group">
+                       <span class="input-group-addon">+1</span>
+                       <input type="text" maxlength=15 minlength=9 onkeypress="return isNumberKey(event)" masked="" data-inputmask="'mask': '(999) 999-9999'" ng-model="account.practice.practice_mobile" class="form-control" required name="" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m-t-20 m-b-20" >
+                  <button  type="submit" ng-disabled="mCtrl.hitInProgress" class="btn btnDefault m-r-10" style="max-width:150px">
+                      Continue
+                  </button>
+                </div>
+              </form>
+            </div>
+        </div>
+        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 panel panel-default" ng-show="account.accountStep==2">
+            <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 p-t-20">
+              <form name="account.accountForm" ng-submit="account.accountForm.$submitted&&account.createToken()">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <label>TIN / SSN</label>
+                  <input type="text" maxlength="9" minLength=9 onkeypress="return isNumberKey(event)" ng-model="account.practice.tin" required class="form-control" aria-label="" />
+                </div>
+                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12 ">
+                  <label>Name</label>
+                  <input type="text" maxlength=25 style="text-transform:capitalize" ng-model="account.register.account_name" class="form-control" required/>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 p-15">
+                  <label class="col-lg-3 col-md-3 col-sm-3 col-xs-12 p-0">Date Of Birth : </label>
+                  <div class="col-lg-12 col-xs-12 p-0">
+
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 p-r-0 p-l-0">
+                    <select ng-model="account.register.dob.month" class="form-control" ng-class="{'invalidDate':account.invalidDate}" ng-change="account.check_date(account.register.dob)" style="height:40px;">
+                      <option value="">Month</option>
+                      <option ng-value="month" ng-repeat="month in months">{{month.month_name}}</option>
+                    </select>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 p-r-0">
+                    <select ng-model="account.register.dob.day" class="form-control" ng-class="{'invalidDate':account.invalidDate}" ng-change="account.check_date(account.register.dob)" style="height:40px;">
+                      <option value="">Date</option>
+                      <option ng-value="day" ng-repeat="day in days" >{{day}}</option>
+                    </select>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 p-r-0">
+                    <select ng-model="account.register.dob.year" class="form-control" ng-class="{'invalidDate':account.invalidDate}" ng-change="account.check_date(account.register.dob)" style="height:40px;">
+                      <option value="">Year</option>
+                      <option ng-value="year" ng-repeat="year in birthYears">{{year}}</option>
+                    </select>
+                  </div>
+
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 p-15 p-l-0">
+                  <label>Business Type</label>
+                  <select ng-model="account.register.account_type" class="form-control" ng-change="account.account_type(account.register.account_type)" style="height:40px;">
+                    <option value="">Choose Account Type</option>
+                    <option ng-value="account_type" ng-repeat="account_type in account.account_types">{{account_type}}</option>
+                  </select>
+                </div>
+                <div ng-if="account.register.account_type=='company'" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <label>Company Name</label>
+                  <input type="text" maxlength=100 style="text-transform:capitalize" ng-model="account.register.business_name" class="form-control" required/>
+                </div>
+                <div ng-if="account.register.account_type=='company'" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <label>Company Tax ID</label>
+                  <input type="text" maxlength=9 minlength=9 onkeypress="return isNumberKey(event)" style="text-transform:capitalize" ng-model="account.register.business_tax_id" class="form-control" required/>
+                </div>
+                <div class="clearfix"></div>
+                <label style="font-family: Lato;font-size: 16px;font-weight: bold;color: #505050;" class="col-lg-6 col-md-6 col-sm-6 col-xs-8">Select your default address</label>
+
+                <div class="clearfix m-b-20"></div>
+                <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12">
+                  <div ng-repeat="location in account.locations" ng-click="account.selectBankAddress(location,$index)" ng-init="$last?account.locationIndeces():null"
+                  class="locationDiv m-b-10 col-lg-12 col-md-12 col-sm-12 col-xs-12" style="cursor:pointer">
+                    <div class="locationHeader p-15 w-100" style="display:table;border:none">
+                      <p class="m-0 col-lg-10 col-md-10 col-sm-10 col-xs-10" style="display:flex"><i class="material-icons lightGreyIcon">location_city</i>&nbsp;&nbsp;{{location.practice_location_address}}, {{location.city}}</p>
+                    </div>
+                  </div>
+                </div>
+                <button type="button" style="font-size: 16px;font-weight: bold;color: #505050;text-align:left" ng-click="account.addAddressPop()" class="whiteBtn p-l-15 p-r-15 p-t-10 p-b-10 m-l-15 m-b-20" ng-if="account.locations.length==0">Add Address</button>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12 p-l-0">
+                    <label>Routing Number</label>
+                    <input type="password" maxlength=9 autocomplete="new-password" onkeypress="return isNumberKey(event)" ng-model="account.register.routing_number" class="form-control" required/>
+                  </div>
+                  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                    <label>Confirm Routing Number</label>
+                    <input type="text" name="confirmRou" maxlength=9  ng-pattern="account.register.routing_number" onkeypress="return isNumberKey(event)" ng-model="account.register.confirm_routing_number" class="form-control" required/>
+                  </div>
+                  <span ng-show="account.accountForm.confirmRou.$error.pattern"
+                        class="alert errorSpan" style="margin-left: 7px;top: 55px;margin-top: 0;padding-right: 15px;">Routing Numbers don't match</span>
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 m-t-10">
+                  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12 p-l-0">
+                    <label>Account Number</label>
+                    <input type="password" maxlength=15 autocomplete="new-password" onkeypress="return isNumberKey(event)" ng-model="account.register.account_number" class="form-control" required/>
+                  </div>
+                  <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                    <label>Confirm Account Number</label>
+                    <input type="text" name="confirmAcc" maxlength=15  ng-pattern="account.register.account_number" onkeypress="return isNumberKey(event)" ng-model="account.register.confirm_account_number" class="form-control" required/>
+                  </div>
+                  <span ng-show="accountForm.confirmAcc.$error.pattern"
+                        class="alert errorSpan" style="margin-left: 7px;top: 55px;margin-top: 0;padding-right: 15px;">Account Numbers don't match</span>
+                  <div class="clearfix"></div>
+                  <!-- <a ng-click="triggerFile()" class="btn btn-actions">
+                      Upload Image
+                  </a>
+                  <span>{{register.FileName}}</span>
+                  <div class="clearfix"></div>
+                  <span class="m-t-20">Please upload a copy (jpg/png) of your Driver's License (Front and Back) or Passport. Please limit your upload  to a single page</span>
+                  <input type="file" style="display: none;" class="upload docUpload" name="profilePic" onchange="angular.element(this).scope().file_to_upload(this.files)" id="fileInput" data-button-text="Single" uploader="uploader" accept="image/*" /> -->
+
+                </div>
+                <div class="checkbox col-md-12 col-lg-12 col-sm-12 col-xs-12 m-t-20" >
+                    <label style="color:#505050">
+                        <input type="checkbox" ng-model="account.register.terms" ng-click="account.checkTerms()">
+                        <i class="input-helper"></i>
+                        By providing this information I agree to all <a style="color:#1eacdb" target="_blank" ui-sref="doctorTerms">Terms & Conditions</a>.
+                    </label>
+                </div>
+                <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 m-t-30 m-b-30">
+                  <button type="submit" ng-disabled="account.invalidDate||!account.register.terms||mCtrl.hitInProgress||account.accountForm.confirmRou.$error.pattern||account.accountForm.confirmAcc.$error.pattern" class="pull-left btn btn-block btn-primary mt-lg btnDefault" style="max-width:150px">
+                    Update
+                  </button>
+                </div>
+
+              </form>
+            </div>
+        </div>
+    </div>
+    <script type="text/ng-template" id="addAddressPop">
+      <div class="ngdialog-message">
+
+        <div class="ngdialog-header">
+          <h4>Add Address</h4>
+        </div>
+        <form name="account.addressForm" ng-submit="account.addressForm.$submitted&&account.selectBankAddress(location,-1)">
+          <div class="ngdialog-body prospectDiv">
+            <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 zipcode">
+              <label>Zipcode</label>
+              <!-- <input type="text" onkeypress="return isNumberKey(event)" maxlength=6 ng-model="account.location.zip" placeholder="Zipcode" typeahead="address as address.zip for address in account.getLocation($viewValue)" typeahead-min-length='4' ng-blur="mCtrl.locationZipSelect()" typeahead-loading="account.loadingLocations"
+                typeahead-select-on-exact="true" typeahead-on-select="mCtrl.locationZipSelect($item, $model, $label, $event)" typeahead-select-on-blur="true" typeahead-no-results="account.noResults" class="form-control" required>
+              <i ng-show="account.loadingLocations" class="fa fa-refresh" style="position: absolute;color: #505050;right:15px"></i>
+              <div ng-show="account.noResults" class="noResults  p-l-15">
+                <i class="fa fa-remove"></i> No Results Found
+              </div> -->
+              <ui-select ng-model="uisel.address.selected" theme="bootstrap" ng-disabled="uisel.disabled" reset-search-input="false">
+               <ui-select-match placeholder="Enter an address...">{{$select.selected.formatted_address}}</ui-select-match>
+               <ui-select-choices repeat="address in uisel.addresses | filter: $select.search track by $index" refresh="uisel.refreshAddresses($select.search)" refresh-delay="0">
+                  <div ng-bind-html="address.formatted_address | highlight: $select.search"></div>
+               </ui-select-choices>
+            </ui-select>
+            </div>
+            <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <label>State</label>
+              <input type="text" ng-model="account.location.state" class="form-control" required readonly/>
+            </div>
+            <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <label>City</label>
+              <input type="text" ng-model="account.location.city" class="form-control" required readonly/>
+            </div>
+            <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <label>Address</label>
+              <input type="text" maxlength=100 ng-model="account.location.practice_location_address" class="form-control" required/>
+            </div>
+            <hr class="popHR">
+            <div class="p-0 col-lg-12">
+              <button type="button" ng-click="closeThisDialog('button')" class="btn btn-default pull-left btn-cancel">Cancel
+                  </button>
+              <button type="submit" class="btn btn-primary pull-right btn-pop">Add
+                  </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </script>
+</div>

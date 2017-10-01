@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+    Denefits - Dental Plans - Profitable Patient Financing - Dental Marketplace
+  </title>
+	<style>
+	.footerWidth1{
+		width: 42%;
+	}
+	.footerWidth1 h1{
+		text-align: left;
+	}
+	.footerWidth{
+		width: 45%;
+	}
+#outlook a{padding:0;}
+body{width:100% !important; background-color:#41849a;-webkit-text-size-adjust:none; -ms-text-size-adjust:none;margin:0 !important; padding:0 !important;}
+.ReadMsgBody{width:100%;}
+.ExternalClass{width:100%;}
+ol li {margin-bottom:15px;}
+
+img{height:auto; line-height:100%; outline:none; text-decoration:none;}
+#backgroundTable{height:100% !important; margin:0; padding:0; width:100% !important;}
+
+p {margin: 1em 0;}
+
+h1, h2, h3, h4, h5, h6 {color:#222222 !important; font-family:Arial, Helvetica, sans-serif; line-height: 100% !important;}
+
+table td {border-collapse:collapse;}
+
+.yshortcuts, .yshortcuts a, .yshortcuts a:link,.yshortcuts a:visited, .yshortcuts a:hover, .yshortcuts a span { color: black; text-decoration: none !important; border-bottom: none !important; background: none !important;}
+
+.im {color:black;}
+div[id="tablewrap"] {
+		width:100%;
+		max-width:600px!important;
+	}
+table[class="fulltable"], td[class="fulltd"] {
+		max-width:100% !important;
+		width:100% !important;
+		height:auto !important;
+	}
+
+@media screen and (max-device-width: 430px), screen and (max-width: 430px) {
+	.footerWidth,.footerWidth1{
+		width: 100%;
+		text-align: center;
+	}
+	.footerWidth1 h1{
+		text-align: center;
+	}
+		td[class=emailcolsplit]{
+			width:100%!important;
+			float:left!important;
+			padding-left:0!important;
+			max-width:430px !important;
+		}
+    td[class=emailcolsplit] img {
+    margin-bottom:20px !important;
+    }
+}
+</style>
+</head>
+<body style="width:100% !important; margin:0 !important; padding:0 !important; -webkit-text-size-adjust:none; -ms-text-size-adjust:none; background-color:#FFFFFF;">
+<table cellpadding="0" cellspacing="0" border="0" id="backgroundTable" style="height:auto !important; margin:0; padding:0; width:100% !important; background-color:#FFFFFF; color:#222222;">
+	<tr>
+		<td>
+         <div id="tablewrap" style="width:100% !important;border:1px solid #d3e5ee;max-width:600px !important; text-align:center !important; margin-top:0 !important; margin-right: auto !important; margin-bottom:2% !important; margin-left: auto !important;background-color:#f4f7fb!important;">
+		      <table id="contenttable" width="600" align="center" cellpadding="0" cellspacing="0" border="0" style="background-color:#f4f7fb; text-align:center !important; margin-top:0 !important; margin-right: auto !important; margin-bottom:0 !important; margin-left: auto !important; border:none; width: 100% !important; max-width:600px !important;">
+            <tr>
+                <td width="100%">
+                    <table  border="0" cellspacing="0" cellpadding="25" width="100%">
+                        <tr bgcolor="#4582bc" style="background-color:#4582bc;">
+                            <td width="50%" bgcolor="#4582bc" style="text-align:left;padding-left:6%;"><a href="http://denefits.com"><img src="http://partners.denefits.com/email/new/logo_main.png" style="display:inline-block; max-width:auto !important; width:auto !important; height:auto !important;border-bottom-right-radius:8px;border-bottom-left-radius:8px;" border="0"></a>
+                            </td>
+														<!-- <td width="50%" bgcolor="#4582bc" style="text-align:right;padding-right:6%;"><a href="#" style="color:#fff;text-decoration:none;font-size:12px;font-family: Helvetica;font-weight: 500;">Help</a>
+                            </td> -->
+                        </tr>
+                   </table>
+
+                   <table bgcolor="#fff" border="0" cellspacing="10" cellpadding="25" width="87%" style="margin:6% auto;">
+                        <tr>
+                            <td width="100%" bgcolor="#ffffff" style="text-align:left;padding-bottom:1%;">
+                            	<p style="color:#202020; font-family: Helvetica; font-size:16px; line-height:22px; margin-top:0; margin-bottom:20px; padding:0; font-weight:normal;">
+																"Your message comes here"
+															</p>
+                            </td>
+                        </tr>
+                   </table>
+										<table bgcolor="#516581" border="0" cellspacing="0" cellpadding="25" width="100%" style="margin:auto;">
+
+ 												<tr>
+ 													<td style="display:inline!important;">
+ 														<p style="color:#fff; font-family: Helvetica ; font-size:16px; line-height:22px; margin-top:0; margin-bottom:15px; padding:0; font-weight:normal;">
+ 																Download App <a href="https://itunes.apple.com/us/app/denefits/id1253338581?ls=1&mt=8" style="margin-left:2%;border:solid 1px rgba(255, 255, 255, 0.2);border-radius:4px;width:60px;height:40px;display:inline-block; padding-top:2%;"><img src="http://partners.denefits.com/email/new/app_store_icon.png" width="18px" height="22px"></a>
+																<a href="https://play.google.com/store/apps/details?id=bhct.denefits.doctor&hl=en" style="margin-left:2%;border:solid 1px rgba(255, 255, 255, 0.2);border-radius:4px;width:60px;height:40px;display:inline-block; padding-top:2%;"><img src="http://partners.denefits.com/email/new/play_store_icon.png" width="18px" height="22px"></a>
+ 															</p>
+ 													</td>
+ 												</tr>
+                     </table>
+
+										 <table bgcolor="#fff" border="0" cellspacing="0" cellpadding="25" width="100%" style="margin:auto;">
+
+											 <tr>
+											 <td class="footerWidth1" style="padding:0;display:inline-block;">
+													<h4 style="font-family:Helvetica;font-size:16px;color:#354052;margin-bottom:0;">1501 Superior Ave</h4>
+													<p style="font-family:Helvetica;font-size:12px;color:#354052;font-weight:600;">Newport Beach, CA 92663</p>
+												</td>
+												<td style="display:inline-block!important;padding:0;" class="footerWidth">
+													 <a href="https://www.facebook.com/denefits" style="display:inline-block;padding:0%;padding-top: 6%;"><img src="http://partners.denefits.com/email/new/facebook.png"></a>
+													 <a href="https://twitter.com/denefits" style="display:inline-block;padding:1%;padding-top: 6%;"><img src="http://partners.denefits.com/email/new/twitter.png"></a>
+													 <a href="https://www.linkedin.com/company-beta/13340421/" style="display:inline-block;padding:0%;padding-top: 6%;"><img src="http://partners.denefits.com/email/new/linked.png"></a>
+													 <a href="https://www.instagram.com/denefits/" style="display:inline-block;padding:1%;padding-top: 6%;"><img src="http://partners.denefits.com/email/new/insta.png"></a>
+													 <a href="https://www.pinterest.com/denefits/" style="display:inline-block;padding:0%;padding-top: 6%;"><img src="http://partners.denefits.com/email/new/pint.png"></a>
+												</td>
+											</tr>
+											</table>
+                </td>
+            </tr>
+        </table>
+        </div>
+		</td>
+	</tr>
+</table>
+</body>
+</html>

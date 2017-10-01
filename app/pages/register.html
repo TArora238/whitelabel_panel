@@ -78,6 +78,8 @@
                 <!-- specialitySelect -->
                 <label>Speciality</label>
                 <select ng-model="reg.register.speciality_type" class="form-control" ng-change="reg.specialitySelect(reg.register.speciality_type)" style="height:40px;">
+                  <option value="">Select your speciality</option>
+
                   <option ng-value="speciality_type.doctor_speciality" ng-repeat="speciality_type in reg.specialityList" ng-selected="{{ $index==0 }}">{{speciality_type.speciality_name}}
                   </option>
                 </select>
