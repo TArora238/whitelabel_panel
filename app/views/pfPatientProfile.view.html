@@ -1,0 +1,140 @@
+<div class="container-fluid" ng-controller="pfPatientProfileCtrl">
+    <div class="animated fadeIn">
+        <!--<h3 class="page-header">Sales</h3>-->
+        <div class="page-header-div">
+                <h3 class="col-lg-4 col-md-4 col-xs-12 col-sm-4">Patient Profile</h3>
+        </div>
+        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+          <div class="profileDivs col-md-12 col-xs-12 col-sm-12 col-lg-12 p-0">
+            <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+              <div class="col-md-6 col-xs-12 col-sm-12 col-lg-6 p-0">
+                <a style="margin-top:0px;margin-right:0px;font-size:0;opacity: 1">
+                    <img id="proPic" ng-src="{{pfPatientData.patient_image!=''&&pfPatientData.patient_image!=null ? pfPatientData.patient_image : 'img/SVG/avatar.svg'}}" class="img-circle">
+                </a>
+                <input type="file" style="display: none;" class="upload profileUpload" name="profilePic" onchange="angular.element(this).scope().profileUpload(this.files)" id="fileInput" data-button-text="Single" uploader="uploader" accept="image/*" />
+              </div>
+
+              <div style="color:#909090" class="m-l-15 whiteDiv col-md-2 col-xs-12 col-sm-2 col-lg-2 pull-right text-right p-15 m-15">
+                <span class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 m-0"><strong>Member Since</strong></span>
+                <h3 class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-left p-0 m-0">{{pfPatientData.date_registered}}</h3>
+              </div>
+              <div style="color:#909090" class="m-l-15 whiteDiv col-md-2 col-xs-12 col-sm-2 col-lg-2 pull-right text-right p-15 m-15">
+                <span class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 m-0"><strong>Patient ID</strong></span>
+                <h3 class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-left p-0 m-0">{{pfPatientData.patient_code}}</h3>
+              </div>
+            </div>
+            <div class="col-md-6 col-xs-12 col-sm-12 col-lg-6">
+              <!-- ng-click="triggerFile()"  -->
+
+              <md-input-container>
+                  <label>Name</label>
+                  <input name="userName" maxlength=25 type="text" ng-model="pfPatientData.name" ng-change="profileEditFn()" class="form-control" required readonly/>
+              </md-input-container>
+              <div class="row profileSelect">
+                  <md-select class="col-lg-2 col-xs-3 col-sm-2 col-md-2" ng-model="pfPatientData.codeSelect" ng-change="profileEditFn()" disabled>
+                      <md-option ng-value="country" ng-repeat="country in countries" ng-selected="{{ country.Code === code ? 'true' : 'false' }}">+{{country.Code}} {{country.ISO|uppercase}}
+                      </md-option>
+                  </md-select>
+                  <md-input-container class="col-lg-10 col-xs-9 col-sm-10 col-md-10" style="padding-left: 0;padding-right:0">
+                      <label>Phone</label>
+                      <input type="text"  onkeypress="return isNumberKey(event)" minlength=9 maxlength=18 ng-change="profileEditFn()" data-input-mask="{mask: '(000) 000-0000'}" ng-model="pfPatientData.mobile" class="form-control" required  readonly/>
+                  </md-input-container>
+              </div>
+              <md-input-container ng-controller="DatepickerDemoCtrl" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 20px 0 26px;">
+                  <!-- <label>Date of Birth</label> -->
+                  <div class="dd-block">
+                      <div class="date-picker">
+                        <div class="date-picker" disabled >
+                          <!-- ng-class="{ 'is-opened': opened == true }" -->
+                          <!-- <span class="input-group-addon"><i class="zmdi zmdi-calendar ma-icon"></i></span> -->
+                          <div class="fg-line" ng-class="{ 'fg-toggled': opened == true }">
+                              <input ng-click="open($event, 'opened')" type="text" class="form-control" uib-datepicker-popup="{{format}}" show-weeks="false" ng-model="pfPatientData.date_of_birth" is-open="opened" max-date="minDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" placeholder="Date Of Birth" required readonly style="background:transparent"/>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+              </md-input-container>
+              <md-input-container>
+                  <label>SSN</label>
+                  <input name="userName" maxlength=9 type="text" ng-model="pfPatientData.patient_ssn" ng-change="profileEditFn()" class="form-control" required readonly/>
+              </md-input-container>
+            </div>
+            <div class="col-md-6 col-xs-12 col-sm-12 col-lg-6">
+              <md-input-container>
+                  <label>Email</label>
+                  <input name="userEmail" type="email" ng-model="pfPatientData.patient_email" ng-change="profileEditFn()" class="form-control" required readonly/>
+              </md-input-container>
+              <md-input-container>
+                  <label>Address</label>
+                  <input name="userEmail" type="text" ng-model="pfPatientData.patient_address" maxlength=100 ng-change="profileEditFn()" class="form-control" required readonly/>
+              </md-input-container>
+              <md-input-container>
+                  <label>DL Number</label>
+                  <input name="userEmail" type="text" ng-model="pfPatientData.dl_number" maxlength=9 ng-change="profileEditFn()" class="form-control" required readonly/>
+              </md-input-container>
+            </div>
+          </div>
+        </div>
+        <h3 class="col-lg-4 col-md-4 col-xs-12 col-sm-4 m-b-20">Payment Details</h3>
+        <button class="pull-right btn btn-default whiteBtn" ng-click="contractDetails(pfPatientData.contract_id)">
+          View Contract
+        </button>
+        <div class="clearfix"></div>
+        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+          <div class="profileDivs col-md-12 col-xs-12 col-sm-12 col-lg-12 p-15">
+            <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0  m-b-15">
+              <label>Total Balance:</label>
+              <h4 class="m-0"><strong>$ {{pfPatientData.remaining_amount}}</strong></h4>
+            </div>
+
+            <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0 m-b-15">
+              <label>Treatment Amount:</label>
+              <h4 class="m-0"><strong>$ {{pfPatientData.treatment_amount}}</strong></h4>
+            </div>
+            <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0 m-b-15">
+              <label>Recurring Amount:</label>
+              <h4 class="m-0"><strong>$ {{pfPatientData.recurring_amount}}</strong></h4>
+            </div>
+
+            <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0 m-b-15">
+              <label>Down Payment:</label>
+              <h4 class="m-0"><strong>$ {{pfPatientData.downpayment_amount}}</strong></h4>
+            </div>
+
+            <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0">
+              <label>Number of Payments:</label>
+              <h4 class="m-0"><strong>{{pfPatientData.number_of_payments}}</strong></h4>
+            </div>
+            <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0 m-b-15">
+              <label>Successful Payments Made:</label>
+              <h4 class="m-0"><strong>{{pfPatientData.number_of_payments-pfPatientData.remaining_payments}}</strong></h4>
+            </div>
+            <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0 m-b-15">
+              <label>Interest Rate:</label>
+              <h4 class="m-0"><strong>{{pfPatientData.interest_rate}} %</strong></h4>
+            </div>
+            <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0 m-b-15">
+              <label>Enrollment Fees:</label>
+              <h4 class="m-0"><strong>$ {{pfPatientData.fixed_flat_fee}}</strong></h4>
+            </div>
+            <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0 m-b-15">
+              <label>Next Payment Date:</label>
+              <h4 class="m-0"><strong>{{pfPatientData.next_payment_date}}</strong></h4>
+            </div>
+            <!-- <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0 m-b-15">
+              <label>Total Balance:</label>
+              <h4 class="m-0"><strong>$ {{pfPatientData.remaining_amount}}</strong></h4>
+            </div>
+            <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0 m-b-15">
+              <label>Rate of interest:</label>
+              <h4 class="m-0"><strong>{{pfPatientData.interest_rate}}%</strong></h4>
+            </div>
+            <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0 m-b-15">
+              <label>Recurring Amount:</label>
+              <h4 class="m-0"><strong>$ {{pfPatientData.recurring_amount}}</strong></h4>
+            </div>
+             -->
+          </div>
+        </div>
+    </div>
+</div>

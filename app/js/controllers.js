@@ -805,9 +805,9 @@
     .module('app.account')
     .controller('UpdateAccountController', UpdateAccountController);
 
-  UpdateAccountController.$inject = ['$http', '$state', '$rootScope', 'toaster', '$scope', 'cfpLoadingBar', 'api', '$timeout','ngDialog'];
+  UpdateAccountController.$inject = ['$http', '$state', '$rootScope', 'toaster', '$scope', 'cfpLoadingBar', 'api', '$timeout', 'ngDialog'];
 
-  function UpdateAccountController($http, $state, $rootScope, toaster, $scope, cfpLoadingBar, api, $timeout,ngDialog) {
+  function UpdateAccountController($http, $state, $rootScope, toaster, $scope, cfpLoadingBar, api, $timeout, ngDialog) {
     var vm = this;
 
     //$rootScope.$on('init', function() {
@@ -1114,15 +1114,1172 @@
 =========================================================*/
 
 (function() {
+  'use strict';
+
+  angular
+    .module('app.email')
+    .controller('EmailController', EmailController);
+
+  EmailController.$inject = ['$http', '$state', '$rootScope', 'toaster', '$scope', 'cfpLoadingBar', 'api', '$timeout', '$sce'];
+
+  function EmailController($http, $state, $rootScope, toaster, $scope, cfpLoadingBar, api, $timeout, $sce) {
+    var vm = this;
+
+    //$rootScope.$on('init', function() {
+    activate();
+    // });
+
+    ////////////////
+
+    function activate() {
+      $scope.mCtrl.checkToken();
+
+      vm.ngDialogPop = function(template, className) {
+        vm.visible = true;
+        ngDialog.openConfirm({
+          template: template,
+          className: 'ngdialog-theme-default ' + className,
+          scope: $scope
+        }).then(function(value) {}, function(reason) {});
+
+      }
+      // GMAIL
+      var clientId = '888750246117-hdiq9usud39eefq9h32houp62o3pjosv.apps.googleusercontent.com';
+      var apiKey = 'AIzaSyAUnB3N3ZeNuxlz3oHO5fCmQ__JFxDTBLc';
+      var scopes = 'https://www.googleapis.com/auth/contacts.readonly';
+
+      vm.getGoogleContacts = function() {
+        vm.manualEnter = 0;
+        gapi.client.setApiKey(apiKey);
+        window.setTimeout(authorize);
+      };
+
+      function authorize() {
+        gapi.auth.authorize({
+          client_id: clientId,
+          scope: scopes,
+          immediate: false,
+          cookie_policy: 'single_host_origin'
+        }, handleAuthorization);
+      }
+
+      function handleAuthorization(authorizationResult) {
+        // vm.patients_selected = [];
+        vm.accountUsed = '';
+        if (authorizationResult && !authorizationResult.error) {
+          $.get("https://www.google.com/m8/feeds/contacts/default/thin?alt=json&access_token=" + authorizationResult.access_token + "&max-results=500&v=3.0",
+            function(response) {
+              //process the response here
+              console.log(response);
+              var entries = response.feed.entry;
+              var contacts = [];
+              vm.accountUsed = response.feed.id.$t;
+              $timeout(function() {
+                for (var i = 0; i < entries.length; i++) {
+                  var name = entries[i].title.$t;
+                  var emails = entries[i].gd$email || [];
+                  for (var j = 0; j < emails.length; j++) {
+                    var email = emails[j].address || '';
+                    if (email)
+                      contacts.push({
+                        email: email
+                      });
+                    if ($.inArray(email, vm.patients_selected) != -1) {
+                      // $scope.mCtrl.openToast('warning', 'Already added', '');
+                      // vm.customEmails.manualEmail = '';
+                      // return false;
+                    } else vm.patients_selected.push(email);
+                  }
+                }
+              });
+              console.log(contacts);
+              console.log(vm.patients_selected);
+            });
+          gapi.auth.setToken(null);
+          gapi.auth.signOut();
+        }
+      }
+
+
+      vm.uploadCSV = function() {
+        vm.manualEnter = 0;
+        $('.csvUpload').trigger('click');
+      }
+
+      vm.csvUpload = function(files) {
+        vm.accountUsed = '';
+        // vm.patients_selected = [];
+        if (files.length > 0) {
+          console.log(files);
+          Papa.parse(files[0], {
+            complete: function(results) {
+              console.log(results);
+              $timeout(function() {
+                for (var i = 1; i < results.data.length; i++) {
+                  console.log(results.data[i]);
+                  if ($scope.mCtrl.emailPattern.test(results.data[i])) {
+                    if ($.inArray(results.data[i][0], vm.patients_selected) == -1) {
+                      vm.patients_selected.push(results.data[i][0])
+                    }
+                  } else {
+                    console.log("Not a valid email");
+                  }
+
+                }
+                console.log(vm.patients_selected);
+              })
+            }
+          });
+        } else {
+          toaster.pop('error', 'Please choose a file', '');
+
+        }
+      }
+      vm.manualEnter = 0;
+      vm.patients_selected = [];
+      vm.manualChoose = function() {
+        vm.manualEnter = 1;
+        vm.manualEmail = '';
+        // vm.patients_selected = [];
+        var userArray = new Array();
+      }
+      vm.addPatient = function(email) {
+        if (!email) {
+          // $scope.mCtrl.openToast('warning', 'Enter a valid mail', '');
+          return false;
+        }
+        if ($.inArray(email, vm.patients_selected) != -1) {
+          toaster.pop('warning', 'Already added', '');
+          vm.customEmails.manualEmail = '';
+          return false;
+        } else {
+          vm.patients_selected.push(email);
+          vm.customEmails.manualEmail = '';
+          return false;
+        }
+      }
+      vm.deleteEmail = function(id) {
+        vm.patients_selected.splice(id, 1);
+      }
+
+
+
+
+      cfpLoadingBar.start();
+      vm.customEmails = {};
+      $http.get('app/data/email-template.txt')
+        .then(function(data) {
+
+          vm.customEmails.template = data.toString();
+          vm.customEmails.templateMesg = data.toString();
+        })
+      $http.get('app/data/email-templates.json')
+        .then(function(data) {
+          vm.templates = data;
+        })
+      vm.selectedTemplate = "Select a template";
+      vm.selectTemplate = function(id) {
+        $timeout(function() {
+          vm.customEmails.message = vm.templates[id].message;
+          vm.customEmails.subject = vm.templates[id].subject;
+          vm.selectedTemplate = vm.templates[id].title;
+          vm.editMessage();
+        });
+      }
+      var userNumList = new Array();
+      var userIDList = new Array();
+
+      vm.customEmails.message = '';
+      vm.editMessage = function() {
+        var body = vm.customEmails.templateMesg;
+        // console.log(vm.customEmails.message);
+        if (vm.customEmails.message) vm.customEmails.template = body.replace('"Your message comes here"', vm.customEmails.message);
+        else vm.customEmails.template = body;
+      }
+      vm.trustedHtml = function(plainText) {
+        return $sce.trustAsHtml(plainText);
+      }
+      vm.options = {
+        language: 'en',
+        allowedContent: true,
+        entities: false
+      };
+      vm.clearAll = function() {
+        vm.patients_selected = [];
+      }
+      vm.sendEmail = function() {
+        console.log("assd");
+
+        // if (vm.isAll == 0 && vm.partner_selected.length == 0) {
+        //   $scope.mCtrl.openToast('error', 'No Partner Selected', '');
+        //   return false;
+        // }
+        if (vm.patients_selected.length == 0) {
+          toaster.pop('error', 'No Patient Selected', '');
+          return false;
+        }
+        if (vm.customEmails.message == '') {
+          toaster.pop('error', 'Message is empty', '');
+          return false;
+        }
+        cfpLoadingBar.start();
+        var t = vm.customEmails.template.replace('width:100%;display:table;', 'min-height:30px;');
+        // for (var i = 0; i < $scope.patients_selected.length; i++) {
+        //   $scope.patients_selected[i]
+        // }
+        var data = {
+          access_token: localStorage.getItem('doctorToken'),
+          email_subject: vm.customEmails.subject,
+          email_body: t,
+          email_array: vm.patients_selected
+          // is_all: vm.isAll
+        }
+
+        // if (vm.isAll == 1) {
+        //   data.partner_ids = 0;
+        // } else data.partner_ids = vm.customEmails.user_id;
+
+        // $.post(api.url + "mass_email_partners", data)
+        var form = new FormData();
+        form.append('access_token', localStorage.getItem('doctorToken'));
+        form.append('email_subject', vm.customEmails.subject);
+        form.append('email_body', t);
+        form.append('emails_array', vm.patients_selected);
+
+        $http({
+            url: api.url + 'mass_email',
+            method: 'POST',
+            data: form,
+            transformRequest: false,
+            headers: {
+              'Content-Type': undefined
+            }
+          })
+          .then(function(data, status) {
+            vm.doSubmit = false;
+            if (typeof data === 'string') data = JSON.parse(data);
+            $scope.mCtrl.flagPopUps(data.flag, data.is_error);
+            if (data.is_error == 0) {
+              // vm.customEmails={}
+              // $state.reload();
+              vm.doSubmit = false;
+              toaster.pop('success', 'Mail Sent Successfully', '');
+            } else {
+              vm.doSubmit = false;
+              // $scope.isAll==1
+            }
+          });
+      }
+    }
+  }
+})();
+
+
+
+/**=========================================================
+ * Module: PF Patient List
+=========================================================*/
+
+(function() {
+  'use strict';
+
+  angular
+    .module('app.pf')
+    .controller('PFPatientsController', PFPatientsController);
+
+  PFPatientsController.$inject = ['$http', '$state', '$rootScope', 'toaster', '$scope', 'cfpLoadingBar', 'api', '$timeout', 'ngDialog', 'DTOptionsBuilder'];
+
+  function PFPatientsController($http, $state, $rootScope, toaster, $scope, cfpLoadingBar, api, $timeout, ngDialog, DTOptionsBuilder) {
+    var vm = this;
+
+    //$rootScope.$on('init', function() {
+    activate();
+    // });
+
+    ////////////////
+
+    function activate() {
+      $scope.mCtrl.checkToken();
+      $scope.mCtrl.checkDoctorToken();
+
+      vm.selectedFilterMode = 'Filter by Plan';
+      vm.filterMode = function(plan) {
+        vm.selectedFilterMode = plan;
+      }
+      vm.dtOptions = {
+        "scrollX": true
+      }
+      vm.ngDialogPop = function(template, className) {
+        ngDialog.openConfirm({
+          template: template,
+          className: 'ngdialog-theme-default ' + className,
+          scope: $scope
+        }).then(function(value) {}, function(reason) {});
+
+      }
+      vm.currentPage = 1;
+      vm.itemsPerPage = 10;
+      vm.maxSize = 5;
+      vm.skip = 0;
+      vm.pageChanged = function(currentPage) {
+        vm.currentPage = currentPage;
+        for (var i = 1; i <= vm.totalItems / 10 + 1; i++) {
+          if (vm.currentPage == i) {
+            vm.skip = 10 * (i - 1);
+          }
+        }
+        vm.pf_patient_list = [];
+        vm.initTable();
+      };
+      vm.initTable = function() {
+        cfpLoadingBar.start();
+        vm.pf_patient_list = [];
+        $.post(api.url + "pf_patient_list", {
+            access_token: localStorage.getItem('doctorToken'),
+            limit: 100,
+            offset: vm.skip
+          })
+          .then(function(data, status) {
+
+            if (typeof data === 'string') data = JSON.parse(data);
+            // console.log(data);
+            $scope.mCtrl.flagPopUps(data.flag, data.is_error);
+            vm.pf_patient_list = data.patient_list;
+            vm.totalItems = data.patient_list.length;
+
+          });
+      }
+      vm.initTable();
+      vm.patientDetails = function(patient) {
+        localStorage.setItem('pfPatientData', JSON.stringify(patient));
+        $state.go('app.pfPatientProfile');
+      }
+    }
+  }
+})();
+
+
+/**=========================================================
+ * Module: PF FINANCE INFO
+=========================================================*/
+
+(function() {
+  'use strict';
+
+  angular
+    .module('app.pf')
+    .controller('PFFinanceInfoController', PFFinanceInfoController);
+
+  PFFinanceInfoController.$inject = ['$http', '$state', '$rootScope', 'toaster', '$scope', 'cfpLoadingBar', 'api', '$timeout'];
+
+  function PFFinanceInfoController($http, $state, $rootScope, toaster, $scope, cfpLoadingBar, api, $timeout) {
+    var vm = this;
+
+    //$rootScope.$on('init', function() {
+    activate();
+    // });
+
+    ////////////////
+
+    function activate() {
+      $scope.mCtrl.checkToken();
+      $scope.mCtrl.checkDoctorToken();
+      localStorage.setItem('bankFromFinance', 0);
+      vm.ngDialogPop = function(template, className, f) {
+        if (f) {
+          ngDialog.openConfirm({
+            template: template,
+            className: 'ngdialog-theme-default ' + className,
+            scope: $scope,
+            showClose: false,
+          }).then(function(value) {}, function(reason) {});
+        } else {
+          ngDialog.openConfirm({
+            template: template,
+            className: 'ngdialog-theme-default ' + className,
+            scope: $scope
+          }).then(function(value) {}, function(reason) {});
+        }
+
+      }
+      // $scope.ngDialogPop('no_guarantee_modal','bigPop');
+      vm.customMonths = 0;
+      vm.finance = {};
+      vm.steps = 1;
+      vm.pfMonths = [3, 6, 9, 12, 15, 18]
+      vm.selectedMonth = [];
+      vm.finance.customMonth = '';
+      vm.monthCheck = [false, false, false, false, false, false];
+      // vm.monthCheck=[true,true,false,false,false,false,false];
+      console.log(localStorage.getItem('customMonth'));
+      if (localStorage.getItem('customMonth')) {
+        $timeout(function() {
+          vm.finance.customMonth = parseInt(localStorage.getItem('customMonth'));
+          console.log(vm.finance.customMonth);
+          vm.selectedMonth.push(vm.finance.customMonth);
+        }); // vm.customMonths = 1;
+      }
+      if (localStorage.getItem('selectedMonth')) {
+        $timeout(function() {
+          vm.monthCheck = JSON.parse(localStorage.getItem('selectedMonth'))
+          for (var i = 0; i < 6; i++) {
+            if (vm.monthCheck[i]) vm.selectedMonth.push(vm.pfMonths[i])
+          }
+
+          console.log(vm.selectedMonth);
+        });
+      }
+
+      if (localStorage.getItem('financeScope') && localStorage.getItem('financeScope') != null) {
+        vm.finance = JSON.parse(localStorage.getItem('financeScope'));
+
+        vm.finance.customMonth = '';
+      }
+      vm.finance.customMonths = '';
+      vm.chooseCustomMonth = function(month) {
+        console.log(vm.finance.customMonth);
+        for (var i = 0; i < vm.selectedMonth.length; i++) {
+          if (vm.selectedMonth[i] != vm.finance.customMonth) {
+            if (vm.selectedMonth[i] % 3 != 0) {
+              vm.selectedMonth.splice(i, 1);
+            }
+          }
+        }
+        if (parseInt(month) > 0)
+          vm.selectedMonth.push(parseInt(month));
+        else {
+          // if(parseInt(month)==0)
+          //   $scope.mCtrl.openToast('error', "Please choose a valid month value", '');
+          return false;
+        }
+        console.log(vm.selectedMonth);
+      }
+      vm.chooseMonth = function(month, index) {
+        console.log(month, index);
+        // console.log(vm.finance.customMonth);
+        console.log(vm.monthCheck[index]);
+        console.log(!vm.monthCheck[index]);
+
+        if (vm.monthCheck[index]) {
+          if (parseInt(month) > 0 && vm.selectedMonth.indexOf(parseInt(month)) == -1)
+            vm.selectedMonth.push(parseInt(month));
+
+        } else {
+          vm.selectedMonth.splice(vm.selectedMonth.indexOf(parseInt(month)), 1)
+        }
+
+
+        console.log(vm.selectedMonth);
+        console.log(vm.monthCheck);
+      }
+      vm.step2 = function() {
+        if (!vm.finance.downpayment_amount) {
+          toaster.pop('error', "Please enter a valid down payment amount", '');
+          return false;
+        }
+        if (!vm.finance.treatment_amount) {
+          toaster.pop('error', "Please enter a valid treatment amount", '');
+          return false;
+        }
+        if (vm.selectedMonth.length == 0) {
+          toaster.pop('error', "Please choose at least one valid month option for comparing", '');
+          return false;
+        }
+        // console.log(vm.finance.downpayment_amount);
+        // console.log(vm.finance.treatment_amount);
+
+        if (parseFloat(vm.finance.downpayment_amount) >= parseFloat(vm.finance.treatment_amount)) {
+          toaster.pop('error', "Down Payment Amount can't be greater or same than the treatment amount", '');
+          return false;
+        }
+        if (vm.finance.downpayment_amount != 0) {
+          if ($scope.mCtrl.showAccount == 1) {
+            vm.ngDialogPop('showAccountPopForce', 'bigPop accountPop');
+            return false;
+          }
+        }
+        vm.selectedMonthTemp = vm.selectedMonth;
+        vm.selectedMonth = vm.selectedMonthTemp.filter(function(item, pos) {
+          return vm.selectedMonthTemp.indexOf(item) == pos;
+        });
+        // console.log(vm.finance.customMonth);
+        // console.log(vm.selectedMonth);
+        // return false;
+        vm.finalData = [];
+        vm.finance.financed_amount = vm.finance.treatment_amount - vm.finance.downpayment_amount;
+        vm.selectedMonth = vm.selectedMonth.sort(function(a, b) {
+          return a - b
+        });
+        for (var p = 0; p < vm.selectedMonth.length; p++) {
+          vm.finance.remaining_amount = (vm.finance.financed_amount * (Math.pow((1 + (vm.finance.interest_rate / 1200)), (vm.selectedMonth[p])))).toFixed(2);
+          // console.log(vm.finance.remaining_amount);
+          vm.finance.recurring_amount = (vm.finance.remaining_amount / vm.selectedMonth[p]).toFixed(2);
+          var d = {
+            month: vm.selectedMonth[p],
+            amount: vm.finance.remaining_amount,
+            monthlyInstallment: vm.finance.recurring_amount,
+            interest: vm.finance.interest_rate,
+            downpayment: vm.finance.downpayment_amount,
+            treatment_amount: vm.finance.treatment_amount,
+            remaining_amount: vm.finance.remaining_amount
+          }
+          vm.finalData.push(d);
+        }
+        // vm.finalData = finalData;
+        // vm.steps = 2;
+        console.log(vm.monthCheck);
+        localStorage.setItem('selectedMonth', JSON.stringify(vm.monthCheck));
+        if (vm.finance.customMonth) localStorage.setItem('customMonth', vm.finance.customMonth);
+        localStorage.setItem('financePlans', JSON.stringify(vm.finalData));
+        localStorage.setItem('financeScope', JSON.stringify(vm.finance));
+
+        $state.go('app.choosePFPlan');
+
+        // vm.ngDialogPop('no_guarantee_modal','bigPop');
+      }
+    }
+  }
+})();
+
+/**=========================================================
+ * Module: Forgot Password
+=========================================================*/
+
+(function() {
+  'use strict';
+
+  angular
+    .module('app.pf')
+    .controller('ChoosePFPlanController', ChoosePFPlanController);
+
+  ChoosePFPlanController.$inject = ['$http', '$state', '$rootScope', 'toaster', '$scope', 'cfpLoadingBar', 'api', '$timeout', 'ngDialog'];
+
+  function ChoosePFPlanController($http, $state, $rootScope, toaster, $scope, cfpLoadingBar, api, $timeout, ngDialog) {
+    var vm = this;
+
+    //$rootScope.$on('init', function() {
+    activate();
+    // });
+
+    ////////////////
+
+    function activate() {
+      vm.ngDialogPop = function(template, className) {
+        vm.visible = true;
+        ngDialog.openConfirm({
+          template: template,
+          className: 'ngdialog-theme-default ' + className,
+          scope: $scope
+        }).then(function(value) {}, function(reason) {});
+
+      }
+      $scope.mCtrl.checkToken();
+      $scope.mCtrl.checkDoctorToken();
+
+      vm.steps = 2;
+      vm.finance = {};
+      if (localStorage.getItem('financeScope') && localStorage.getItem('financeScope') != null) {
+        vm.finance = JSON.parse(localStorage.getItem('financeScope'));
+      }
+      if (localStorage.getItem('financePlans') && localStorage.getItem('financePlans') != null) {
+        vm.finalData = JSON.parse(localStorage.getItem('financePlans'));
+      }
+      vm.is_guaranteed = JSON.parse(localStorage.getItem('profileData')).is_guaranteed;
+
+      vm.viewPopup = function(month, Installment) {
+        var mon = [];
+        for (var i = 1; i <= month; i++) {
+          if (i) {
+            var k = i;
+          }
+          mon.push(k);
+        }
+        vm.installment = Installment;
+        vm.months = mon;
+        vm.ngDialogPop('view_Details', 'bigPop');
+      }
+      vm.selectPFPlan = function(f) {
+        vm.steps = 3;
+        console.log(f);
+        vm.finance.number_of_payments = f.month;
+        vm.addPatientFinance();
+      }
+
+      vm.addPatientFinance = function() {
+        console.log(vm.finance);
+        var d = {
+          // access_token: localStorage.getItem('doctorToken'),
+          // patient_id: vm.patients[0].patient_id,
+          treatment_amount: vm.finance.treatment_amount,
+          financed_amount: vm.finance.financed_amount || vm.finance.treatment_amount - vm.finance.downpayment_amount,
+          downpayment_amount: vm.finance.downpayment_amount,
+          number_of_payments: vm.finance.number_of_payments,
+          interest_rate: vm.finance.interest_rate,
+          recurring_amount: vm.finance.recurring_amount,
+          // guarantee_type: vm.finance.guarantee_type,
+          // start_date: moment(vm.finance.dob_date).format('YYYY-MM-DD'),
+          remaining_amount: vm.finance.remaining_amount || (vm.finance.recurring_amount * vm.finance.number_of_payments)
+        }
+        var t = (vm.finance.recurring_amount * vm.finance.number_of_payments);
+        vm.finance.remaining_amount = t.toFixed(2);
+        localStorage.setItem('financeDataSave', JSON.stringify(vm.finance));
+        localStorage.setItem('financePatientSave', JSON.stringify(d));
+        $state.go('app.pfAddPatient');
+      }
+    }
+  }
+})();
+
+
+
+/**=========================================================
+ * Module: PF EMAIL CHECK CONTROLLER
+=========================================================*/
+
+(function() {
+  'use strict';
+
+  angular
+    .module('app.pf')
+    .controller('PFAddPatientController', PFAddPatientController);
+
+  PFAddPatientController.$inject = ['$http', '$state', '$rootScope', 'toaster', '$scope', 'cfpLoadingBar', 'api', '$timeout'];
+
+  function PFAddPatientController($http, $state, $rootScope, toaster, $scope, cfpLoadingBar, api, $timeout) {
+    var vm = this;
+
+    //$rootScope.$on('init', function() {
+    activate();
+    // });
+
+    ////////////////
+
+    function activate() {
+      $scope.mCtrl.checkToken();
+      $scope.mCtrl.checkDoctorToken();
+      vm.addPatient = {};
+
+      if (localStorage.getItem('pfPatientEmail'))
+        vm.addPatient.userName = localStorage.getItem('pfPatientEmail');
+
+      vm.checkEmailPatient = function() {
+        if (!vm.addPatient.userName || vm.addPatient.userName.trim().length == 0) {
+          toaster.pop('warning', 'Enter a valid email/username', '');
+          return false;
+        }
+        cfpLoadingBar.start();
+        $.post(api.url + 'check_email_code', {
+            access_token: localStorage.getItem('doctorToken'),
+            patient_email_code: vm.addPatient.userName,
+            dp_id: -1,
+            is_primary: 1,
+            contract_code: 0,
+            contract_id: 0
+          })
+          .success(function(data, status) {
+            if (typeof data === 'string')
+              var data = JSON.parse(data);
+            console.log(data);
+            // $scope.mCtrl.flagPopUps(data.flag, data.is_error);
+            cfpLoadingBar.complete();
+            if (!data.is_error) {
+              localStorage.setItem('patientProfile', JSON.stringify(data.patients))
+              localStorage.setItem('pfPatientEmail', vm.addPatient.userName);
+
+              $state.go('app.pfNewPatient');
+            } else {
+              if (data.flag == 72 || !$scope.mCtrl.emailPattern.test(vm.addPatient.userName)) {
+                toaster.pop('warning', 'Enter a valid email if not already registered', '');
+                localStorage.removeItem('pfPatientEmail', vm.addPatient.userName);
+                return false;
+              }
+              localStorage.setItem('pfPatientEmail', vm.addPatient.userName);
+
+              localStorage.setItem('patientProfile', 1);
+              $state.go('app.pfNewPatient');
+            }
+          });
+      }
+
+    }
+  }
+})();
+
+
+
+/**=========================================================
+ * Module: PF Form Controller
+=========================================================*/
+
+(function() {
+  'use strict';
+
+  angular
+    .module('app.pf')
+    .controller('PFNewPatientController', PFNewPatientController);
+
+  PFNewPatientController.$inject = ['$http', '$state', '$rootScope', 'toaster', '$scope', 'cfpLoadingBar', 'api', '$timeout','ngDialog'];
+
+  function PFNewPatientController($http, $state, $rootScope, toaster, $scope, cfpLoadingBar, api, $timeout,ngDialog) {
+    var vm = this;
+
+    //$rootScope.$on('init', function() {
+    activate();
+    // });
+
+    ////////////////
+
+    function activate() {
+      $scope.mCtrl.checkToken();
+      $scope.mCtrl.checkDoctorToken();
+      vm.ngDialogPop = function(template, className, f) {
+        if (f) {
+          ngDialog.openConfirm({
+            template: template,
+            className: 'ngdialog-theme-default ' + className,
+            scope: $scope,
+            showClose: false,
+          }).then(function(value) {}, function(reason) {});
+        } else {
+          ngDialog.openConfirm({
+            template: template,
+            className: 'ngdialog-theme-default ' + className,
+            scope: $scope
+          }).then(function(value) {}, function(reason) {});
+        }
+
+      }
+      //$scope.mCtrl.checkDoctorFinancing();
+      vm.addPatient = {};
+      vm.address = {};
+      vm.addressEmp = {};
+
+      vm.addPatient.employer_mobile = '';
+      // console.log(localStorage.getItem('patientProfile'));
+      if (localStorage.getItem('patientProfile') && localStorage.getItem('patientProfile') != 1 && localStorage.getItem('patientProfile') != null) {
+        var p = JSON.parse(localStorage.getItem('patientProfile'));
+        vm.addPatient = p[0];
+        console.log(vm.addPatient);
+        // return false;
+        var a = vm.addPatient.patient_mobile.split('-');
+        var b = a[0].split('+');
+        var code = b[1];
+        vm.code = code;
+        // for (var c = 0; c < $rootScope.countries.length; c++) {
+        //   if ($rootScope.countries[c].Code == vm.code) {
+        //     vm.addPatient.codeSelect = $rootScope.countries[c];
+        //   }
+        // }
+        // vm.profile.phone = a[1];
+        var p1 = a[1].slice(0, 3);
+        var p2 = a[1].slice(3, 6);
+        var p3 = a[1].slice(6);
+        vm.addPatient.phone = '(' + p1 + ') ' + p2 + '-' + p3;
+        if (vm.addPatient.employer_mobile) {
+          var a = vm.addPatient.employer_mobile.split('-');
+          var b = a[0].split('+');
+          var code = b[1];
+          vm.code = code;
+          // for (var c = 0; c < $rootScope.countries.length; c++) {
+          //   if ($rootScope.countries[c].Code == vm.code) {
+          //     vm.addPatient.codeSelect = $rootScope.countries[c];
+          //   }
+          // }
+          // vm.profile.phone = a[1];
+          var p1 = a[1].slice(0, 3);
+          var p2 = a[1].slice(3, 6);
+          var p3 = a[1].slice(6);
+          vm.addPatient.employer_mobile = '(' + p1 + ') ' + p2 + '-' + p3;
+        } else vm.addPatient.employer_mobile = '';
+        vm.addPatient.state = vm.addPatient.state_name;
+        if (vm.addPatient.patient_gender == 1 || vm.addPatient.patient_gender_id == 1) vm.addPatient.patient_gender = 'Male';
+        else if (vm.addPatient.patient_gender == 2 || vm.addPatient.patient_gender_id == 2) vm.addPatient.patient_gender = 'Female';
+        else if (vm.addPatient.patient_gender == 3 || vm.addPatient.patient_gender_id == 3) vm.addPatient.patient_gender = 'Others';
+        else vm.addPatient.patient_gender = '';
+      } else {
+        vm.addPatient.patient_email = vm.addPatient.email || localStorage.getItem('pfPatientEmail');
+        vm.addPatient.patient_gender = '';
+      }
+      vm.address.selected = {};
+      if (vm.addPatient.zip && vm.addPatient.zip != null) vm.address.selected.zip = vm.addPatient.zip.toString();
+      if (vm.addPatient.employer_zip && vm.addPatient.employer_zip != null) vm.addressEmp.selected = vm.addPatient.employer_zip.toString();
+      vm.genderSelect = function(gen) {
+        vm.addPatient.patient_gender = gen;
+        if (gen == 'Male') vm.addPatient.patient_gender_id = 1;
+        if (gen == 'Female') vm.addPatient.patient_gender_id = 2;
+        if (gen == 'Others') vm.addPatient.patient_gender_id = 3;
+      }
+      vm.invalidDate = true;
+      vm.addPatient.dob_date = '';
+
+      vm.check_date = function(dob) {
+        vm.addPatient.dob_temp = new Date(dob.year, dob.month.month - 1, dob.day);
+        console.log(vm.addPatient.dob_temp.getTime() > $scope.mCtrl.today.getTime());
+        console.log(vm.addPatient.dob_temp);
+        console.log($scope.mCtrl.today);
+        if (dob.year % 4 != 0 && dob.month.month == 2 && dob.day > 29) {
+          toaster.pop('error', 'Please enter a valid date', '');
+          vm.invalidDate = true;
+          return false;
+        } else if (dob.month.month == 4 || dob.month.month == 6 || dob.month.month == 9 || dob.month.month == 11) {
+          if (dob.day > 30) {
+            toaster.pop('error', 'Please enter a valid date', '');
+            vm.invalidDate = true;
+            return false;
+          }
+          if (vm.addPatient.dob_temp.getTime() > $rootScope.today.getTime()) {
+            // console.log("Enter a valid Birthdate");
+            vm.invalidDate = true;
+            toaster.pop('error', "Enter a valid Birthdate", '');
+            // console.log("3");
+            return false;
+          } else {
+            vm.invalidDate = false;
+            // console.log("4");
+            vm.addPatient.dob_date = new Date(dob.year, dob.month.month - 1, dob.day)
+          }
+        } else if (vm.addPatient.dob_temp.getTime() > $rootScope.today.getTime()) {
+          // console.log("Enter a valid Birthdate");
+          vm.invalidDate = true;
+          toaster.pop('error', 'Enter a valid Birthdate', '');
+          return false;
+        } else {
+          vm.invalidDate = false;
+          vm.addPatient.dob_date = new Date(dob.year, dob.month.month - 1, dob.day)
+        }
+        console.log(vm.invalidDate);
+        console.log(vm.addPatient.dob_date);
+      }
+      vm.addPatient.dob = {
+        month: '',
+        day: '',
+        year: ''
+      };
+      if (vm.addPatient.date_of_birth) {
+        var d = vm.addPatient.date_of_birth.split('-');
+        vm.DOBMonth = parseInt(d[0]) - 1;
+        vm.DOBDay = parseInt(d[1]) - 1;
+        vm.DOBYear = parseInt(d[2]);
+        console.log(vm.DOBYear, vm.DOBDay, vm.DOBMonth);
+        vm.addPatient.dob.day = parseInt(d[1]);
+        vm.addPatient.dob.year = parseInt(d[2]);
+        vm.addPatient.dob.month = $rootScope.months[vm.DOBMonth];
+        vm.check_date(vm.addPatient.dob);
+      }
+
+
+      // var temp=JSON.parse(localStorage.getItem('plan_selected'));
+      // console.log(temp);
+      // vm.dp_id=temp[0].plan_id;
+      if (vm.addPatient.patient_gender_id == 1) vm.addPatient.patient_gender = 'Male'
+      if (vm.addPatient.patient_gender_id == 2) vm.addPatient.patient_gender = 'Female'
+      if (vm.addPatient.patient_gender_id == 3) vm.addPatient.patient_gender = 'Others'
+
+      if (vm.addPatient.patient_gender == 'Male') vm.addPatient.patient_gender_id = 1;
+      if (vm.addPatient.patient_gender == 'Female') vm.addPatient.patient_gender_id = 2;
+      if (vm.addPatient.patient_gender == 'Others') vm.addPatient.patient_gender_id = 3;
+      vm.guaranteeSelect = function(mode) {
+        console.log(mode);
+        vm.addPatient.guarantee_type = mode;
+        vm.addPatientData();
+      }
+      vm.noGuaranteeSelect = function() {
+        vm.addPatient.guarantee_type = 1;
+        vm.addPatientData();
+      }
+      vm.continueNG = function() {
+        vm.addPatient.state_name = vm.addPatient.state;
+        vm.addPatient.patient_mobile = '+' + vm.addPatient.codeSelect.Code + '-' + vm.addPatient.phone.replace(/[^0-9]/g, "");
+        vm.addPatient.date_of_birth = moment(vm.addPatient.dob_date).format('MM-DD-YYYY');
+        vm.finance.next_date = vm.next_date;
+        localStorage.setItem('financeDataSave', JSON.stringify(vm.finance));
+        localStorage.setItem('financeSaveRedirect', 1);
+        localStorage.setItem('patientProfile', JSON.stringify([vm.addPatient]));
+        ngDialog.close();
+        $state.go('app.updateFeatures');
+      }
+      $.post(api.url + "guarantee_type_list", {
+          access_token: localStorage.getItem('doctorToken')
+        })
+        .success(function(data, status) {
+          if (typeof data === 'string') data = JSON.parse(data);
+          $timeout(function() {
+
+            $scope.mCtrl.flagPopUps(data.flag, data.is_error);
+            vm.addPatient.guarantee_types = data.guarantee_type;
+            vm.addPatient.guarantee_type = vm.addPatient.guarantee_types[0].guarantee_type;
+            // console.log(vm.addPatient.guarantee_types);
+          })
+        });
+      vm.chooseGuarantee = function() {
+        // console.log(vm.addPatient.patient_gender);
+        // console.log(vm.addPatient.patient_gender_id);
+        // return false;
+        if(vm.invalidDate){
+          toaster.pop('warning', 'Enter a valid Date of birth', '');
+          return false;
+        }
+        if (!vm.addPatient.patient_first_name || vm.addPatient.patient_first_name.trim().length == 0 || !vm.addPatient.patient_last_name || vm.addPatient.patient_last_name.trim().length == 0) {
+          toaster.pop('warning', 'Enter a valid name', '');
+          return false;
+        }
+        var mobile = '';
+
+        if (!vm.addPatient.phone) {
+          toaster.pop('warning', 'Enter a valid mobile', '');
+          return false;
+        } else {
+          mobile = vm.addPatient.phone.replace(/[^0-9]/g, "");
+          if (mobile.length < 9) {
+            toaster.pop('warning', 'Enter a valid mobile', '');
+            return false;
+          }
+        }
+        if (!vm.addPatient.patient_email || vm.addPatient.patient_email.trim().length == 0) {
+          toaster.pop('warning', 'Enter a valid email', '');
+          return false;
+        }
+        if (!vm.addPatient.patient_address) {
+          toaster.pop('warning', 'Enter a valid address', '');
+          return false;
+        }
+        if (!vm.addPatient.city_id) {
+          toaster.pop('warning', 'Enter a valid zip', '');
+          return false;
+        }
+        console.log(vm.addPatient.employer_mobile);
+        if (vm.addPatient.employer_mobile === undefined) {
+          toaster.pop('warning', 'Enter a valid mobile', '');
+          return false;
+        }
+        if (vm.addPatient.employer_mobile) {
+          var mobile = vm.addPatient.employer_mobile.replace(/[^0-9]/g, "");
+          console.log(mobile.length);
+          if (mobile.length < 9) {
+            toaster.pop('warning', 'Enter a valid mobile', '');
+            return false;
+          }
+        }
+
+        if (vm.addPatient.zipEmp) {
+          if (!vm.addPatient.employer_city_id) {
+            toaster.pop('warning', 'Enter a valid zip for employer', '');
+            return false;
+          }
+        }
+        if (!vm.addPatient.patient_gender_id) {
+          toaster.pop('warning', 'Enter a valid gender', '');
+          return false;
+        }
+        vm.is_guaranteed = JSON.parse(localStorage.getItem('profileData')).is_guaranteed;
+        console.log(vm.addPatient.guarantee_types);
+        if (vm.is_guaranteed == 1)
+          vm.ngDialogPop('guarantee_modal', 'bigPop');
+        else {
+          vm.visible = true;
+          ngDialog.open({
+            template: 'no_guarantee_modal',
+            className: 'ngdialog-theme-default bigPop',
+            scope: $scope,
+            showClose: false
+          })
+          $('#ngdialog1').find('div.ngdialog-content').attr('ng-show', 'visible');
+        }
+      }
+      // $scope.chooseGuarantee();
+      vm.finance = JSON.parse(localStorage.getItem('financeDataSave'));
+      // console.log(vm.finance);
+
+
+      vm.addPatientData = function() {
+        if (!vm.addPatient.patient_first_name || vm.addPatient.patient_first_name.trim().length == 0 || !vm.addPatient.patient_last_name || vm.addPatient.patient_last_name.trim().length == 0) {
+          toaster.pop('warning', 'Enter a valid name', '');
+          return false;
+        }
+        var mobile = '';
+        if (!vm.addPatient.phone) {
+          toaster.pop('warning', 'Enter a valid mobile', '');
+          return false;
+        } else {
+          mobile = vm.addPatient.phone.replace(/[^0-9]/g, "");
+          if (mobile.length < 9) {
+            toaster.pop('warning', 'Enter a valid mobile', '');
+            return false;
+          }
+        }
+        if (!vm.addPatient.patient_email || vm.addPatient.patient_email.trim().length == 0) {
+          toaster.pop('warning', 'Enter a valid email', '');
+          return false;
+        }
+        if (!vm.addPatient.patient_address) {
+          toaster.pop('warning', 'Enter a valid address', '');
+          return false;
+        }
+        if (!vm.addPatient.city_id) {
+          toaster.pop('warning', 'Enter a valid zip', '');
+          return false;
+        }
+        if (!vm.addPatient.patient_gender_id) {
+          toaster.pop('warning', 'Enter a valid gender', '');
+          return false;
+        }
+        if (vm.addPatient.employer_mobile) {
+          var mobile = vm.addPatient.employer_mobile.replace(/[^0-9]/g, "");
+          if (mobile.length < 9) {
+            toaster.pop('warning', 'Enter a valid mobile', '');
+            return false;
+          }
+        }
+        if (vm.addPatient.zipEmp) {
+          if (!vm.addPatient.employer_city_id) {
+            toaster.pop('warning', 'Enter a valid zip for employer', '');
+            return false;
+          }
+        }
+        // console.log(vm.addPatient.patient_gender);
+        // console.log(vm.addPatient.patient_gender_id);
+        vm.next_date = new Date();
+        vm.next_date.setDate(vm.next_date.getDate() + 1);
+        // console.log(vm.addPatient.dob_date);
+        // console.log(moment(vm.addPatient.dob_date).format('YYYY-MM-DD'));
+        // return false;
+        var data = {
+          access_token: localStorage.getItem('doctorToken'),
+          patient_email: vm.addPatient.patient_email.replace(/\s/g, '').toLowerCase(),
+          patient_first_name: vm.addPatient.patient_first_name,
+          patient_last_name: vm.addPatient.patient_last_name,
+          patient_mobile: '+1-' + vm.addPatient.phone.replace(/[^0-9]/g, ""),
+          patient_address: vm.addPatient.patient_address,
+          date_of_birth: moment(vm.addPatient.dob_date).format('YYYY-MM-DD'),
+          patient_gender: vm.addPatient.patient_gender_id,
+          city_id: vm.addPatient.city_id,
+          patient_ssn: vm.addPatient.patient_ssn,
+          dl_number: vm.addPatient.dl_number,
+          dp_id: -1,
+          is_primary: 1,
+          patients: [],
+          contract_code: 0,
+          contract_id: 0,
+
+          treatment_amount: parseFloat(vm.finance.treatment_amount).toFixed(2),
+          financed_amount: parseFloat(vm.finance.financed_amount).toFixed(2) || parseFloat(vm.finance.treatment_amount - vm.finance.downpayment_amount).toFixed(2),
+          downpayment_amount: parseFloat(vm.finance.downpayment_amount).toFixed(2),
+          number_of_payments: vm.finance.number_of_payments,
+          interest_rate: parseFloat(vm.finance.interest_rate).toFixed(2),
+          recurring_amount: parseFloat(vm.finance.recurring_amount).toFixed(2),
+          guarantee_type: vm.addPatient.guarantee_type,
+          start_date: moment(vm.next_date).format('YYYY-MM-DD'),
+          remaining_amount: parseFloat(vm.finance.remaining_amount).toFixed(2),
+          employer_name: vm.addPatient.employer_name || '',
+          employer_mobile: vm.addPatient.employer_mobile ? '+1-' + vm.addPatient.employer_mobile.replace(/[^0-9]/g, "") : '',
+          employer_address: vm.addPatient.employer_address || '',
+          employer_city: vm.addPatient.employer_city_id || '',
+          annual_income: vm.addPatient.annual_income || '',
+
+        }
+        vm.addPatient.state_name = vm.addPatient.state;
+        vm.addPatient.patient_mobile = '+1-' + vm.addPatient.phone.replace(/[^0-9]/g, "");
+        if (vm.addPatient.employer_mobile) vm.addPatient.employer_mobile = '+1-' + vm.addPatient.employer_mobile.replace(/[^0-9]/g, "");
+        vm.addPatient.date_of_birth = moment(vm.addPatient.dob_date).format('MM-DD-YYYY');
+        if (vm.addPatient.patient_id) data.patient_id = vm.addPatient.patient_id;
+        cfpLoadingBar.start();
+        console.log(vm.finance);
+        vm.finance.next_date = vm.next_date;
+        localStorage.setItem('financeDataSave', JSON.stringify(vm.finance));
+        // return false;
+        $.post(api.url + "add_pf_patient", data)
+          .success(function(data, status) {
+            if (typeof data === 'string')
+              var data = JSON.parse(data);
+            console.log(data);
+
+            if (!data.is_error) {
+              $scope.mCtrl.flagPopUps(data.flag, data.is_error);
+              localStorage.setItem('patientProfileSummary', JSON.stringify([data]));
+              // $state.go('app.pfFinanceInfo');
+
+              var patient = {
+                contract_id: data.contract_id,
+                contract_code: data.contract_code,
+                downpayment_amount: data.downpayment_amount,
+                financed_amount: data.financed_amount,
+                fixed_flat_fee: data.fixed_flat_fee,
+                guarantee_percent: data.guarantee_percent,
+                pf_id: data.pf_id,
+                treatment_amount: data.treatment_amount,
+                interest_rate: vm.finance.interest_rate,
+                start_date: moment(vm.finance.dob_date).format('MM-DD-YYYY'),
+                number_of_payments: vm.finance.number_of_payments,
+                recurring_amount: vm.finance.recurring_amount,
+                remaining_amount: vm.finance.remaining_amount
+              }
+              ngDialog.close();
+              // localStorage.removeItem('financeSave');
+              vm.addPatient.state_name = vm.addPatient.state;
+              localStorage.setItem('patientProfile', JSON.stringify([vm.addPatient]))
+              localStorage.setItem('pfPatientFinance', JSON.stringify(patient));
+              $state.go('app.pfAddedPatient');
+            } else if (data.tracking_id == '4251a' && data.err[0] == "patient_ssn is not valid tin number.") {
+              toaster.pop('error', 'Enter a valid TIN', '');
+              cfpLoadingBar.complete();
+              $scope.mCtrl.hitInProgress = false;
+              return false;
+            } else {
+              $scope.mCtrl.flagPopUps(data.flag, data.is_error);
+            }
+          });
+
+      }
+
+      $scope.zipSelect = function(item, model, label, event) {
+        // console.log(item);
+        // console.log(item);
+        // console.log(model);
+        if (item.city_id)
+          vm.addPatient.city_id = item.city_id;
+        else vm.addPatient.city_id = '';
+        if (item.city)
+          vm.addPatient.city = item.city;
+        else vm.addPatient.city = '';
+        if (item.state_name)
+          vm.addPatient.state = item.state_name;
+        else vm.addPatient.state = '';
+        if (!vm.addPatient.city_id) vm.addPatient.city_id = '';
+      }
+      $scope.zipSelectEmp = function(item, model, label, event) {
+        console.log(item);
+        if (item.city_id)
+          vm.addPatient.employer_city_id = item.city_id;
+        else vm.addPatient.employer_city_id = '';
+        if (item.city)
+          vm.addPatient.employer_city = item.city;
+        else vm.addPatient.employer_city = '';
+        if (item.state_name)
+          vm.addPatient.employer_state = item.state_name;
+        else vm.addPatient.employer_state = '';
+        if (!vm.addPatient.employer_city_id) vm.addPatient.employer_city_id = '';
+        console.log(vm.addPatient);
+      }
+    }
+  }
+})();
+
+
+
+/**=========================================================
+ * Module: PF ADDED / Review Screen
+=========================================================*/
+
+(function() {
     'use strict';
 
     angular
-      .module('app.email')
-      .controller('EmailController', EmailController);
+      .module('app.pf')
+      .controller('PFAddedPatientController', PFAddedPatientController);
 
-    EmailController.$inject = ['$http', '$state', '$rootScope', 'toaster', '$scope','cfpLoadingBar','api','$timeout','$sce'];
+    PFAddedPatientController.$inject = ['$http', '$state', '$rootScope', 'toaster', '$scope','cfpLoadingBar','api','$timeout','ngDialog'];
 
-    function EmailController($http, $state, $rootScope, toaster, $scope,cfpLoadingBar,api,$timeout,$sce) {
+    function PFAddedPatientController($http, $state, $rootScope, toaster, $scope,cfpLoadingBar,api,$timeout,ngDialog) {
       var vm = this;
 
       //$rootScope.$on('init', function() {
@@ -1133,8 +2290,8 @@
 
       function activate() {
         $scope.mCtrl.checkToken();
-
-    vm.ngDialogPop = function(template, className) {
+        $scope.mCtrl.checkDoctorToken();
+        vm.ngDialogPop = function(template, className) {
       vm.visible = true;
       ngDialog.openConfirm({
         template: template,
@@ -1143,253 +2300,100 @@
       }).then(function(value) {}, function(reason) {});
 
     }
-    // GMAIL
-    var clientId = '888750246117-hdiq9usud39eefq9h32houp62o3pjosv.apps.googleusercontent.com';
-    var apiKey = 'AIzaSyAUnB3N3ZeNuxlz3oHO5fCmQ__JFxDTBLc';
-    var scopes = 'https://www.googleapis.com/auth/contacts.readonly';
 
-    vm.getGoogleContacts = function() {
-      vm.manualEnter = 0;
-      gapi.client.setApiKey(apiKey);
-      window.setTimeout(authorize);
-    };
-
-    function authorize() {
-      gapi.auth.authorize({
-        client_id: clientId,
-        scope: scopes,
-        immediate: false,
-        cookie_policy: 'single_host_origin'
-      }, handleAuthorization);
+    vm.confirmPatient = function() {
+      vm.ngDialogPop('confirmPatient', 'bigPop');
+    }
+    vm.paymentScreen = function() {
+      ngDialog.close();
+      $state.go('app.pfPatientPayment');
     }
 
-    function handleAuthorization(authorizationResult) {
-      // vm.patients_selected = [];
-      vm.accountUsed = '';
-      if (authorizationResult && !authorizationResult.error) {
-        $.get("https://www.google.com/m8/feeds/contacts/default/thin?alt=json&access_token=" + authorizationResult.access_token + "&max-results=500&v=3.0",
-          function(response) {
-            //process the response here
-            console.log(response);
-            var entries = response.feed.entry;
-            var contacts = [];
-            vm.accountUsed = response.feed.id.$t;
-            $timeout(function() {
-              for (var i = 0; i < entries.length; i++) {
-                var name = entries[i].title.$t;
-                var emails = entries[i].gd$email || [];
-                for (var j = 0; j < emails.length; j++) {
-                  var email = emails[j].address || '';
-                  if (email)
-                    contacts.push({
-                      email: email
-                    });
-                  if ($.inArray(email, vm.patients_selected) != -1) {
-                    // vm.mCtrl.openToast('warning', 'Already added', '');
-                    // vm.customEmails.manualEmail = '';
-                    // return false;
-                  } else vm.patients_selected.push(email);
-                }
-              }
-            });
-            console.log(contacts);
-            console.log(vm.patients_selected);
-          });
-        gapi.auth.setToken(null);
-        gapi.auth.signOut();
-      }
-    }
+    vm.addPatient = {};
+    vm.addPatient.terms = false;
+    vm.patients = JSON.parse(localStorage.getItem('patientProfileSummary'));
+    vm.finance = JSON.parse(localStorage.getItem('pfPatientFinance'));
+    vm.finance = JSON.parse(localStorage.getItem('financeDataSave'));
+    localStorage.setItem('financeDataSave',JSON.stringify(vm.finance));
+    console.log(vm.finance);
+    localStorage.setItem('patientProfileSummary', JSON.stringify(vm.patients));
 
-
-    vm.uploadCSV = function() {
-      vm.manualEnter = 0;
-      $('.csvUpload').trigger('click');
-    }
-
-    vm.csvUpload = function(files) {
-      vm.accountUsed = '';
-      // vm.patients_selected = [];
-      if (files.length > 0) {
-        console.log(files);
-        Papa.parse(files[0], {
-          complete: function(results) {
-            console.log(results);
-            $timeout(function() {
-              for (var i = 1; i < results.data.length; i++) {
-                console.log(results.data[i]);
-                if (vm.mCtrl.emailPattern.test(results.data[i])) {
-                  if ($.inArray(results.data[i][0], vm.patients_selected) == -1) {
-                    vm.patients_selected.push(results.data[i][0])
-                  }
-                } else {
-                  console.log("Not a valid email");
-                }
-
-              }
-              console.log(vm.patients_selected);
-            })
-          }
-        });
-      } else {
-        toaster.pop('error', 'Please choose a file', '');
-
-      }
-    }
-    vm.manualEnter = 0;
-    vm.patients_selected = [];
-    vm.manualChoose = function() {
-      vm.manualEnter = 1;
-      vm.manualEmail = '';
-      // vm.patients_selected = [];
-      var userArray = new Array();
-    }
-    vm.addPatient = function(email) {
-      if (!email) {
-        // vm.mCtrl.openToast('warning', 'Enter a valid mail', '');
-        return false;
-      }
-      if ($.inArray(email, vm.patients_selected) != -1) {
-        toaster.pop('warning', 'Already added', '');
-        vm.customEmails.manualEmail = '';
-        return false;
-      } else {
-        vm.patients_selected.push(email);
-        vm.customEmails.manualEmail = '';
-        return false;
-      }
-    }
-    vm.deleteEmail = function(id) {
-      vm.patients_selected.splice(id, 1);
-    }
-
-
-
-
-    cfpLoadingBar.start();
-    vm.customEmails = {};
-    $http.get('app/data/email-template.txt')
-      .then(function(data) {
-
-        vm.customEmails.template = data.toString();
-        vm.customEmails.templateMesg = data.toString();
-      })
-    $http.get('app/data/email-templates.json')
-      .then(function(data) {
-        vm.templates = data;
-      })
-    vm.selectedTemplate = "Select a template";
-    vm.selectTemplate = function(id) {
-      $timeout(function() {
-        vm.customEmails.message = vm.templates[id].message;
-        vm.customEmails.subject = vm.templates[id].subject;
-        vm.selectedTemplate = vm.templates[id].title;
-        vm.editMessage();
-      });
-    }
-    var userNumList = new Array();
-    var userIDList = new Array();
-
-    vm.customEmails.message = '';
-    vm.editMessage = function() {
-      var body = vm.customEmails.templateMesg;
-      // console.log(vm.customEmails.message);
-      if (vm.customEmails.message) vm.customEmails.template = body.replace('"Your message comes here"', vm.customEmails.message);
-      else vm.customEmails.template = body;
-    }
-    vm.trustedHtml = function(plainText) {
-      return $sce.trustAsHtml(plainText);
-    }
-    vm.options = {
-      language: 'en',
-      allowedContent: true,
-      entities: false
-    };
-    vm.clearAll = function() {
-      vm.patients_selected = [];
-    }
-    vm.sendEmail = function() {
-      console.log("assd");
-
-      // if (vm.isAll == 0 && vm.partner_selected.length == 0) {
-      //   vm.mCtrl.openToast('error', 'No Partner Selected', '');
-      //   return false;
-      // }
-      if (vm.patients_selected.length == 0) {
-        toaster.pop('error', 'No Patient Selected', '');
-        return false;
-      }
-      if (vm.customEmails.message == '') {
-        toaster.pop('error', 'Message is empty', '');
-        return false;
-      }
-      cfpLoadingBar.start();
-      var t = vm.customEmails.template.replace('width:100%;display:table;', 'min-height:30px;');
-      // for (var i = 0; i < $scope.patients_selected.length; i++) {
-      //   $scope.patients_selected[i]
-      // }
-      var data = {
-        access_token: localStorage.getItem('doctorToken'),
-        email_subject: vm.customEmails.subject,
-        email_body: t,
-        email_array: vm.patients_selected
-        // is_all: vm.isAll
-      }
-
-      // if (vm.isAll == 1) {
-      //   data.partner_ids = 0;
-      // } else data.partner_ids = vm.customEmails.user_id;
-
-      // $.post(api.url + "mass_email_partners", data)
-      var form = new FormData();
-      form.append('access_token', localStorage.getItem('doctorToken'));
-      form.append('email_subject', vm.customEmails.subject);
-      form.append('email_body', t);
-      form.append('emails_array', vm.patients_selected);
-
-      $http({
-          url: api.url + 'mass_email',
-          method: 'POST',
-          data: form,
-          transformRequest: false,
-          headers: {
-            'Content-Type': undefined
-          }
-        })
-        .then(function(data, status) {
-          vm.doSubmit = false;
-          if (typeof data === 'string') data = JSON.parse(data);
-          $scope.mCtrl.flagPopUps(data.flag, data.is_error);
-          if (data.is_error == 0) {
-            // vm.customEmails={}
-            // $state.reload();
-            vm.doSubmit = false;
-            toaster.pop('success', 'Mail Sent Successfully', '');
-          } else {
-            vm.doSubmit = false;
-            // $scope.isAll==1
-          }
-        });
-    }
       }
     }
 })();
 
 
+/**=========================================================
+ * Module: PF Payment Screen
+=========================================================*/
+
+(function() {
+    'use strict';
+
+    angular
+      .module('app.pf')
+      .controller('PFPatientPaymentController', PFPatientPaymentController);
+
+    PFPatientPaymentController.$inject = ['$http', '$state', '$rootScope', 'toaster', '$scope','cfpLoadingBar','api','$timeout','ngDialog'];
+
+    function PFPatientPaymentController($http, $state, $rootScope, toaster, $scope,cfpLoadingBar,api,$timeout,ngDialog) {
+      var vm = this;
+
+      //$rootScope.$on('init', function() {
+        activate();
+       // });
+
+      ////////////////
+
+      function activate() {
+        $scope.mCtrl.checkToken();
+        $scope.mCtrl.checkDoctorToken();
+        vm.ngDialogPop = function(template, className) {
+      vm.visible = true;
+      ngDialog.openConfirm({
+        template: template,
+        className: 'ngdialog-theme-default ' + className,
+        scope: $scope
+      }).then(function(value) {}, function(reason) {});
+
+    }
+
+    vm.confirmPatient = function() {
+      vm.ngDialogPop('confirmPatient', 'bigPop');
+    }
+    vm.paymentScreen = function() {
+      ngDialog.close();
+      $state.go('app.pfPatientPayment');
+    }
+
+    vm.addPatient = {};
+    vm.addPatient.terms = false;
+    vm.patients = JSON.parse(localStorage.getItem('patientProfileSummary'));
+    vm.finance = JSON.parse(localStorage.getItem('pfPatientFinance'));
+    vm.finance = JSON.parse(localStorage.getItem('financeDataSave'));
+    localStorage.setItem('financeDataSave',JSON.stringify(vm.finance));
+    console.log(vm.finance);
+    localStorage.setItem('patientProfileSummary', JSON.stringify(vm.patients));
+
+      }
+    }
+})();
+
 
 /**=========================================================
- * Module: Forgot Password
+ * Module: PF ADDED / Review Screen
 =========================================================*/
 
 // (function() {
 //     'use strict';
 //
 //     angular
-//       .module('app.pages')
-//       .controller('RegisterFormController', RegisterFormController);
+//       .module('app.pf')
+//       .controller('PFAddedPatientController', PfAddedPatientController);
 //
-//     RegisterFormController.$inject = ['$http', '$state', '$rootScope', 'toaster', '$scope','cfpLoadingBar','api','$timeout'];
+//     PFAddedPatientController.$inject = ['$http', '$state', '$rootScope', 'toaster', '$scope','cfpLoadingBar','api','$timeout','ngDialog'];
 //
-//     function RegisterFormController($http, $state, $rootScope, toaster, $scope,cfpLoadingBar,api,$timeout) {
+//     function PFAddedPatientController($http, $state, $rootScope, toaster, $scope,cfpLoadingBar,api,$timeout,ngDialog) {
 //       var vm = this;
 //
 //       //$rootScope.$on('init', function() {
@@ -1398,33 +2402,36 @@
 //
 //       ////////////////
 //
-//       function activate() {}
+//       function activate() {
+//         $scope.mCtrl.checkToken();
+//         $scope.mCtrl.checkDoctorToken();
+//         vm.ngDialogPop = function(template, className) {
+//       vm.visible = true;
+//       ngDialog.openConfirm({
+//         template: template,
+//         className: 'ngdialog-theme-default ' + className,
+//         scope: $scope
+//       }).then(function(value) {}, function(reason) {});
+//
 //     }
-// })();
-
-
-/**=========================================================
- * Module: Forgot Password
-=========================================================*/
-
-// (function() {
-//     'use strict';
 //
-//     angular
-//       .module('app.pages')
-//       .controller('RegisterFormController', RegisterFormController);
+//     vm.confirmPatient = function() {
+//       vm.ngDialogPop('confirmPatient', 'bigPop');
+//     }
+//     vm.paymentScreen = function() {
+//       ngDialog.close();
+//       $state.go('app.pfPatientPayment');
+//     }
 //
-//     RegisterFormController.$inject = ['$http', '$state', '$rootScope', 'toaster', '$scope','cfpLoadingBar','api','$timeout'];
+//     vm.addPatient = {};
+//     vm.addPatient.terms = false;
+//     vm.patients = JSON.parse(localStorage.getItem('patientProfileSummary'));
+//     vm.finance = JSON.parse(localStorage.getItem('pfPatientFinance'));
+//     vm.finance = JSON.parse(localStorage.getItem('financeDataSave'));
+//     localStorage.setItem('financeDataSave',JSON.stringify(vm.finance));
+//     console.log(vm.finance);
+//     localStorage.setItem('patientProfileSummary', JSON.stringify(vm.patients));
 //
-//     function RegisterFormController($http, $state, $rootScope, toaster, $scope,cfpLoadingBar,api,$timeout) {
-//       var vm = this;
-//
-//       //$rootScope.$on('init', function() {
-//         activate();
-//        // });
-//
-//       ////////////////
-//
-//       function activate() {}
+//       }
 //     }
 // })();

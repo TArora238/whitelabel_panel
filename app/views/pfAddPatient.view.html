@@ -1,0 +1,28 @@
+<div ng-controller="PFAddPatientController as pfEmail">
+  <div class="animated fadeIn">
+        <div class="row p-b-20">
+          <h3 class="col-lg-8 col-md-8 col-sm-8 col-xs-8 m-0">Add Patient</h3>
+          <button class="col-lg-1 col-md-1 col-sm-1 btnDefault col-xs-2 pull-right" ui-sref="app.choosePFPlan">Back</button>
+        </div>
+        <div class="row col-lg-12">
+          <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 profileDivs m-0" style="max-width:450px">
+              <label>Enter the email of the patient</label>
+              <form name="pfEmail.patientForm" ng-submit="pfEmail.patientForm.$submitted&&pfEmail.checkEmailPatient()">
+                <div>
+                    <label>Email ID or Patient ID if existing</label>
+                    <input name="userName" type="text" ng-model="pfEmail.addPatient.userName" class="form-control m-b-20" required/>
+                </div>
+                <button type="submit" ng-disabled="mCtrl.hitInProgress" class="btn btn-primary btn-pop">
+                    Continue
+                </button>
+                <button ng-click="mCtrl.cancelPatientPF()" type="button" class="btn btn-default btn-cancel" style="margin-left: 15px">
+                    Cancel
+                </button>
+              </form>
+              <strong class="m-t-20 col-lg-12 p-0">Note : If your patient has used Denefits before, please use the email address already associated with their Denefits account</strong>
+            </div>
+
+        </div>
+
+    </div>
+</div>

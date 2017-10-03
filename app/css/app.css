@@ -883,7 +883,7 @@ _:-ms-lang(x),
   overflow-y: auto;
 }
 .layout-h .wrapper > section {
-  display: table;
+  /*display: table;*/
   width: 100%;
   max-width: 1140px;
   margin-left: auto;

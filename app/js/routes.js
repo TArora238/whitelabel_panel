@@ -194,6 +194,49 @@
                 title: 'Email',
                 templateUrl: helper.basepath('email.html')
           })
+          .state('app.pfAddPatient', {
+                url: '/pfAddPatient',
+                templateUrl:  helper.basepath('pfAddPatient.view.html')
+            })
+            .state('app.pfNewPatient', {
+                url: '/pfNewPatient',
+                templateUrl:  helper.basepath('pfNewPatient.view.html'),
+                resolve: helper.resolveFor('ui.select')
+            })
+            .state('app.pfFinanceInfo', {
+                url: '/pfFinanceInfo',
+                templateUrl:  helper.basepath('pfFinanceInfo.view.html')
+            })
+            .state('app.choosePFPlan', {
+                url: '/choosePFPlan',
+                templateUrl:  helper.basepath('choosePFPlan.view.html')
+            })
+            .state('app.pfAddedPatient', {
+                url: '/pfAddedPatient',
+                templateUrl:  helper.basepath('pfAddedPatient.view.html')
+            })
+            .state('app.pfPatientPayment', {
+                url: '/pfPatientPayment',
+                templateUrl:  helper.basepath('pfPatientPayment.view.html')
+            })
+            .state('app.pfPatientContract', {
+                url: '/pfPatientContract',
+                templateUrl:  helper.basepath('pfPatientContract.view.html')
+            })
+            .state('app.pfPatients', {
+                url: '/pfPatients',
+                templateUrl:  helper.basepath('pfPatients.view.html'),
+                resolve: helper.resolveFor('datatables')
+            })
+            .state('app.pfPatientProfile', {
+                url: '/pfPatientProfile',
+                templateUrl:  helper.basepath('pfPatientProfile.view.html')
+            })
+            .state('app.pfContractDetails', {
+                url: '/pfContractDetails',
+                templateUrl:  helper.basepath('pfContractDetails.view.html')
+            })
+
           //
           // CUSTOM RESOLVES
           //   Add your own resolves properties

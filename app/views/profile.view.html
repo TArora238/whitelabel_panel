@@ -1,0 +1,121 @@
+<div ng-controller="profileCtrl">
+    <div class="animated fadeIn">
+      <div class="page-header-div">
+        <h3  class="col-lg-12 col-md-12 col-sm-12 col-xs-12">My Profile</h3>
+      </div>
+        <div class="w-100 pull-left">
+                <div class="col-md-12 col-xs-12 col-sm-12 col-lg-6 profileEditDiv">
+                    <form enctype="multipart/form-data" name="profileData" ng-submit="profileData.$submitted&&saveProfileData()">
+                        <div class="row">
+                            <h3 class="pageHeader">Personal Information</h3>
+                        </div>
+                        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 profileDivs">
+                          <!-- ng-click="triggerFile()" -->
+                            <a  style="margin-top:0px;margin-right:0px;font-size:0;opacity: 1">
+                                <img id="proPic" ng-src="{{profile.profilePic!='' ? profile.profilePic : 'img/SVG/avatar.svg'}}" class="img-circle">
+                            </a>
+                            <input type="file" style="display: none;" class="upload profileUpload" name="profilePic" onchange="angular.element(this).scope().profileUpload(this.files)" id="fileInput" data-button-text="Single" uploader="uploader" accept="image/*" />
+
+
+                            <md-input-container>
+                                <label>Name</label>
+                                <input name="userName" maxlength=25 type="text" ng-model="profile.name" ng-change="profileEditFn()" class="form-control" required readonly/>
+                            </md-input-container>
+                            <div class="row profileSelect">
+                                <md-select class="col-lg-2 col-xs-3 col-sm-2 col-md-2" disabled ng-model="profile.codeSelect" ng-change="profileEditFn()" >
+                                    <md-option ng-value="country" ng-repeat="country in countries" ng-selected="{{ country.Code === code ? 'true' : 'false' }}">+{{country.Code}} {{country.ISO|uppercase}}
+                                    </md-option>
+                                </md-select>
+                                <md-input-container class="col-lg-10 col-xs-9 col-sm-10 col-md-10" style="padding-left: 0;padding-right:0">
+                                    <label>Phone</label>
+                                    <input type="text"  onkeypress="return isNumberKey(event)" minlength=9 maxlength=18 ng-change="profileEditFn()" data-input-mask="{mask: '(000) 000-0000'}" ng-model="profile.phone" class="form-control" required readonly/>
+                                </md-input-container>
+                            </div>
+                            <md-input-container>
+                                <label>Email</label>
+                                <input name="userEmail" type="email" ng-model="profile.email" ng-change="profileEditFn()" class="form-control" required readonly/>
+                            </md-input-container>
+                            <div style="display:inline-flex" class="hide">
+                            <md-input-container class="col-lg-4 col-md-4 col-sm-4 col-xs-12 zipcode">
+                            <input type="text" onkeypress="return isNumberKey(event)" maxlength=6 ng-model="profile.zip" placeholder="Zipcode" typeahead="address as address.zip for address in getLocation($viewValue)" typeahead-min-length='4'  typeahead-loading="loadingLocations" typeahead-select-on-exact="true" typeahead-on-select="zipSelect($item, $model, $label, $event)"
+                            typeahead-select-on-blur="true" typeahead-no-results="noResults" class="form-control" ng-change="profileEditFn()" required>
+                            <i ng-show="loadingLocations" class="fa fa-refresh" style="position: absolute;color: #505050;right:15px"></i>
+                            <div ng-show="noResults" class="noResults">
+                              <i class="fa fa-remove"></i> No Results Found
+                            </div>
+                            </md-input-container>
+                            <md-input-container class="col-lg-4">
+                                <label>State</label>
+                                <input type="text"
+                                       ng-model="profile.state_name"
+                                       class="form-control" required readonly  ng-change="profileEditFn()"/>
+                            </md-input-container>
+                            <md-input-container class="col-lg-4">
+                                <label>City</label>
+                                <input type="text"
+                                       ng-model="profile.city"
+                                       class="form-control" required readonly  ng-change="profileEditFn()"/>
+                            </md-input-container>
+                          </div>
+                            <button ng-disabled="!profileEdit" type="submit" class="btn-form col-lg-12 hide" style="clear:both">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-12 col-xs-12 col-sm-12 col-lg-6">
+                    <div class="row">
+                        <h3 class="pageHeader">Account Information</h3>
+                    </div>
+                    <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 profileDivs" ng-show="!bank_error">
+                        <!-- <md-input-container>
+                            <label>Account holder name</label>
+                            <input name="userName" type="text" ng-model="account.accountName" ng-change="accountEditFn()" class="form-control" required readonly/>
+                        </md-input-container>
+                        <md-input-container>
+                            <label>Account Number</label>
+                            <input name="userPhone" type="text" ng-model="account.accountNumber" ng-change="accountEditFn()" class="form-control" required readonly/>
+                        </md-input-container> -->
+                        <!-- <md-input-container> -->
+                        <!-- <input name="userPhone" type="text" ng-model="account.routingNumber" ng-change="accountEditFn()" class="form-control" required readonly/> -->
+
+                          <!-- </md-input-container> -->
+                        <!-- <button ng-disabled="!accountEdit" class="btn-form">Save Changes</button> -->
+                        <div>
+                          <label>Account holder name</label>
+                          <p>{{account.accountName}}</p>
+                        </div>
+                        <div>
+                          <label>Account Number</label>
+                          <p>{{account.accountNumber}}</p>
+                        </div>
+                        <div>
+                          <label>Routing Number</label>
+                          <p>*****{{account.routingNumber|limitTo:-4}}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 profileDivs" ng-show="bank_error">
+                        <label class="col-lg-12">No bank account added yet</label>
+                        <button ui-sref="app.updateAccount">Add Account</button>
+                    </div>
+
+                </div>
+        </div>
+
+    </div>
+
+        <div id="imageCropPopUp" class="modal" role="dialog" data-keyboard="false" data-backdrop="static">
+              <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-body p-30" style="text-align: center;">
+                            <div class="cropArea">
+                                <img-crop image="myImage" result-image="myCroppedImage"></img-crop>
+                            </div>
+                            <div>Cropped Image:</div>
+                            <div><img ng-src="{{myCroppedImage}}" /></div>
+                            <button class="btn btn-primary" style="width:30%;margin-top: 35px;" ng-click="saveCroppedPic()">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</div>

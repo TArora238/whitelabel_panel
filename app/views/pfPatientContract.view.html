@@ -1,0 +1,147 @@
+  <div ng-controller="pfPatientContractCtrl">
+    <div class="animated fadeIn">
+        <div class="page-header-div">
+          <h3 class="col-lg-12 col-md-12 col-sm-12 col-xs-12">Contract Details</h3>
+        </div>
+        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12"  >
+          <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 greenDiv w-100 m-b-15 p-20 text-center VHAlign" style="display: flex;" >
+            <i class="material-icons whiteIcon m-r-15" style="font-size:30px">check_circle</i>
+            <h4>Payment Successful</h4>
+          </div>
+        </div>
+        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m-b-15">
+          <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 profileDivs m-0 p-0">
+            <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 VHAlign" style="padding: 25px 15px;border-bottom:1px solid #dce5eb">
+              <h3 class="p-0 m-0 col-md-6 col-xs-12 col-sm-6 col-lg-6 text-left">Contract ID: {{pfPatientFinance.contract_code}}</h3>
+              <h3 ng-if="patients[0].guarantee_percent==10" class="p-0 m-0 col-md-6 col-xs-12 col-sm-6 col-lg-6 text-right"><strong>Guaranteed Payment</strong></h3>
+              <h3 ng-if="patients[0].guarantee_percent==5"  class="p-0 m-0 col-md-6 col-xs-12 col-sm-6 col-lg-6 text-right"><strong>Non-Guaranteed Payment</strong></h3>
+
+            </div>
+            <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 VHAlign" style="padding: 25px 15px;border-bottom:1px solid #dce5eb;display:flex">
+              <div class="p-0 m-0 col-md-7 col-xs-12 col-sm-7 col-lg-7 text-left VHAlign">
+                <label class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0">Created By:</label>
+                <div class="p-t-15 p-b-15 col-md-8 col-xs-12 col-sm-8 col-lg-8 patientMemberDiv">
+                  <h3 class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 m-t-0">Dr {{doctor_name}}</h3>
+                  <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0 p-t-15" ng-if="doctorPractice.practice_name">
+                    <label >Practice Name</label>
+                    <h6><strong>{{doctorPractice.practice_name}}</strong></h6>
+                  </div>
+                  <div class="col-md-5 col-xs-12 col-sm-5 col-lg-5 p-0 p-t-15" ng-if="doctorPractice.practice_email">
+                    <label>Email</label>
+                    <h6><strong>{{doctorPractice.practice_email}}</strong></h6>
+                  </div>
+                  <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0 p-t-15"  ng-if="doctorPractice.practice_mobile">
+                    <label>Phone</label>
+                    <h6><strong>{{doctorPractice.practice_mobile|phoneNumber}}</strong></h6>
+                  </div>
+                  <div class="hide col-md-5 col-xs-12 col-sm-5 col-lg-5 p-0 p-t-15"  ng-if="doctorPractice.practice">
+                    <label>Practice</label>
+                    <h6><strong>{{doctorPractice.practice_type_name}}</strong></h6>
+                  </div>
+                </div>
+              </div>
+
+              <div class="p-0 m-0 col-md-5 col-xs-12 col-sm-5 col-lg-5 text-left pull-right">
+                <div style="color:#909090" class="whiteDiv col-md-5 col-xs-12 col-sm-5 col-lg-5 pull-left text-right p-15">
+                  <span class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 m-0"><strong>Total Balance</strong></span>
+                  <h3 class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-left p-0 m-0" style="word-break: break-all;">$ {{pfPatientFinance.remaining_amount}}</h3>
+                </div>
+                <div style="color:#909090" class="whiteDiv col-md-5 col-xs-12 col-sm-5 col-lg-5 pull-right text-right p-15">
+                  <span class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 m-0"><strong>Recurring Amount</strong></span>
+                  <h3 class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-left p-0 m-0" style="word-break: break-all;">$ {{pfPatientFinance.recurring_amount}}</h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 p-15 m-0">
+              <label class=" col-md-12 col-xs-12 col-sm-12 col-lg-12 p-0">Patient Details</label>
+              <div  ng-repeat="patient in patients track by $index">
+              <div class="row p-l-15 p-r-15 m-b-15">
+                <div class=" col-md-12 col-xs-12 col-sm-12 col-lg-12 patientMemberDiv p-0">
+
+                  <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 p-t-15 p-b-15">
+                    <div class="col-md-1 col-xs-12 col-sm-1 col-lg-1 p-0">
+                      <label>Name</label>
+                      <h6><strong>{{patient.patient_first_name}}&nbsp;{{patient.patient_last_name}}</strong></h6>
+                    </div>
+                    <div class="col-md-2 col-xs-12 col-sm-2 col-lg-2 p-0">
+                      <label>Email</label>
+                      <h6><strong>{{patient.patient_email}}</strong></h6>
+                    </div>
+                    <div class="col-md-2 col-xs-12 col-sm-2 col-lg-2 p-0">
+                      <label>Address</label>
+                      <h6><strong>{{patient.patient_address}}</strong></h6>
+                    </div>
+                    <div class="col-md-2 col-xs-12 col-sm-2 col-lg-2 p-0">
+                      <label>Phone</label>
+                      <h6><strong>{{patient.patient_mobile|phoneNumber}}</strong></h6>
+                    </div>
+                    <div class="col-md-1 col-xs-12 col-sm-1 col-lg-1 p-0">
+                      <label>Date of Birth</label>
+                      <h6><strong>{{patient.date_of_birth|date:'MM-dd-yyyy'}}</strong></h6>
+                    </div>
+                    <div class="col-md-2 col-xs-12 col-sm-2 col-lg-2 p-0">
+                      <label>SSN</label>
+                      <h6><strong>{{patient.patient_ssn}}</strong></h6>
+                    </div>
+                    <div class="col-md-2 col-xs-12 col-sm-2 col-lg-2 p-0">
+                      <label>DL Number</label>
+                      <h6><strong>{{patient.dl_number}}</strong></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 p-15 m-0">
+            <label class="col-md-12 col-xs-12 col-sm-12 col-lg-12 p-0">Finance Details</label>
+            <div class=" col-md-12 col-xs-12 col-sm-12 col-lg-12 patientMemberDiv p-15">
+            <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0  m-b-15">
+              <label>Treatment Cost:</label>
+              <h4 class="m-0"><strong>$ {{pfPatientFinance.treatment_amount}}</strong></h4>
+            </div>
+            <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0 m-b-15">
+              <label>Enrollment Date:</label>
+              <h4 class="m-0"><strong>{{pfPatientFinance.start_date}}</strong></h4>
+            </div>
+            <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0 m-b-15">
+              <label>Amount Financed:</label>
+              <h4 class="m-0"><strong>$ {{pfPatientFinance.financed_amount}}</strong></h4>
+            </div>
+            <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0 m-b-15">
+              <label>Recurring payment starting on:</label>
+              <h4 class="m-0"><strong>{{finance.next_date|date:'MM-dd-yyyy'}}</strong></h4>
+            </div>
+            <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0 m-b-15">
+              <label>Down Payment:</label>
+              <h4 class="m-0"><strong>$ {{pfPatientFinance.downpayment_amount}}</strong></h4>
+            </div>
+            <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0 m-b-15">
+              <label>Total Balance:</label>
+              <h4 class="m-0"><strong>$ {{pfPatientFinance.remaining_amount}}</strong></h4>
+            </div>
+            <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0 m-b-15">
+              <label>Rate of interest:</label>
+              <h4 class="m-0"><strong>{{pfPatientFinance.interest_rate}}%</strong></h4>
+            </div>
+            <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0 m-b-15">
+              <label>Recurring Amount:</label>
+              <h4 class="m-0"><strong>$ {{pfPatientFinance.recurring_amount}} + $ 3 for all recurring payments</strong></h4>
+            </div>
+            <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0">
+              <label>Number of Payments:</label>
+              <h4 class="m-0"><strong>{{pfPatientFinance.number_of_payments}}</strong></h4>
+            </div>
+          </div>
+        </div>
+          <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 p-0 m-0">
+            <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 VHAlign" style="padding: 25px 15px;">
+              <button ng-click="goToStartPF()" type="button" class="btn pull-left btnDefault btn-pop">
+                  Done
+              </button>
+              <button  type="button" disabled class="btn whiteBtn VHAlign hide" style="margin-left: 15px;display:flex">
+                <i class="material-icons">file_download</i>&nbsp;Download PDF
+              </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -323,7 +323,10 @@ hr {
     margin-top: 18px;
     margin-bottom: 18px;
 }
-
+/*.radio + .radio, .checkbox + .checkbox{
+  margin-top: 10px!important;
+  margin-bottom: 10px!important;
+}*/
 .readnotf{
   background-color: #eee!important;
 }
@@ -334,10 +337,14 @@ md-select.invalidDate.md-default-theme .md-select-label{
   border-color: rgb(244,67,54)!important;
 }
 .dataTables_filter{
-  width: 50%;
-  padding: 15px;
-  float: right;
-  text-align: right;
+  width: 400px;
+  /*position: fixed;*/
+  text-align: left!important;
+  float: left!important;
+}
+.dataTables_length{
+  text-align: right!important;
+  float: right!important;
 }
 .dataTables_filter label{
   width: 80%!important;
@@ -348,7 +355,6 @@ md-select.invalidDate.md-default-theme .md-select-label{
   line-height: 20px;
   margin-left: 15px;
   width: 80%;
-  float: right;
 }
 
 #header{
@@ -444,6 +450,17 @@ display: block;
   justify-content: center;
   align-items: center;
 }
+/*.compareFinancingOptions{border-radius:4px;background-color:#ffffff;border:solid 1px #dce5eb;padding:30px 15px;text-align:center;overflow: hidden}*/
+.compareFinancingOptions ul{margin:0;padding:0}
+.compareFinancingOptions ul li{border-radius:4px;display:inline-block;background-color:#ffffff;border:solid 1px #dce5eb;padding:20px 0;float:left;min-height:460px;max-width:350px;margin:0 1%;width:31.3%}
+.compareFinancingOptions ul li h3{line-height:29px;font-family:Lato;font-size:24px;font-weight:bold;text-align:center;color:#505050;margin:0}
+.compareFinancingOptions ul li .style1{margin:0 0 25px;border-bottom:solid 1px #dce5eb;padding-bottom:15px;}
+.compareFinancingOptions ul li .style2{margin:0;border-top:solid 1px #dce5eb;padding-top:15px;}
+.compareFinancingOptions ul li h1 {font-family: Lato;font-size: 48px;font-weight: bold; text-align: center; color: #505050;margin:0}
+.compareFinancingOptions ul li .btn{min-width: 150px}
+.compareFinancingOptions ul li p{font-family: Lato; font-size: 16px; text-align: center; color: #505050;margin:15px 0}
+.compareFinancingOptions ul li  a{color: #18add2;}
+
 .dropOut{
   overflow-y: auto;
   max-height: 300px;

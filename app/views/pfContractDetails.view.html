@@ -1,0 +1,145 @@
+<div ng-controller="pfContractDetailsCtrl">
+    <div class="animated fadeIn">
+        <div class="page-header-div">
+          <h3 class="col-lg-12 col-md-12 col-sm-12 col-xs-12">Contract Details</h3>
+        </div>
+        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 m-b-15">
+          <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 profileDivs m-0 p-0">
+            <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 VHAlign" style="padding: 25px 15px;border-bottom:1px solid #dce5eb">
+              <h3 class="p-0 m-0 col-md-8 col-xs-12 col-sm-8 col-lg-8 text-left">Contract ID: {{pfPatientData.contract_code}}</h3>
+              <a class="btn btn-lg btn-success pull-right" ng-if="contractData.pf_status==2">{{contractData.payment_status}}</a>
+              <a class="btn btn-lg btn-warning pull-right" ng-if="contractData.pf_status==3">{{contractData.payment_status}}</a>
+              <a class="btn btn-lg btn-danger pull-right" ng-if="contractData.pf_status==5">{{contractData.payment_status}}</a>
+            </div>
+            <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12" style="padding: 25px 15px;border-bottom:1px solid #dce5eb;">
+              <div class="p-0 m-0 col-md-7 col-xs-12 col-sm-7 col-lg-7 text-left VHAlign">
+                <div class="p-t-15 p-b-15 col-md-10 col-xs-12 col-sm-10 col-lg-10 patientMemberDiv">
+                  <label class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0">Patient Details : </label>
+                  <h3 class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 m-t-0" style="text-transform:capitalize">{{pfPatientData.patient_first_name}}&nbsp;{{pfPatientData.patient_last_name}}</h3>
+                  <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0 p-t-15">
+                    <label >Patient Code</label>
+                    <h6>{{pfPatientData.patient_code}}</h6>
+                  </div>
+                  <div class="col-md-5 col-xs-12 col-sm-5 col-lg-5 p-0 p-t-15">
+                    <label>Email</label>
+                    <h6>{{pfPatientData.patient_email}}</h6>
+                  </div>
+                  <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 p-0 p-t-15">
+                    <label>Phone</label>
+                    <h6>{{pfPatientData.patient_mobile|phoneNumber}}</h6>
+                  </div>
+                  <div class="col-md-5 col-xs-12 col-sm-5 col-lg-5 p-0 p-t-15">
+                    <label>Address</label>
+                    <h6>{{pfPatientData.patient_address}}&nbsp;{{contractData.state_name}}</h6>
+                  </div>
+                </div>
+              </div>
+              <div class="p-0 m-0 col-md-5 col-xs-12 col-sm-5 col-lg-5 text-left pull-right">
+                <div class="p-15 patientMemberDiv" style="display:table">
+                  <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 p-0 p-t-15">
+                    <label>Treatment Amount</label>
+                    <h6>${{pfPatientData.treatment_amount | number : 2}}</h6>
+                  </div>
+                  <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 p-0 p-t-15">
+                    <label>Financed Amount</label>
+                    <h6>${{pfPatientData.financed_amount | number : 2}}</h6>
+                  </div>
+
+                  <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 p-0 p-t-15">
+                    <label>Number of payments</label>
+                    <h6>{{pfPatientData.number_of_payments}}</h6>
+                  </div>
+                  <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 p-0 p-t-15" ng-if="pfPatientData.pf_status==3">
+                    <label>Number of missing payments</label>
+                    <h6>{{contractData.number_of_missing_payments}}</h6>
+                  </div>
+
+                  <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 p-0 p-t-15">
+                    <label>Remaining Payments</label>
+                    <h6>{{pfPatientData.remaining_payments}}</h6>
+                  </div>
+
+                  <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 p-0 p-t-15" ng-if="pfPatientData.pf_status==3">
+                    <label>Overdue Amount</label>
+                    <h6>${{contractData.overdue_amount | number : 2}} + $3x{{contractData.number_of_missing_payments}} Missing Payments</h6>
+                  </div>
+
+                  <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 p-0 p-t-15">
+                    <label>Reccuring Amount</label>
+                    <h6>${{pfPatientData.recurring_amount | number : 2}} + $3</h6>
+                  </div>
+
+                  <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 p-0 p-t-15">
+                    <label>Downpayment Amount</label>
+                    <h6>${{pfPatientData.downpayment_amount | number : 2}}</h6>
+                  </div>
+
+                  <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 p-0 p-t-15">
+                    <label>Interest Rate</label>
+                    <h6>{{pfPatientData.interest_rate | number : 2}}%</h6>
+                  </div>
+
+                  <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 p-0 p-t-15">
+                    <label>Fixed Flat Fee </label>
+                    <h6>${{pfPatientData.fixed_flat_fee | number : 2}}</h6>
+                  </div>
+
+                  <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 p-0 p-t-15">
+                    <label>Next Payment Date</label>
+                    <h6>{{pfPatientData.next_payment_date}}</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 profileDivs m-0" style="border-radius:0px">
+              <div class="panel panel default col-lg-12 col-sm-12 col-xs-12 col-md-12" ng-if="payments.length>0">
+                <div class="tableDiv">
+                      <div class="table-responsive">
+                          <table id="datatablePFPayments" class="table table-striped table-hover table-vmiddle" style="table-layout:fixed;">
+                              <thead>
+                              <tr>
+                                <th class="smallTD">S.No.</th>
+                                <th class="normalTD">Payment Status</th>
+                                <th class="normalTD">Payment Type</th>
+                                <th class="normalTD">Amount Deducted</th>
+                                <th class="normalTD">Application Fees</th>
+                                <th class="normalTD">Pay To Doctor</th>
+                                <th class="normalTD">PF Status</th>
+                                <th class="normalTD">Remaining Amount</th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              <tr ng-repeat="data in payments">
+                                <td class="smallTD">{{$index+1}}</td>
+                                <td class="normalTD">
+                                  <a class="btn btn-sm btn-actions btn-success" ng-if="contractData.pf_status==1">{{data.payment_status}}</a>
+                                  <a class="btn btn-sm btn-actions btn-success" ng-if="contractData.pf_status==2">{{data.payment_status}}</a>
+                                  <a class="btn btn-sm btn-actions btn-warning" ng-if="contractData.pf_status==3">{{data.payment_status}}</a>
+                                  <a class="btn btn-sm btn-actions btn-danger" ng-if="contractData.pf_status==5">{{data.payment_status}}</a>
+                                </td>
+                                <td class="normalTD">{{data.pt_name}}</td>
+                                <td class="normalTD">{{data.amount_deducted | number : 2}}</td>
+                                <td class="normalTD">{{data.application_fee | number : 2}}</td>
+                                <td class="normalTD">{{data.pay_to_doctor | number : 2}}</td>
+                                <td class="normalTD">{{contractData.pf_status}}</td>
+                                <td class="normalTD">{{contractData.remaining_amount | number : 2}}</td>
+
+                              </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+            </div>
+            <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 VHAlign" style="padding: 25px 15px;border-bottom:1px solid #dce5eb">
+              <button ng-click="backToPDPProfile()" type="button" class="btn btnDefault btn-pop">
+                  Back
+              </button>
+              <button  type="button" class="btn whiteBtn VHAlign hide " ng-click="generate()" style="margin-left: 15px;display:flex">
+                <i class="material-icons">file_download</i>&nbsp;Download PDF
+              </button>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>

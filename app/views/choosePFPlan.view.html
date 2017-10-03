@@ -1,0 +1,48 @@
+<div ng-controller="ChoosePFPlanController as choose">
+  <div class="animated fadeIn">
+    <div class="row p-0">
+      <!-- <h3 class="col-lg-12 col-md-12 col-sm-12 col-xs-12">Add Patient</h3> -->
+      <h3 class="col-lg-8 col-md-8 col-sm-8 col-xs-8">Add Patient</h3>
+      <button class="col-lg-1 col-md-1 col-sm-1 btnDefault col-xs-2 pull-right" ui-sref="app.pfFinanceInfo">Back</button>
+    </div>
+    <div class="row col-md-12 col-xs-12 col-sm-12 col-lg-12 addPatientDivs">
+      <label class="pull-left p-t-20 p-b-20" ng-hide="choose.showAccount==0"><strong>* To enroll a patient, request you to please add your bank account information</strong></label>
+      <div class="clearfix"></div>
+      <div class="row">
+				<div class="compareFinancingOptions">
+					<ul>
+						<!-- li block -->
+						<li ng-repeat="f in choose.finalData" class="m-t-20 text-center">
+							<h3 class="style1">{{f.month}} Months</h3>
+							<h1>$ {{f.monthlyInstallment | number :2}}</h1>
+							<h3>per month</h3>
+							<button class="btn btn-info m-t-15 m-b-15" ng-click="choose.selectPFPlan(f)">Select</button>
+							<p>Interest Rate: <strong>{{f.interest}} %</strong></p>
+							<p>Down Payment: <strong>$ {{f.downpayment}}</strong></p>
+							<p>Enrollment Fee: <strong>$ 25</strong></p>
+              <p>Transaction Fee: <strong>$ 3/payment</strong></p>
+              <p>Treatment Amount: <strong>$ {{f.treatment_amount}}</strong></p>
+							<p>Total Payable Amount: <strong>$ {{f.remaining_amount}}</strong></p>
+							<p class="style2" ng-click="choose.viewPopup(f.month,f.monthlyInstallment)"><a href=""><i class="zmdi zmdi-info-outline zmdi-hc-fw"></i> View Details</a></p>
+						</li>
+					</ul>
+				</div>
+			</div>
+    </div>
+  </div>
+  <script type="text/ng-template" ng-show="visible" id="view_Details">
+		<div class="ngdialog-message">
+			<div class="ngdialog-header">
+				<p>Payment Schedule</p>
+			</div>
+			<table class="table addProspects">
+				<tr ng-repeat="month in choose.months">
+					<td>Month {{month}}</td>
+					<td>${{choose.installment | number :2}}</td>
+				</tr>
+
+				<table>
+		</div>
+	</script>
+
+</div>

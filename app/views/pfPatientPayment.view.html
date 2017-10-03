@@ -1,0 +1,119 @@
+<div ng-controller="PFPatientPaymentController as pfPay">
+    <div class="animated fadeIn p-l-15">
+        <!-- <div class="page-header-div"> -->
+          <h3 class="col-lg-8 col-md-8 col-sm-8 col-xs-8 m-0">Payment</h3>
+          <button class="col-lg-1 col-md-1 col-sm-1 btnDefault col-xs-2 pull-right" ui-sref="app.pfAddedPatient">Back</button>
+        <!-- </div> -->
+        <h4 class="col-lg-12 col-md-12 col-sm-12 col-xs-12">Patient's Signature : </h4>
+        <div class="col-lg-6">
+            <signature-pad style="background-color:white;" accept="accept" ng-mouseup="saveSign()"  clear="clear" height="220" width="568" dataurl="dataurl" id="signPad"></signature-pad>
+            <div class="buttons col-lg-12 m-t-20">
+                <button ng-click="clear();clearSign();" class="btn btn-cancel">Clear</button>
+                <!-- <button ng-click="dataurl = signature.dataUrl" ng-disabled="!signature">Reset</button> -->
+                <!-- <button ng-click="signature = accept();getdataUrl()"class="btn-cancel">Save</button> -->
+                <label ng-show="signature.dataUrl">Signature Registered</label>
+            </div>
+            <div class="panel panel default col-lg-6 col-sm-8 col-xs-12 col-md-6" ng-show="payment_source_list.length==0">
+              <h3 >No Cards added yet</h3>
+            </div>
+            <div class="m-t-30 col-lg-12 panel panel default" ng-show="payment_source_list.length>0">
+                <h3 class="m-b-10 text-center col-lg-12 col-sm-12 col-md-12 m-t-20 m-b-10"><strong>Added Cards</strong></h3>
+                <div class="tableDiv">
+                    <div class="table-responsive" style="display:table;">
+                        <table id="datatablePDPPaySource" class="table table-striped table-hover table-vmiddle" style="table-layout:fixed;">
+                            <thead>
+                            <tr>
+                              <th class="smallTD">S.No.</th>
+                              <th class="normalTD">Card No</th>
+                              <th class="normalTD">Brand</th>
+                              <th class="normalTD">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="data in payment_source_list track by $index" ng-if="data.payment_source_type!='1'">
+                              <td class="smallTD">{{$index+1}}</td>
+                              <td class="normalTD">XXXX-XXXX-XXXX-{{data.last4}}</td>
+                              <td class="normalTD">{{data.brand}}</td>
+                              <td class="normalTD"><button class="btn whiteBtn"  ng-click="payFromCard(data)" ng-disabled="invalidDate||!signImg">Pay</button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <h4 class="col-lg-12 col-md-12 col-sm-12 col-xs-12 dateLabel m-0">Recurring payments starting from : </h4>
+          <md-select class="col-lg-3 col-md-3 col-sm-3 col-xs-3 p-0" ng-class="{'invalidDate':invalidDate}" ng-model="finance.dob.month" aria-label="" ng-change="check_start_date(finance.dob)" style="padding-top:21px">
+            <md-option ng-value="month" ng-repeat="month in months" ng-selected="$index==currentMonth">{{month.month_name}}
+            </md-option>
+          </md-select>
+          <md-select class="col-lg-2 col-md-2 col-sm-2 col-xs-3 p-0" ng-class="{'invalidDate':invalidDate}" ng-model="finance.dob.day" aria-label="" ng-change="check_start_date(finance.dob)" style="padding-top:21px">
+            <md-option ng-value="day" ng-repeat="day in days">{{day}}
+            </md-option>
+          </md-select>
+          <!-- <select class="col-lg-2 col-md-2 col-sm-2 col-xs-3 form-control" style="max-width:16.6%;margin-top:10px" ng-options="day as day for day in days" ng-model="finance.dob.day" ng-change="check_start_date(finance.dob)" ng-selected="$index == 0"></select> -->
+
+
+          <md-select class="col-lg-2 col-md-2 col-sm-2 col-xs-3 p-0" ng-class="{'invalidDate':invalidDate}" ng-model="finance.dob.year" aria-label="" ng-change="check_start_date(finance.dob)" style="padding-top:21px">
+            <md-option ng-value="year" ng-repeat="year in newYears">{{year}}
+            </md-option>
+          </md-select>
+
+          <div class="col-lg-10 col-sm-10 col-xs-12 col-md-10 addPatientDivs">
+            <div class="profileDivs" style="max-width:450px;margin: 30px 0px">
+              <h3 class="m-b-10 text-center col-lg-12 col-sm-12 col-md-12 m-t-20"><strong>Add New Card</strong></h3>
+              <form name="cardForm" ng-submit="cardForm.$submitted&&makePaymentPatient()">
+                <div class="ngdialog-body prospectDiv">
+                    <md-input-container class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <label>Card Number</label>
+                        <input type="text" data-input-mask="{mask: '0000 0000 0000 0000'}" onkeypress="return isNumberKey(event)" ng-model="card.cardNumber" class="form-control" required/>
+                    </md-input-container>
+                  <md-input-container class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                      <label>Expiry Month</label>
+                      <input type="text" maxlength=2 minlength=1  onkeypress="return isNumberKey(event)" ng-model="card.cardMonth" class="form-control" required/>
+                  </md-input-container>
+                  <!-- <span class="col-lg-1 col-md-1 col-sm-1 col-xs-1">/</span> -->
+                  <md-input-container class=" p-0 col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                    <label class="p-10">/</label>
+                  </md-input-container>
+                  <md-input-container class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                      <label>Expiry Year</label>
+                      <input type="text" maxlength=2 minlength=1  onkeypress="return isNumberKey(event)" ng-model="card.cardYear" class="form-control" required/>
+                  </md-input-container>
+                  <md-input-container class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                      <label>CVV</label>
+                      <input type="text" maxlength=4 minlength=3  onkeypress="return isNumberKey(event)" ng-model="card.cardCVV" class="form-control" required/>
+                  </md-input-container>
+
+                  <!-- <hr class="popHR"> -->
+                  <div class="p-0 col-lg-12">
+                    <button type="button" ng-click="cancelPatientPF()" class="btn btn-default pull-left btn-cancel">Cancel
+                        </button>
+                    <button type="submit" class="btn btn-primary pull-right btn-pop" ng-disabled="invalidDate||!signImg">Pay
+                        </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+
+        </div>
+
+        <!-- <div ng-show="sourceAdded==1" class="col-lg-12 col-sm-12 col-xs-12 col-md-12 m-t-20">
+          <button ng-click="paymentProceed()" ng-disabled="hitInProgress" class="btn loginBtn m-r-10">
+              Proceed with Payment
+          </button>
+
+        </div> -->
+        <!-- <button ng-click="addSource()" class="btn loginBtn pull-right">
+            Add New Source
+        </button> -->
+        <div class="clearfix"></div>
+    </div>
+    <strong style="font-size:16px" class="m-t-20 col-lg-12 col-sm-12 col-xs-12 col-md-12"><i>Note: <br />1. Today $ {{finance.downpayment_amount||'0'}} down payment and $ 25 enrollment fee will be collected from patient.<br />2. Your first payment starts on {{finance.dob.month.month_name}} {{finance.dob.day}}, {{finance.dob.year}} and $ 3 transaction fee will be collected with every recurring payment from patient.</i></strong>
+
+
+</div>

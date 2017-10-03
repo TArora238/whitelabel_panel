@@ -1,0 +1,112 @@
+<div ng-controller="PFAddedPatientController as pfAdded">
+    <div class="animated fadeIn">
+        <!-- <div class="page-header-div"> -->
+          <!-- <h3 class="col-lg-12 col-md-12 col-sm-12 col-xs-12">Add Patient</h3> -->
+          <h3 class="col-lg-8 col-md-8 col-sm-8 col-xs-8 m-0">Add Patient</h3>
+          <button class="col-lg-1 col-md-1 col-sm-1 btnDefault col-xs-2 pull-right" ui-sref="app.pfNewPatient">Back</button>
+        <!-- </div> -->
+        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 addPatientDivs m-b-15">
+
+          <div class="col-md-3 col-xs-12 col-sm-3 col-lg-3 whiteDiv m-b-15 p-b-10" style="max-width:250px">
+            <h4 class="m-b-5">$ {{pfAdded.finance.financed_amount| number : 2}}</h4>
+            <span class="col-md-12 col-xs-12 col-sm-12 col-lg-12 p-0 text-left">Financed at a {{pfAdded.finance.interest_rate}}% interest rate</span>
+          </div>
+          <div class="col-md-4 col-xs-12 col-sm-4 col-lg-4 greenDiv m-b-15 m-l-15" style="max-width:300px;width:auto">
+            <h4 class="m-b-5">$ {{pfAdded.finance.recurring_amount| number : 2}}</h4>
+            <span>Payment to be made for next {{pfAdded.finance.number_of_payments}} months</span>
+          </div>
+          <div class="col-md-2 col-xs-12 col-sm-3 col-lg-2 whiteDiv m-b-15 hide">
+            <span class="col-md-12 col-xs-12 col-sm-12 col-lg-12 p-0 p-t-5 text-left">Effective On</span>
+            <h4 class="col-md-12 col-xs-12 col-sm-12 col-lg-12 p-0 text-left">{{pfAdded.finance.next_date|date:'MM-dd-yyyy'}}</h4>
+          </div>
+          <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 profileDivs m-0">
+            <div  ng-repeat="patient in pfAdded.patients track by $index">
+
+            <label ng-if="patient.is_primary=='1'">Fresh Member</label>
+            <label ng-if="$index==1">Additional Members</label>
+            <div class="row p-l-15 p-r-15 m-b-15">
+              <div class=" col-md-12 col-xs-12 col-sm-12 col-lg-12 patientMemberDiv p-0">
+
+                <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 p-t-15 p-b-15">
+                  <div class="col-md-2 col-xs-12 col-sm-2 col-lg-2 p-0">
+                    <label>Name</label>
+                    <h6><strong>{{patient.patient_first_name}}&nbsp;{{patient.patient_last_name}}</strong></h6>
+                  </div>
+                  <div class="col-md-2 col-xs-12 col-sm-2 col-lg-2 p-0">
+                    <label>Email</label>
+                    <h6><strong>{{patient.patient_email}}</strong></h6>
+                  </div>
+                  <div class="col-md-2 col-xs-12 col-sm-2 col-lg-2 p-0">
+                    <label>Address</label>
+                    <h6><strong>{{patient.patient_address}}</strong></h6>
+                  </div>
+                  <div class="col-md-2 col-xs-12 col-sm-2 col-lg-2 p-0">
+                    <label>Phone</label>
+                    <h6><strong>{{patient.patient_mobile|phoneNumber}}</strong></h6>
+                  </div>
+                  <div class="col-md-1 col-xs-12 col-sm-1 col-lg-1 p-0">
+                    <label>Date of Birth</label>
+                    <h6><strong>{{patient.date_of_birth|date:'MM-dd-yyyy'}}</strong></h6>
+                  </div>
+                  <div class="col-md-2 col-xs-12 col-sm-2 col-lg-2 p-0">
+                    <label>SSN</label>
+                    <h6><strong>{{patient.patient_ssn}}</strong></h6>
+                  </div>
+                  <div class="col-md-1 col-xs-12 col-sm-1 col-lg-1 p-0">
+                    <label>DL Number</label>
+                    <h6><strong>{{patient.dl_number}}</strong></h6>
+                  </div>
+
+                </div>
+                <!-- <div class="col-md-1 col-xs-12 col-sm-1 col-lg-1 p-t-15 p-b-15 text-center">
+                  <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 p-0" ng-click="deletePatientConfirm(patient)" style="cursor:pointer;height:36px;border-left:1px solid #dce5eb">
+                    <i class="material-icons redIcon" style="padding:8px">delete</i>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+
+            <!-- <button class="col-md-4 pull-left col-xs-6 col-sm-4 col-lg-4 btn btn-default btn-cancel p-l-10 p-r-10 m-0" style="max-width:150px" ng-click="addMember()">
+              <p class="m-0 p-t-0 p-l-10" style="display:flex;" ><i class="material-icons" style="font-size:20px;">add_circle_outline</i>&nbsp;&nbsp;Add Member</p></button> -->
+          </div>
+        </div>
+        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+        <button ng-click="pfAdded.confirmPatient()" type="button" ng-disabled="mCtrl.hitInProgress" class="btn btn-primary btn-pop">
+            Continue
+        </button>
+        <!-- <button ui-sref="app.pfNewPatient" type="button" class="btn btn-default btn-cancel" style="margin-left: 15px">
+            Back
+        </button> -->
+        <button ng-click="mCtrl.cancelPatientPF()" type="button" class="btn btn-default btn-cancel" style="margin-left: 15px">
+            Cancel
+        </button>
+      </div>
+    </div>
+    <script type="text/ng-template" id="confirmPatient">
+        <div class="ngdialog-message">
+            <div class="ngdialog-header">
+                <h4>Confirmation</h4>
+            </div>
+            <div class="ngdialog-body prospectDiv text-center">
+                <img src="app/img/SVG/doc_confirm.svg" style="margin:auto;padding:30px 0 30px;"/>
+                <!-- <h3>Verify your patient's phone number</h3> starting from {{pfAdded.finance.next_date|date:'MM-dd-yyyy'}} -->
+                <label style="color:#505050" class="m-b-30">You will be on this contract for {{pfAdded.finance.number_of_payments}} months  provided all payments are made as agreed by you on this contract.</label>
+                <div class="checkbox">
+                    <label style="color:#505050">
+                        <input type="checkbox" value="" ng-model="pfAdded.addPatient.terms">
+                        <i class="input-helper"></i>
+                        I’ve read  & agree with all <a style="color:#1eacdb" target="_blank" href="terms/PatientFinancingTermsOfService.pdf">Terms & Conditions</a>.
+                    </label>
+                </div>
+
+                <hr class="popHR">
+                <div class="p-0 col-lg-12">
+                  <button type="button" ng-disabled="!pfAdded.addPatient.terms" ng-click="pfAdded.paymentScreen()"
+                          class="btn btn-primary pull-right btn-pop">Continue
+                  </button>
+                </div>
+            </div>
+        </div>
+    </script>
+</div>

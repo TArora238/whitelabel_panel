@@ -1,0 +1,101 @@
+<div class="row p-b-30" ng-controller="PFPatientsController as pfPatients">
+  <div class="animated fadeIn">
+    <!--<h3 class="page-header-divpage-header">Sales</h3>-->
+    <div class="row p-15">
+      <h3 class="col-lg-4 col-md-4 col-xs-12 col-sm-4 p-0 m-0">Manage Patients</h3>
+      <button style="width:auto" class="m-0 m-b-20 pull-right btn-default btnDefault" ui-sref="app.pfFinanceInfo">
+                    Finance Patient
+                </button>
+      <div class="pull-right col-lg-3 col-md-3 col-xs-6 col-sm-3 greenDiv" style="max-width:200px;padding:12.5px">
+        <h4><span>Total Contracts : </span>&nbsp;{{pfPatients.totalItems||0}}</h4>
+      </div>
+    </div>
+    <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+      <div class="col-md-12 col-lg-12 text-center m-t-30" ng-if="pf_patient_list.length==0">
+        <img src="app/img/SVG/empty/patients.svg" />
+        <h4 style="color:#8592a5">No Patients added yet</h4>
+      </div>
+      <div class="panel panel-default row p-15" ng-if="pfPatients.pf_patient_list.length>0">
+        <div class="tableDiv">
+          <div class="table-responsive">
+            <table id="datatablePFPatients"  datatable="ng" dt-options="pfPatients.dtOptions"  class="table table-striped table-hover table-vmiddle" style="table-layout:fixed;">
+              <thead>
+                <tr>
+                  <th class="smallTD">S.No.</th>
+                  <th class="normalTD">Patient ID</th>
+                  <th class="normalTD">Patient Name</th>
+                  <th class="normalTD">Enrollment Date</th>
+                  <th class="normalTD">Contract ID</th>
+                  <th class="normalTD">Amount Financed</th>
+                  <th class="normalTD">Total Balance</th>
+                  <th class="largeTD">Payment Status</th>
+                  <!-- <th class="normalTD">1st Notice</th>
+                  <th class="normalTD">2nd Notice</th>
+                  <th class="normalTD">Letter</th>
+                  <th class="largeTD">Collections</th> -->
+                  <th class="largeTD">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="data in pfPatients.pf_patient_list">
+                  <td class="smallTD">{{$index+1}}</td>
+                  <td class="normalTD">{{data.patient_code}}</td>
+                  <td class="normalTD">
+                    <a style="color:#18add2" ng-click="pfPatients.patientDetails(data)">{{data.patient_first_name}}&nbsp;{{data.patient_last_name}}</a>
+                  </td>
+                  <td class="normalTD">{{data.contract_date|date:'MM-dd-yyyy'}}</td>
+                  <td class="normalTD">{{data.contract_code}}</td>
+                  <td class="normalTD">$ {{data.financed_amount}}</td>
+                  <td class="normalTD">$ {{data.remaining_amount}}</td>
+                  <td class="largeTD">Current</td>
+                  <!-- <td class="normalTD">
+                    <a class="btn btn-sm btn-actions" title="Email">
+                                  Email
+                                </a>
+                  </td>
+                  <td class="normalTD">
+                    <a class="btn btn-sm btn-actions" title="Email">
+                                  Email
+                                </a>
+                  </td>
+                  <td class="normalTD">
+                    <a class="btn btn-sm btn-actions" title="Print">
+                                  Print
+                                </a>
+                  </td>
+                  <td class="largeTD">
+                    <a class="btn btn-sm btn-actions" title="Send to Collections">
+                                  Send to Collections
+                                </a>
+                  </td> -->
+                  <td class="largeTD">
+                    <a class="btn btn-sm btn-actions" title="Deactivate" ng-click="pfPatients.ngDialogPop('deactivate_patient_modal','smallPop')">
+                                    Deactivate
+                                  </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/ng-template" ng-show="visible" id="deactivate_patient_modal">
+    <div class="ngdialog-message logoutpopo">
+
+      <div class="ngdialog-header">
+        <p>Information</p>
+      </div>
+      <div class="ngdialog-body">
+        <p>Please contact the support center at <a href="tel:+18333363348">1 (833) DENEFITS</a> to deactivate the patient.</p>
+        <!-- <button type="button" ng-click="closeThisDialog('button')"
+                class="btn btn-default pull-left btn-cancel">Cancel
+                </button>
+                <button type="button" ng-click="delete_prospect(id)"
+                        class="btn btn-primary pull-right btn-pop">Delete
+                </button> -->
+      </div>
+    </div>
+  </script>
+</div>

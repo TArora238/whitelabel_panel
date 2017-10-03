@@ -1,0 +1,236 @@
+<div ng-controller="PFNewPatientController as PFNew">
+    <div class="animated fadeIn">
+        <div class="row p-0">
+          <!-- <h3 class="col-lg-12 col-md-12 col-sm-12 col-xs-12">Add Patient Details</h3> -->
+          <h3 class="col-lg-8 col-md-8 col-sm-8 col-xs-8 m-0">Add Patient Details</h3>
+          <button class="col-lg-1 col-md-1 col-sm-1 btnDefault col-xs-2 pull-right" ui-sref="app.pfAddPatient">Back</button>
+        </div>
+        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 addPatientDivs p-t-20">
+            <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 profileDivs m-0">
+              <form name="PFNew.patientForm" ng-submit="PFNew.patientForm.$submitted&&PFNew.chooseGuarantee()">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <label class="col-lg-3 col-md-3 col-sm-3 col-xs-12 p-0">Date Of Birth : </label>
+                  <div class="col-lg-12 col-xs-12 p-0">
+
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 p-r-0 p-l-0">
+                    <select ng-model="PFNew.addPatient.dob.month" class="form-control" ng-class="{'invalidDate':PFNew.invalidDate}" ng-change="PFNew.check_date(PFNew.addPatient.dob)" style="height:35px;">
+                      <option value="">Month</option>
+                      <option ng-value="month" ng-repeat="month in months" ng-selected="$index == PFNew.DOBMonth">{{month.month_name}}</option>
+                    </select>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 p-r-0">
+                    <select ng-model="PFNew.addPatient.dob.day" class="form-control" ng-class="{'invalidDate':PFNew.invalidDate}" ng-change="PFNew.check_date(PFNew.addPatient.dob)" style="height:35px;">
+                      <option value="">Date</option>
+                      <option ng-value="day" ng-repeat="day in days"  ng-selected="$index == PFNew.DOBDay">{{day}}</option>
+                    </select>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 p-r-0">
+                    <select ng-model="PFNew.addPatient.dob.year" class="form-control" ng-class="{'invalidDate':PFNew.invalidDate}" ng-change="PFNew.check_date(PFNew.addPatient.dob)" style="height:35px;">
+                      <option value="">Year</option>
+                      <option ng-value="year" ng-repeat="year in birthYears" ng-selected="year == PFNew.DOBMonth">{{year}}</option>
+                    </select>
+                  </div>
+
+                  </div>
+                </div>
+                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                    <label>Social Security Number</label>
+                    <input type="text" maxlength=9 minlength=9  onkeypress="return isNumberKey(event)" ng-model="PFNew.addPatient.patient_ssn" class="form-control" required/>
+                </div>
+                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                    <label>First Name</label>
+                    <input type="text"  maxlength=25 style="text-transform:capitalize" ng-model="PFNew.addPatient.patient_first_name" class="form-control" required/>
+                </div>
+                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                    <label>Last Name</label>
+                    <input type="text"  maxlength=25 style="text-transform:capitalize" ng-model="PFNew.addPatient.patient_last_name" class="form-control" required/>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <label class="col-lg-12 col-xs-12 col-md-12 col-sm-12 p-0">Gender</label>
+                  <div class="radio radio-inline c-radio c-radio-nofont m-0 p-0">
+                     <label>
+                        <input type="radio" name="a" value="Male" ng-model="PFNew.addPatient.patient_gender" ng-click="PFNew.genderSelect('Male')"/>
+                        <span></span>Male</label>
+                  </div>
+                  <div class="radio radio-inline c-radio c-radio-nofont m-0 p-0">
+                     <label>
+                        <input type="radio" name="a" value="Female" ng-model="PFNew.addPatient.patient_gender" ng-click="PFNew.genderSelect('Female')"/>
+                        <span></span>Female</label>
+                  </div>
+                  <div class="radio radio-inline c-radio c-radio-nofont m-0 p-0">
+                     <label>
+                        <input type="radio" name="a" value="Others" ng-model="PFNew.addPatient.patient_gender" ng-click="PFNew.genderSelect('Others')"/>
+                        <span></span>Others</label>
+                  </div>
+                  <!-- <md-radio-group ng-model="addPatient.patient_gender" class="col-lg-12 p-0">
+                    <md-radio-button value="Male" class="m-0 md-primary col-lg-4 col-md-4 col-sm-4 col-xs-5" ng-click="genderSelect('Male')">Male</md-radio-button>
+                    <md-radio-button value="Female" class="m-0 md-primary col-lg-4 col-sm-4 col-md-4 col-xs-5" ng-click="genderSelect('Female')">
+                      Female
+                    </md-radio-button>
+                    <md-radio-button value="Others" class="m-0 md-primary col-lg-4 col-sm-4 col-md-4 col-xs-5" ng-click="genderSelect('Others')">
+                      Others
+                    </md-radio-button>
+                  </md-radio-group> -->
+                </div>
+                <div class="col-lg-6 col-xs-12 col-md-6 col-sm-6">
+                  <label>Phone Number</label>
+                  <div class="input-group">
+                     <span class="input-group-addon">+1</span>
+                     <input type="text" ng-blur="PFNew.check_patient_mobile(0,addPatient.phone,addPatient.codeSelect)" maxlength=15 minlength=9 onkeypress="return isNumberKey(event)" masked="" data-inputmask="'mask': '(999) 999-9999'" ng-model="PFNew.addPatient.phone" class="form-control" required name="addPatientPhone" />
+                  </div>
+                  <span ng-show="PFNew.PhoneAvailable" class="alert errorSpan" style="margin-left: 7px;position: static;margin-bottom: 0;padding: 0 15px 0 0;">Phone number is already taken</span>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <label>Email</label>
+                    <input name="userName" disabled type="email" ng-pattern="mCtrl.emailPattern" ng-model="PFNew.addPatient.patient_email" class="form-control" required/>
+                </div>
+                <span ng-show="PFNew.EmailAvailable" class="alert errorSpan" style="margin-left: 7px;position: static;margin-bottom: 0;padding: 0 15px 0 0;">Email is already taken</span>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <label>DL Number</label>
+                  <input type="text" ng-model="PFNew.addPatient.dl_number" class="form-control" required/>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <label>Address</label>
+                  <input type="text" maxlength=100 ng-model="PFNew.addPatient.patient_address" class="form-control" required/>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="margin-bottom:1px">
+                  <label>Zipcode</label>
+                  <ui-select required ng-model="PFNew.address.selected" theme="bootstrap" reset-search-input="false" on-select="zipSelect($item, $model);">
+                   <ui-select-match placeholder="">{{$select.selected.zip}}</ui-select-match>
+                   <ui-select-choices repeat=" address in mCtrl.states | filter: $select.search track by $index" refresh="mCtrl.getLocation($select.search)" refresh-delay="0">
+                      <div ng-bind-html="address.zip | highlight: $select.search"></div>
+                      <!--  | highlight: $select.search -->
+                   </ui-select-choices>
+                  </ui-select>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <label>State</label>
+                  <input type="text" ng-model="PFNew.addPatient.state" class="form-control" required readonly/>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <label>City</label>
+                  <input type="text" ng-model="PFNew.addPatient.city" class="form-control" required readonly/>
+                </div>
+                <h4 class="col-lg-12"><strong>Employer Information</strong></h4>
+                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                    <label>Employer Name</label>
+                    <input type="text"  maxlength=25 style="text-transform:capitalize" ng-model="PFNew.addPatient.employer_name" class="form-control"/>
+                </div>
+                <!-- <div class="col-lg-6 col-xs-12 col-md-6 col-sm-6 p-0">
+                  <md-select class="col-lg-2 col-md-2 col-sm-2 col-xs-3 m-0 p-r-0" ng-model="addPatient.codeSelect" aria-label="" ng-change="check_patient_mobile(0,addPatient.phone,addPatient.codeSelect)" style="padding-top:21px" disabled>
+                      <md-option ng-value="country" ng-repeat="country in countries"
+                                 ng-selected="$index==0">+{{country.Code}} {{country.ISO|uppercase}}
+                      </md-option>
+                  </md-select>
+                  <div class="col-lg-10 col-sm-10 col-md-10 col-xs-9" style="padding-left: 0">
+                      <label>Employer Phone Number</label>
+                      <input type="text" maxlength=15 onkeypress="return isNumberKey(event)" data-input-mask="{mask: '(000) 000-0000'}" ng-model="addPatient.employer_mobile" class="form-control" name="addPatientPhone" />
+                  </div>
+                  <span ng-show="PhoneAvailable" class="alert errorSpan" style="margin-left: 7px;position: static;margin-bottom: 0;padding: 0 15px 0 0;">Phone number is already taken</span>
+                </div> -->
+                <div class="col-lg-6 col-xs-12 col-md-6 col-sm-6">
+                  <label>Employer Phone Number</label>
+                  <div class="input-group">
+                     <span class="input-group-addon">+1</span>
+                     <input type="text" maxlength=15 minlength=9 onkeypress="return isNumberKey(event)" masked="" data-inputmask="'mask': '(999) 999-9999'" ng-model="PFNew.addPatient.employer_mobile" class="form-control" name="addPatientPhone" />
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <label>Employer Address</label>
+                  <input type="text" maxlength=100 ng-model="addPatient.employer_address" class="form-control"/>
+                </div>
+                <!-- <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 zipcode">
+                  <input type="text" onkeypress="return isNumberKey(event)" maxlength=6 ng-model="addPatient.zipEmp" placeholder="Zipcode" typeahead="address as address.zip for address in getLocation($viewValue)" typeahead-min-length='4' ng-blur="zipSelectEmp()" typeahead-loading="loadingLocations"
+                    typeahead-select-on-exact="true" typeahead-on-select="zipSelectEmp($item, $model, $label, $event)" typeahead-select-on-blur="true" typeahead-no-results="noResults1" class="form-control"> -->
+                  <!-- <i ng-show="loadingLocations" class="fa fa-refresh" style="position: absolute;color: #505050;right:15px"></i> -->
+                  <!--<div ng-show="noResults1" class="noResults">
+                    <i class="fa fa-remove"></i> No Results Found
+                  </div>
+                </div> -->
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="margin-bottom:1px">
+                  <label>Employer Zipcode</label>
+                  <ui-select ng-model="PFNew.addressEmp.selected" theme="bootstrap" reset-search-input="false" on-select="zipSelectEmp($item, $model)">
+                   <ui-select-match placeholder="">{{$select.selected.zip}}</ui-select-match>
+                   <ui-select-choices repeat=" address in mCtrl.states | filter: $select.search track by $index" refresh="mCtrl.getLocation($select.search)" refresh-delay="0">
+                      <div ng-bind-html="address.zip | highlight: $select.search"></div>
+                      <!--  | highlight: $select.search -->
+                   </ui-select-choices>
+                  </ui-select>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <label>State</label>
+                  <input type="text" ng-model="PFNew.addPatient.employer_state" class="form-control" readonly/>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <label>City</label>
+                  <input type="text" ng-model="PFNew.addPatient.employer_city" class="form-control" readonly/>
+                </div>
+                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                    <label>Annual Income</label>
+                    <!-- type="number" min=0 max=10000000  -->
+                    <input type="text" masked="" data-inputmask="'mask': '$ 999999'" onkeypress="return isNumberKey(event)"  style="text-transform:capitalize" ng-model="PFNew.addPatient.annual_income" class="form-control"/>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m-t-20 m-b-20" >
+                  <button type="submit" ng-disabled="mCtrl.hitInProgress||mCtrl.EmailAvailable||mCtrl.PhoneAvailable||PFNew.invalidDate" class="btn btn-primary btn-pop m-r-10">
+                      Continue
+                  </button>
+                  <button ng-click="mCtrl.cancelPatientPF()" type="button" class="btn btn-default btn-cancel" style="margin-left: 15px">
+                      Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+        </div>
+    </div>
+    <script type="text/ng-template" ng-show="visible" id="no_guarantee_modal">
+      <div class="ngdialog-message">
+        <div class="ngdialog-header">
+          <p>Add Patient</p>
+        </div>
+        <div class="ngdialog-body">
+          <div class="col-lg-12 col-md-12 col-sm-12 VHAlign" style="display:flex">
+
+
+            <div class="col-lg-3 col-md-3 col-sm-3">
+              <img src="img/SVG/gua_pay.svg" />
+            </div>
+            <div class="p-l-30 col-lg-9 col-md-9 col-sm-9 VHAlign" style="display:flex">
+              <p class="text-left">Finding it risky to finance a patient? You are currently risking yourself for $ {{PFNew.finance.recurring_amount}} per month by financing this patient. In total you are at risk of $ {{PFNew.finance.remaining_amount}}</p>
+            </div>
+          </div>
+          <h4 class="col-lg-12 col-sm-12 col-xs-12 col-md-12 text-center"><strong>Get Guaranteed Payments for just $20 per month or $149 per year for unlimited patients.</strong></h4>
+          <hr class="popHR">
+          <div class="p-0 col-lg-12">
+            <button type="button" ng-click="PFNew.noGuaranteeSelect()" class="btn btn-default pull-left btn-cancel">No Thanks
+                    </button>
+            <button type="button" ng-click="PFNew.continueNG()" class="btn btn-primary pull-right btn-pop">Take me there
+                    </button>
+          </div>
+        </div>
+      </div>
+    </script>
+    <script type="text/ng-template" ng-show="visible" id="guarantee_modal">
+      <div class="ngdialog-message">
+        <div class="ngdialog-header">
+          <p>Add Patient</p>
+        </div>
+        <div class="ngdialog-body">
+          <p class="text-center">Denefits provides you the flexibility to choose between Guaranteed payments & Non-guaranteed payments for each patient. We will provide you the guarantee for payments of that patient. For this guarantee, we charge you transaction fees of 10% instead
+            of 5%.</p>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m-t-20">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-repeat="type in PFNew.addPatient.guarantee_types" ng-click="PFNew.guaranteeSelect(type.guarantee_type)">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bdr-4 p-20 text-center" style="border:1px solid #dce5eb">
+                <h4 ng-if="type.guarantee_type==2"><strong>Guaranteed<br />Payments</strong></h4>
+                <h4 ng-if="type.guarantee_type==1"><strong>Non-Guaranteed<br />Payments</strong></h4>
+                <h3 class="m-30"><strong>{{type.guarantee_percent}} %</strong></h3>
+                <button class="btn btnDefault m-r-10 w-100">
+                            Select
+                        </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </script>
+</div>

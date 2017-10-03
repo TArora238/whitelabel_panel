@@ -8,6 +8,40 @@
   angular
     .module('doctorPanel')
     .run(mainRun)
+    .filter('phoneNumber',function () {
+            return function (number) {
+                 if (!number) { return ''; }
+                 number = String(number);
+                //  console.log(number);
+                 var num=number.split('-');
+                //  console.log(num);
+                 if(num.length>1){
+                   var code=num[0];
+                   number=num[1];
+                 }
+                 else{
+                   var code='';
+                   number=num[0];
+                 }
+                 number = number.replace(/[^0-9]*/g, '');
+                 var formattedNumber = number;
+
+                 var c = (number[0] == '1') ? '1' : '';
+                 number = number[0] == '1' ? number.slice(1) : number;
+                //  var c = number[0];
+                 var area = number.substring(0, 3);
+                 var front = number.substring(3, 6);
+                 var end = number.substring(6, 10);
+                //  console.log(c,area,front,end);
+                 if (front) {
+                     formattedNumber = (code + " (" + area + ") " + front);
+                 }
+                 if (end) {
+                     formattedNumber += ("-" + end);
+                 }
+                 return formattedNumber;
+             };
+         })
   mainRun.$inject = ['$http', '$state', '$timeout', 'api', 'cfpLoadingBar', '$interval', '$rootScope'];
 
   function mainRun($http, $state, $timeout, api, cfpLoadingBar, $interval, $rootScope) {
@@ -70,7 +104,7 @@
       });
     }
     $rootScope.deviceId();
-    
+
     $rootScope.days = [];
     $rootScope.months = [];
     $rootScope.birthYears = [];
@@ -116,6 +150,7 @@
       $rootScope.newYears[i - currentYear] = i;
     }
   }
+
 })();
 
 
@@ -479,8 +514,10 @@
             });
         }
       }
+      vm.states=[];
       vm.getLocation = function(query) {
         // console.log(query);
+        if(query.length<4)return false;
         return $.post(api.url + 'get_zipcode', {
           zipcode: query
         }).then(function(data, status) {
@@ -489,7 +526,7 @@
           // console.log(data);
           if (data.is_error == 0) {
             // return vm.items=data.zip_info;
-            console.log(data);
+            // console.log(data);
             vm.states = data.zip_info;
             // vm.$apply();
             // if(vm.states.length>0)$('typeahead-popup').css('display','block');
@@ -534,7 +571,7 @@
         // localStorage.setItem('freshUser',vm.freshUser);
 
         // console.log(localStorage.getItem('doctorToken'));
-        console.log("asdf");
+        // console.log("asdf");
         if (!localStorage.getItem('doctorToken')) {
           localStorage.removeItem('doctorToken')
           $state.go('login');
