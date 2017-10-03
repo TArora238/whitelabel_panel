@@ -125,7 +125,8 @@
                   <div ng-repeat="location in account.locations" ng-click="account.selectBankAddress(location,$index)" ng-init="$last?account.locationIndeces():null"
                   class="locationDiv m-b-10 col-lg-12 col-md-12 col-sm-12 col-xs-12" style="cursor:pointer">
                     <div class="locationHeader p-15 w-100" style="display:table;border:none">
-                      <p class="m-0 col-lg-10 col-md-10 col-sm-10 col-xs-10" style="display:flex"><i class="material-icons lightGreyIcon">location_city</i>&nbsp;&nbsp;{{location.practice_location_address}}, {{location.city}}</p>
+                      <p class="m-0 col-lg-10 col-md-10 col-sm-10 col-xs-10" style="display:flex">
+                        <i class="fa fa-building"></i>&nbsp;&nbsp;{{location.practice_location_address}}, {{location.city}}</p>
                     </div>
                   </div>
                 </div>
@@ -186,7 +187,7 @@
         <div class="ngdialog-header">
           <h4>Add Address</h4>
         </div>
-        <form name="account.addressForm" ng-submit="account.addressForm.$submitted&&account.selectBankAddress(location,-1)">
+        <form name="account.addressForm" ng-submit="account.addressForm.$submitted&&account.selectBankAddress(account.location,-1)">
           <div class="ngdialog-body prospectDiv">
             <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 zipcode">
               <label>Zipcode</label>
@@ -196,10 +197,10 @@
               <div ng-show="account.noResults" class="noResults  p-l-15">
                 <i class="fa fa-remove"></i> No Results Found
               </div> -->
-              <ui-select ng-model="uisel.address.selected" theme="bootstrap" ng-disabled="uisel.disabled" reset-search-input="false">
-               <ui-select-match placeholder="Enter an address...">{{$select.selected.formatted_address}}</ui-select-match>
-               <ui-select-choices repeat="address in uisel.addresses | filter: $select.search track by $index" refresh="uisel.refreshAddresses($select.search)" refresh-delay="0">
-                  <div ng-bind-html="address.formatted_address | highlight: $select.search"></div>
+              <ui-select ng-model="account.address.selected" theme="bootstrap" on-select="locationZipSelect($item, $model);" reset-search-input="false">
+               <ui-select-match placeholder="">{{$select.selected.zip}}</ui-select-match>
+               <ui-select-choices repeat=" address in mCtrl.states | filter: $select.search track by $index" refresh="mCtrl.getLocation($select.search)" refresh-delay="0">
+                  <div ng-bind-html="address.zip | highlight: $select.search"></div>
                </ui-select-choices>
             </ui-select>
             </div>

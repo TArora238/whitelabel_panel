@@ -817,6 +817,9 @@
     ////////////////
 
     function activate() {
+      $scope.mCtrl.checkToken();
+      $scope.mCtrl.checkDoctorToken();
+      if($scope.mCtrl.showAccount==0)$state.go('app.dashboard');
       vm.accountStep = 1;
       vm.ngDialogPop = function(template, className) {
         vm.visible = true;
@@ -834,7 +837,7 @@
         vm.register.account_type = aT;
       }
       vm.practice.practice_name = '';
-      if (localStorage.getItem('practiceInfo')) {
+      if (localStorage.getItem('practiceInfo')&&localStorage.getItem('practiceInfo')!=null) {
         vm.practice = JSON.parse(localStorage.getItem('practiceInfo'));
       }
       vm.goToStep = function() {
@@ -960,19 +963,20 @@
                   'Content-Type': undefined
                 }
               })
-              .success(function(data, status) {
+              .then(function(data, status) {
                 if (typeof data === 'string')
                   var data = JSON.parse(data.data);
                 else var data = data.data;
+                console.log(data);
                 if (data.is_error == 0) {
                   $scope.mCtrl.flagPopUps(data.flag, data.is_error);
                   // $rootScope.checkDoctorToken(1);
                   // $rootScope.setLoginData(data,1);
-                  $rootScope.setLoginData(data);
-                  $rootScope.register = {};
+                  $scope.mCtrl.setLoginData(data);
+                  vm.register = {};
                   localStorage.setItem('bankScreen', 0);
                   localStorage.removeItem('practiceInfo');
-                  $rootScope.showAccount = 0;
+                  $scope.mCtrl.showAccount = 0;
                   ngDialog.openConfirm({
                     template: 'register_done_modal',
                     className: 'ngdialog-theme-default bigPop',
@@ -981,6 +985,7 @@
                   }).then(function(value) {}, function(reason) {});
 
                 } else {
+                  $scope.mCtrl.hitInProgress = false;
                   if (data.tracking_id == '3354b6' || data.err == 'tin is not valid ssn/tin.') {
                     toaster.pop('error', 'Please enter a valid TIN', '')
                     $scope.mCtrl.hitInProgress = false;
@@ -1007,7 +1012,7 @@
         }
       }
       vm.selectBankAddress = function(location, id) {
-        console.log(vm.locations);
+        console.log(vm.location);
         console.log(location);
         if (!location || !location.city || !location.zip) {
           toaster.pop('error', 'Select a valid Zipcode', '');
@@ -1033,11 +1038,11 @@
           console.log(location);
           vm.address = {
             city: location.city,
-            postal_code: location.zip.zip,
+            postal_code: location.zip,
             state: location.state,
             line1: location.practice_location_address,
           };
-          location.zip = location.zip.zip;
+          location.zip = location.zip;
           vm.locationIndex = 0;
           vm.locationIndexDefault = 0;
           ngDialog.close();
@@ -1047,16 +1052,20 @@
         console.log(vm.address);
 
       }
-      vm.locationZipSelect = function(item, model, label, event) {
-        console.log(vm.location.zip);
-        if (vm.location.zip.city_id)
-          vm.location.city_id = vm.location.zip.city_id;
+      vm.address={
+        selected:{}
+      }
+      $scope.locationZipSelect = function(item, model, label, event) {
+        console.log(item);
+        if (item.city_id)
+          vm.location.city_id = item.city_id;
         else vm.location.city_id = '';
-        if (vm.location.zip.city)
-          vm.location.city = vm.location.zip.city;
+        if(item.zip)vm.location.zip = item.zip;
+        if (item.city)
+          vm.location.city = item.city;
         else vm.location.city = '';
-        if (vm.location.zip.state_name)
-          vm.location.state = vm.location.zip.state_name;
+        if (item.state_name)
+          vm.location.state = item.state_name;
         else vm.location.state = '';
         if (!vm.location.city_id) vm.location.city_id = '';
       }
