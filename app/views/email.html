@@ -3,7 +3,7 @@
           <button ng-click="email.getGoogleContacts()" class="btn whiteBtn m-r-15">Get Gmail Contacts</button>
           <!-- <button ng-click="getOutlookContacts()" class="btn whiteBtn m-r-15" disabled>Get Outlook Contacts</button> -->
           <button ng-click="email.uploadCSV()" class="hide btn whiteBtn m-r-15">Upload Email CSV</button>
-          <button ng-click="email.clearAll()" ng-if="email.patients_selected>0" class="btn whiteBtn m-r-15">Clear All</button>
+          <button ng-click="email.clearAll()" ng-show="email.patients_selected.length>0" class="btn whiteBtn m-r-15">Clear All</button>
           <!-- <button ng-click="manualChoose()" class="btn whiteBtn m-r-15" >Manually Choose</button> -->
 
           <div class="col-md-4 col-lg-4 brd-4 pull-right">
