@@ -620,7 +620,8 @@
           if (data.access_token) localStorage.setItem('doctorToken', data.access_token);
 
           vm.doctor_notifications = [];
-
+          console.log(data.doctor_profile);
+          console.log(data);
           vm.is_guaranteed = data.doctor_profile.is_guaranteed;
           // console.log(vm.is_guaranteed);
 
