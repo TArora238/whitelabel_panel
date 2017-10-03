@@ -16,7 +16,7 @@
     'use strict';
 
     angular
-        .module('doctorPanel', [
+        .module('adminPanel', [
             'app.core',
             'app.routes',
             'app.mainCtrl',
@@ -97,7 +97,7 @@
 (function() {
     'use strict';
     angular
-        .module('doctorPanel').constant("api", {
+        .module('adminPanel').constant("api", {
             // Live
             // "url": "https://apilive.denefits.com:3003/"
             // Dev
@@ -7313,7 +7313,7 @@
     angular
         .module('custom', [
             // request the the entire framework
-            'doctorPanel',
+            'adminPanel',
             // or just modules
             'app.core',
             'app.sidebar'

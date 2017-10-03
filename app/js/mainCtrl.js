@@ -6,7 +6,7 @@
   'use strict';
 
   angular
-    .module('doctorPanel')
+    .module('adminPanel')
     .run(mainRun)
     .filter('phoneNumber',function () {
             return function (number) {

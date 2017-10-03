@@ -26,8 +26,8 @@
       // Global Settings
       // -----------------------------------
       $rootScope.app = {
-        name: 'Denefits',
-        description: 'Doctor Panel',
+        name: 'Taxi',
+        description: 'Admin Panel',
         year: ((new Date()).getFullYear()),
         layout: {
           isFixed: true,
