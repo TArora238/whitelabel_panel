@@ -41,7 +41,8 @@
                   <td class="smallTD">{{$index+1}}</td>
                   <td class="normalTD">{{data.patient_code}}</td>
                   <td class="normalTD">
-                    <a style="color:#18add2" ng-click="pfPatients.patientDetails(data)">{{data.patient_first_name}}&nbsp;{{data.patient_last_name}}</a>
+                    {{data.patient_first_name}}&nbsp;{{data.patient_last_name}}
+                    <!-- <a style="color:#18add2" ng-click="pfPatients.patientDetails(data)">{{data.patient_first_name}}&nbsp;{{data.patient_last_name}}</a> -->
                   </td>
                   <td class="normalTD">{{data.contract_date|date:'MM-dd-yyyy'}}</td>
                   <td class="normalTD">{{data.contract_code}}</td>

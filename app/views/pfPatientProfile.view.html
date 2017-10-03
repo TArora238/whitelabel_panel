@@ -1,4 +1,4 @@
-<div class="container-fluid" ng-controller="pfPatientProfileCtrl">
+<div class="container-fluid" ng-controller="PFPatientProfileCtrl as pfProfile">
     <div class="animated fadeIn">
         <!--<h3 class="page-header">Sales</h3>-->
         <div class="page-header-div">
@@ -9,18 +9,18 @@
             <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
               <div class="col-md-6 col-xs-12 col-sm-12 col-lg-6 p-0">
                 <a style="margin-top:0px;margin-right:0px;font-size:0;opacity: 1">
-                    <img id="proPic" ng-src="{{pfPatientData.patient_image!=''&&pfPatientData.patient_image!=null ? pfPatientData.patient_image : 'img/SVG/avatar.svg'}}" class="img-circle">
+                    <img id="proPic" ng-src="{{pfProfile.pfPatientData.patient_image!=''&&pfProfile.pfPatientData.patient_image!=null ? pfProfile.pfPatientData.patient_image : 'app/img/SVG/avatar.svg'}}" class="img-circle">
                 </a>
-                <input type="file" style="display: none;" class="upload profileUpload" name="profilePic" onchange="angular.element(this).scope().profileUpload(this.files)" id="fileInput" data-button-text="Single" uploader="uploader" accept="image/*" />
+                <!-- <input type="file" style="display: none;" class="upload profileUpload" name="profilePic" onchange="angular.element(this).scope().profileUpload(this.files)" id="fileInput" data-button-text="Single" uploader="uploader" accept="image/*" /> -->
               </div>
 
               <div style="color:#909090" class="m-l-15 whiteDiv col-md-2 col-xs-12 col-sm-2 col-lg-2 pull-right text-right p-15 m-15">
                 <span class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 m-0"><strong>Member Since</strong></span>
-                <h3 class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-left p-0 m-0">{{pfPatientData.date_registered}}</h3>
+                <h3 class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-left p-0 m-0">{{pfProfile.pfPatientData.date_registered}}</h3>
               </div>
               <div style="color:#909090" class="m-l-15 whiteDiv col-md-2 col-xs-12 col-sm-2 col-lg-2 pull-right text-right p-15 m-15">
                 <span class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 m-0"><strong>Patient ID</strong></span>
-                <h3 class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-left p-0 m-0">{{pfPatientData.patient_code}}</h3>
+                <h3 class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-left p-0 m-0">{{pfProfile.pfPatientData.patient_code}}</h3>
               </div>
             </div>
             <div class="col-md-6 col-xs-12 col-sm-12 col-lg-6">
@@ -28,10 +28,10 @@
 
               <md-input-container>
                   <label>Name</label>
-                  <input name="userName" maxlength=25 type="text" ng-model="pfPatientData.name" ng-change="profileEditFn()" class="form-control" required readonly/>
+                  <input name="userName" maxlength=25 type="text" ng-model="pfProfile.pfPatientData.name" ng-change="profileEditFn()" class="form-control" required readonly/>
               </md-input-container>
               <div class="row profileSelect">
-                  <md-select class="col-lg-2 col-xs-3 col-sm-2 col-md-2" ng-model="pfPatientData.codeSelect" ng-change="profileEditFn()" disabled>
+                  <md-select class="col-lg-2 col-xs-3 col-sm-2 col-md-2" ng-model="pfProfile.pfPatientData.codeSelect" ng-change="profileEditFn()" disabled>
                       <md-option ng-value="country" ng-repeat="country in countries" ng-selected="{{ country.Code === code ? 'true' : 'false' }}">+{{country.Code}} {{country.ISO|uppercase}}
                       </md-option>
                   </md-select>
@@ -56,13 +56,13 @@
               </md-input-container>
               <md-input-container>
                   <label>SSN</label>
-                  <input name="userName" maxlength=9 type="text" ng-model="pfPatientData.patient_ssn" ng-change="profileEditFn()" class="form-control" required readonly/>
+                  <input name="userName" maxlength=9 type="text" ng-model="pfProfile.pfPatientData.patient_ssn" ng-change="profileEditFn()" class="form-control" required readonly/>
               </md-input-container>
             </div>
             <div class="col-md-6 col-xs-12 col-sm-12 col-lg-6">
               <md-input-container>
                   <label>Email</label>
-                  <input name="userEmail" type="email" ng-model="pfPatientData.patient_email" ng-change="profileEditFn()" class="form-control" required readonly/>
+                  <input name="userEmail" type="email" ng-model="pfProfile.pfPatientData.patient_email" ng-change="profileEditFn()" class="form-control" required readonly/>
               </md-input-container>
               <md-input-container>
                   <label>Address</label>

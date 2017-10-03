@@ -192,7 +192,8 @@
           .state('app.email', {
                 url: '/email',
                 title: 'Email',
-                templateUrl: helper.basepath('email.html')
+                templateUrl: helper.basepath('email.html'),
+                resolve: helper.resolveFor('summernote')
           })
           .state('app.pfAddPatient', {
                 url: '/pfAddPatient',

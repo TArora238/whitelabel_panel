@@ -88,7 +88,7 @@ table[class="fulltable"], td[class="fulltd"] {
                             </td>
                         </tr>
                    </table>
-										<table bgcolor="#516581" border="0" cellspacing="0" cellpadding="25" width="100%" style="margin:auto;">
+										<table bgcolor="#516581" border="0" cellspacing="0" cellpadding="25" width="100%" style="margin:auto;background-color:#516581">
 
  												<tr>
  													<td style="display:inline!important;">

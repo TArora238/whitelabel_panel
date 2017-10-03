@@ -65,7 +65,7 @@
                 $state.go('newPass');
               } else if (data.is_error == 0) {
 
-                $scope.mCtrl.clearPFData();
+                $rootScope.clearPFData();
                 localStorage.removeItem('pfPatientEmail');
                 localStorage.removeItem('financePlans');
                 localStorage.removeItem('financeSave');
@@ -206,7 +206,7 @@
           .success(function(data, status) {
             if (typeof data === 'string')
               var data = JSON.parse(data);
-            $scope.mCtrl.clearPFData();
+            $rootScope.clearPFData();
             $scope.mCtrl.flagPopUps(data.flag, data.is_error);
             if (data.is_error == 0) {
               $timeout(function() {
@@ -962,8 +962,8 @@
               })
               .success(function(data, status) {
                 if (typeof data === 'string')
-                  var data = JSON.parse(data);
-
+                  var data = JSON.parse(data.data);
+                else var data = data.data;
                 if (data.is_error == 0) {
                   $scope.mCtrl.flagPopUps(data.flag, data.is_error);
                   // $rootScope.checkDoctorToken(1);
@@ -1269,13 +1269,14 @@
       vm.customEmails = {};
       $http.get('app/data/email-template.txt')
         .then(function(data) {
-
-          vm.customEmails.template = data.toString();
-          vm.customEmails.templateMesg = data.toString();
+          console.log(data);
+          vm.customEmails.template = data.data.toString();
+          vm.customEmails.templateMesg = data.data.toString();
         })
       $http.get('app/data/email-templates.json')
         .then(function(data) {
-          vm.templates = data;
+          console.log(data);
+          vm.templates = data.data;
         })
       vm.selectedTemplate = "Select a template";
       vm.selectTemplate = function(id) {
@@ -1322,6 +1323,7 @@
           toaster.pop('error', 'Message is empty', '');
           return false;
         }
+
         cfpLoadingBar.start();
         var t = vm.customEmails.template.replace('width:100%;display:table;', 'min-height:30px;');
         // for (var i = 0; i < $scope.patients_selected.length; i++) {
@@ -1357,7 +1359,8 @@
           })
           .then(function(data, status) {
             vm.doSubmit = false;
-            if (typeof data === 'string') data = JSON.parse(data);
+            if (typeof data === 'string') data = JSON.parse(data.data);
+            else var data = data.data;
             $scope.mCtrl.flagPopUps(data.flag, data.is_error);
             if (data.is_error == 0) {
               // vm.customEmails={}
@@ -2348,40 +2351,348 @@
       function activate() {
         $scope.mCtrl.checkToken();
         $scope.mCtrl.checkDoctorToken();
-        vm.ngDialogPop = function(template, className) {
-      vm.visible = true;
-      ngDialog.openConfirm({
-        template: template,
-        className: 'ngdialog-theme-default ' + className,
-        scope: $scope
-      }).then(function(value) {}, function(reason) {});
+
+        vm.signImg = '';
+    vm.signature = '';
+    vm.saveSign = function () {
+      vm.signature = $scope.accept();
+      console.log(vm.signature);
+      vm.getdataUrl();
+    }
+    vm.clearSign = function () {
+      vm.signImg = '';
+      vm.signature.dataUrl = '';
+    }
+    $(document).click(function(event) {
+    if(!$(event.target).closest('#signPad').length) {
+          vm.signature = $scope.accept();
+          console.log(vm.signature);
+          if(vm.signature&&!vm.signature.isEmpty){
+            vm.getdataUrl();
+          }
+        }
+    });
+    vm.getdataUrl = function () {
+      console.log(vm.signature.dataUrl);
+      if(vm.signature.dataUrl){
+        var dataURI = vm.signature.dataUrl
+        var byteString = atob(dataURI.split(',')[1]);
+        var ab = new ArrayBuffer(byteString.length);
+        var ia = new Uint8Array(ab);
+        for (var i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i);
+        }
+        var blob = new Blob([ab], {
+          type: 'image/jpeg'
+        });
+        console.log(blob);
+        vm.signImg = blob;
+        console.log(vm.signImg);
+      }
+      else{
+        // alert('Kootriya sala dekh ke sign kar !!!!!');
+        console.log(vm.signature.dataUrl);
+      }
+    }
+    vm.pfPatientFinance = JSON.parse(localStorage.getItem('pfPatientFinance'));
+    vm.pfTotalAmount = parseInt(vm.pfPatientFinance.downpayment_amount) + parseInt(vm.pfPatientFinance.fixed_flat_fee);
+    vm.ngDialogPop = function(template, className, f) {
+      if (f) {
+        ngDialog.openConfirm({
+          template: template,
+          className: 'ngdialog-theme-default ' + className,
+          scope: $scope,
+          showClose: false,
+        }).then(function(value) {}, function(reason) {});
+      } else {
+        ngDialog.openConfirm({
+          template: template,
+          className: 'ngdialog-theme-default ' + className,
+          scope: $scope
+        }).then(function(value) {}, function(reason) {});
+      }
 
     }
 
-    vm.confirmPatient = function() {
-      vm.ngDialogPop('confirmPatient', 'bigPop');
-    }
-    vm.paymentScreen = function() {
-      ngDialog.close();
-      $state.go('app.pfPatientPayment');
-    }
-
-    vm.addPatient = {};
-    vm.addPatient.terms = false;
     vm.patients = JSON.parse(localStorage.getItem('patientProfileSummary'));
-    vm.finance = JSON.parse(localStorage.getItem('pfPatientFinance'));
-    vm.finance = JSON.parse(localStorage.getItem('financeDataSave'));
-    localStorage.setItem('financeDataSave',JSON.stringify(vm.finance));
-    console.log(vm.finance);
-    localStorage.setItem('patientProfileSummary', JSON.stringify(vm.patients));
+    console.log(vm.patients);
+    if (vm.patients[0].payment_sources && vm.patients[0].payment_sources.length > 0) {
+      vm.sourceAdded = 1;
+      vm.payment_source_list = vm.patients[0].payment_sources;
+    } else vm.sourceAdded = 0;
 
+    vm.count=0;
+    vm.makePaymentPatient = function() {
+      if(vm.count==1){
+        return false;
+      }
+      vm.count=1;
+      $scope.mCtrl.hitInProgress = true;
+      cfpLoadingBar.start();
+      console.log(vm.card);
+      Stripe.card.createToken({
+        number: vm.card.cardNumber,
+        cvc: vm.card.cardCVV,
+        exp_month: vm.card.cardMonth,
+        exp_year: vm.card.cardYear
+      }, stripeCardResponseHandler);
+
+      function stripeCardResponseHandler(status, response) {
+        if (response.error) {
+          cfpLoadingBar.complete();
+          $scope.mCtrl.hitInProgress = false;
+          vm.count=0;
+          toaster.pop('error', response.error.message, '');
+        } else {
+          // var data = {
+          //   access_token: localStorage.getItem('doctorToken'),
+          //   stripe_token: response.id,
+          //   patient_id: vm.patients[0].patient_id,
+          //   payment_source_type: 3,
+          //   contract_id: vm.pfPatientFinance.contract_id,
+          //   apf_id: vm.patients[0].apf_id,
+          //   start_date : moment(vm.finance.dob_date).format('YYYY-MM-DD'),
+          //   patient_signature : vm.signImg
+          // }
+          var form = new FormData();
+          form.append('access_token',localStorage.getItem('doctorToken'));
+          form.append('stripe_token',response.id);
+          form.append('patient_id',vm.patients[0].patient_id);
+          form.append('payment_source_type',3);
+          form.append('contract_id',vm.pfPatientFinance.contract_id);
+          form.append('apf_id',vm.patients[0].apf_id);
+          form.append('start_date',moment(vm.finance.dob_date).format('YYYY-MM-DD'));
+          form.append('patient_signature',vm.signImg);
+          // $.post(api.url + "pay_pf", data)
+          $http({
+              url: api.url + 'pay_pf',
+              method: 'POST',
+              data: form,
+              transformRequest: false,
+              headers: {
+                'Content-Type': undefined
+              }
+            })
+            .then(function(data, status) {
+              console.log(data);
+              if (typeof data === 'string')
+                var data = JSON.parse(data.data);
+              else var data = data.data;
+              // ngDialog.close();
+              vm.count=0;
+              if (data.is_error == 1) {
+                if (data.override_text) {
+                  cfpLoadingBar.complete();
+                  toaster.pop('error', data.override_text, '');
+                } else {
+                  if(data.flag==38){
+                    localStorage.setItem('financeDataSave',JSON.stringify(vm.finance));
+                    toaster.pop('error','Patient already completed for this patient','');
+                    $state.go('app.pfPatientContract');
+                  }
+                  else $scope.mCtrl.flagPopUps(data.flag, data.is_error);
+                }
+              }
+              if (data.is_error == 0) {
+                // console.log(data);
+
+                $scope.mCtrl.flagPopUps(data.flag, data.is_error);
+                ngDialog.close();
+                vm.finance.next_date = vm.finance.dob_date;
+                localStorage.setItem('financeDataSave',JSON.stringify(vm.finance));
+                $state.go('app.pfPatientContract');
+
+              }
+
+            })
+        }
+      }
+    }
+    vm.payFromCard = function(data) {
+      cfpLoadingBar.start();
+      // var data = {
+      //   access_token: localStorage.getItem('doctorToken'),
+      //   patient_id: vm.patients[0].patient_id,
+      //   source_id: data.source_id,
+      //   contract_id: vm.pfPatientFinance.contract_id,
+      //   apf_id: vm.patients[0].apf_id||218,
+      //   start_date : moment(vm.finance.dob_date).format('YYYY-MM-DD'),
+      //   patient_signature : vm.signImg
+      // }
+      var form = new FormData();
+      form.append('access_token',localStorage.getItem('doctorToken'));
+      form.append('source_id',data.source_id);
+      form.append('patient_id',vm.patients[0].patient_id);
+      // form.append('payment_source_type',3);
+      form.append('contract_id',vm.pfPatientFinance.contract_id);
+      form.append('apf_id',vm.patients[0].apf_id);
+      form.append('start_date',moment(vm.finance.dob_date).format('YYYY-MM-DD'));
+      form.append('patient_signature',vm.signImg);
+      // $.post(api.url + "pay_pf", data)
+      $http({
+          url: api.url + 'pay_pf',
+          method: 'POST',
+          data: form,
+          transformRequest: false,
+          headers: {
+            'Content-Type': undefined
+          }
+        })
+      // $.post(api.url + "pay_pf", data)
+        .then(function(data, status) {
+          console.log(data);
+          if (typeof data === 'string')
+            var data = JSON.parse(data.data);
+          // ngDialog.close();
+          else var data = data.data;
+          vm.count=0;
+          if (data.is_error == 1) {
+            if (data.override_text) {
+              cfpLoadingBar.complete();
+              toaster.pop('error', data.override_text, '');
+            } else {
+              if(data.flag==38){
+                localStorage.setItem('financeDataSave',JSON.stringify(vm.finance));
+                toaster.pop('error','Patient already completed for this patient','');
+                $state.go('app.pfPatientContract');
+              }
+              else $scope.mCtrl.flagPopUps(data.flag, data.is_error);
+            }
+          }
+          if (data.is_error == 0) {
+            // console.log(data);
+            $scope.mCtrl.flagPopUps(data.flag, data.is_error);
+            ngDialog.close();
+            vm.finance.next_date = vm.finance.dob_date;
+            localStorage.setItem('financeDataSave',JSON.stringify(vm.finance));
+            $state.go('app.pfPatientContract');
+          }
+
+        })
+    }
+    vm.finance = JSON.parse(localStorage.getItem('financeDataSave'));
+    // console.log(vm.finance);
+    vm.finance.dob_date = '';
+    // console.log(new Date().getMonth());
+    // console.log(new Date().getYear());
+    var monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    vm.currentMonth = new Date().getMonth();
+
+
+    vm.finance.dob = {
+      month: $rootScope.months[new Date().getMonth()],
+      day: parseInt(new Date().getDate()+1),
+      year: parseInt(1900 + new Date().getYear())
+    };
+    vm.finance.dob_date = new Date(vm.finance.dob.year, vm.finance.dob.month.month - 1, vm.finance.dob.day)
+    console.log(vm.finance.dob);
+    vm.invalidDate = false;
+    vm.check_start_date = function(dob) {
+      vm.finance.dob_temp = new Date(dob.year, dob.month.month - 1, dob.day);
+      // console.log(vm.finance.dob_temp);
+      // console.log(dob);
+      // console.log(vm.finance.dob_temp.getTime());
+      // console.log($rootScope.today);
+      // console.log(vm.finance.dob_temp.getTime() > $rootScope.today.getTime());
+      if (dob.year % 4 != 0 && dob.month.month == 2 && dob.day > 29) {
+        toaster.pop('error', 'Please enter a valid date', '');
+        vm.invalidDate = true;
+        // console.log("1");
+        return false;
+      } else if (dob.month.month == 4 || dob.month.month == 6 || dob.month.month == 9 || dob.month.month == 11) {
+        if (dob.day > 30) {
+          toaster.pop('error', 'Please enter a valid date', '');
+          vm.invalidDate = true;
+          // console.log("2");
+          return false;
+        } else if (vm.finance.dob_temp.getTime() < $rootScope.today.getTime()) {
+          // console.log("Enter a valid Birthdate");
+          vm.invalidDate = true;
+          toaster.pop('warning', "Payments must start from a future date", '');
+          // console.log("3");
+          return false;
+        } else {
+          vm.invalidDate = false;
+          // console.log("4");
+          vm.finance.dob_date = new Date(dob.year, dob.month.month - 1, dob.day)
+        }
+      } else if (vm.finance.dob_temp.getTime() < $rootScope.today.getTime()) {
+        // console.log("Enter a valid Birthdate");
+        vm.invalidDate = true;
+        toaster.pop('warning', "Payments must start from a future date", '');
+        // console.log("3");
+        return false;
+      } else {
+        vm.invalidDate = false;
+        // console.log("4");
+        vm.finance.dob_date = new Date(dob.year, dob.month.month - 1, dob.day)
+      }
+    }
       }
     }
 })();
 
 
 /**=========================================================
- * Module: PF ADDED / Review Screen
+ * Module: PF Contract Screen
+=========================================================*/
+
+(function() {
+    'use strict';
+
+    angular
+      .module('app.pf')
+      .controller('PFPatientContractController', PFPatientContractController);
+
+    PFPatientContractController.$inject = ['$http', '$state', '$rootScope', 'toaster', '$scope','cfpLoadingBar','api','$timeout','ngDialog'];
+
+    function PFPatientContractController($http, $state, $rootScope, toaster, $scope,cfpLoadingBar,api,$timeout,ngDialog) {
+      var vm = this;
+
+      //$rootScope.$on('init', function() {
+        activate();
+       // });
+
+      ////////////////
+
+      function activate() {
+        $scope.mCtrl.checkToken();
+        $scope.mCtrl.checkDoctorToken();
+        if ($scope.mCtrl.showAccount == 1) {
+          $timeout(function () {
+            vm.ngDialogPop('showAccountPopReminder','bigPop accountPop');
+              return false;
+          },1000);
+        }
+        vm.is_guaranteed = JSON.parse(localStorage.getItem('profileData')).is_guaranteed;
+        vm.goToStartPF = function () {
+          $rootScope.clearPFData();
+          $state.go('app.pfPatients');
+        }
+        vm.totalAmount = localStorage.getItem('totalAmount');
+      vm.ngDialogPop = function(template, className) {
+        vm.visible = true;
+        ngDialog.openConfirm({
+          template: template,
+          className: 'ngdialog-theme-default ' + className,
+          scope: $scope
+        }).then(function(value) {}, function(reason) {});
+      }
+      // console.log(localStorage.getItem('patientProfile'));
+      vm.pfPatientFinance = JSON.parse(localStorage.getItem('pfPatientFinance'));
+      vm.finance = JSON.parse(localStorage.getItem('financeDataSave'));
+      vm.doctorPractice = JSON.parse(localStorage.getItem('profileData'));
+      vm.patients = JSON.parse(localStorage.getItem('patientProfileSummary'));
+      console.log(vm.patients);
+      }
+    }
+})();
+
+
+/**=========================================================
+ * Module: PF Contract Screen
 =========================================================*/
 
 // (function() {

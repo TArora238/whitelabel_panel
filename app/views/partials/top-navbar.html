@@ -21,8 +21,8 @@
    <!-- START Nav wrapper-->
    <div class="collapse navbar-collapse" uib-collapse="navCollapsed">
       <!-- Navbar Menu -->
-      <ul class="nav navbar-nav" ng-controller="SidebarController">
-         <li ng-repeat="item in menuItems " ng-class="{'dropdown': item.submenu,'active':$state.includes(item.sref)}" uib-dropdown="!!item.submenu" >
+      <ul class="nav navbar-nav" ng-controller="SidebarController" >
+         <li ng-repeat="item in menuItems " ng-class="{'dropdown': item.submenu,'active':$state.includes(item.sref)}" uib-dropdown="!!item.submenu" ng-hide="item.sref=='app.updateAccount'&&mCtrl.showAccount==0||item.sref=='app.updateFeatures'&&mCtrl.is_guaranteed==1">
             <a ng-if="!item.heading &amp;&amp; !item.submenu" ng-href="{{$state.href(item.sref)}}" title="{{item.text}}" ng-class="{'active':$state.includes(item.sref)}">
                <span>{{item.text}}</span>
                <!-- (item.translate | translate) ||  -->
@@ -44,7 +44,7 @@
       <!-- START Right Navbar-->
       <ul class="nav navbar-nav navbar-right">
          <!-- START lock screen-->
-         <li>
+         <li class="hide">
             <a ui-sref="page.lock" title="Lock screen">
                <em class="icon-lock"></em>
             </a>

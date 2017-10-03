@@ -211,7 +211,7 @@
       vm.goToAddBank = function() {
         $state.go('app.updateAccount');
       }
-      vm.clearPFData = function() {
+      $rootScope.clearPFData = function() {
         localStorage.removeItem('pfPatientFinance');
         localStorage.removeItem('financeDataSave');
         localStorage.removeItem('profileData');
@@ -277,7 +277,7 @@
         vm.ngDialogPop('cancelConfirmFirst', 'smallPop');
       }
       vm.cancelYes = function() {
-        vm.clearPFData();
+        $rootScope.clearPFData();
         $state.go('app.pfPatients');
       }
       if ($state.current.name.indexOf('app')!==-1&&!localStorage.getItem('profileData')) {
@@ -716,7 +716,7 @@
               var data = JSON.parse(data);
             console.log(data);
             ngDialog.close();
-            vm.clearPFData();
+            $rootScope.clearPFData();
             localStorage.removeItem('doctorToken');
             toaster.pop('success', 'Logged Out Successfully', '');
             $state.go('login');

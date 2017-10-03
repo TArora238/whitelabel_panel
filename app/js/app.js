@@ -48,7 +48,8 @@
             'app.mailbox',
             'app.utils',
             'ngDialog',
-            'toaster'
+            'toaster',
+            'signature'
         ]);
     // console.log("inside app");
 })();
@@ -2255,9 +2256,9 @@
         .module('app.core')
         .run(appRun);
 
-    appRun.$inject = ['$rootScope', '$state', '$stateParams', '$window', '$templateCache', 'Colors', '$timeout'];
+    appRun.$inject = ['$rootScope', '$state', '$stateParams', '$window', '$templateCache', 'Colors', '$timeout','cfpLoadingBar'];
 
-    function appRun($rootScope, $state, $stateParams, $window, $templateCache, Colors, $timeout) {
+    function appRun($rootScope, $state, $stateParams, $window, $templateCache, Colors, $timeout,cfpLoadingBar) {
 
         // Hook into ocLazyLoad to setup AngularGrid before inject into the app
         // See "Creating the AngularJS Module" at
@@ -2281,45 +2282,54 @@
             // }
             if(toState.name=="app.updateAccount"&&fromState.name=="app.dashboard"){
             if($rootScope.showAccount==0){
+              cfpLoadingBar.complete();
               event.preventDefault();
               $state.go('app.dashboard');
             }
           }
           if(toState.name=="app.updateAccount"&&fromState.name=="app.pfFinanceInfo"){
             if($rootScope.showAccount==0){
+              cfpLoadingBar.complete();
               event.preventDefault();
               $state.go('app.pfFinanceInfo');
             }
           }
           if(toState.name=="app.updateFeatures"&&fromState.name=="app.pfNewPatient"){
             if($rootScope.is_guaranteed==1){
+              cfpLoadingBar.complete();
               event.preventDefault();
               $state.go('app.pfNewPatient');
             }
           }
           if(toState.name=="upgrade"&&fromState.name=="app.dashboard"){
+            cfpLoadingBar.complete();
             event.preventDefault();
             $state.go('app.dashboard');
           }
           if(toState.name=="app.pfPatientContract"&&fromState.name=="app.pfPatients"){
-            $scope.clearPFData();
+            cfpLoadingBar.complete();
+            $rootScope.clearPFData();
             event.preventDefault();
             $state.go('app.pfPatients');
           }
           if(toState.name=="app.pfPatientPayment"&&fromState.name=="app.pfPatientContract"){
-            $scope.clearPFData();
+            cfpLoadingBar.complete();
+            $rootScope.clearPFData();
             event.preventDefault();
             $state.go('app.pfPatientContract');
           }
           if(toState.name=="app.pfPatientContract"&&fromState.name=="app.pfFinanceInfo"){
+            cfpLoadingBar.complete();
             event.preventDefault();
             $state.go('app.pfFinanceInfo');
           }
           if(toState.name=="app.pfAddedPatient"&&fromState.name=="app.pfFinanceInfo"){
+            cfpLoadingBar.complete();
             event.preventDefault();
             $state.go('app.pfFinanceInfo');
           }
           if(toState.name=="register"&&fromState.name=="upgrade"){
+            cfpLoadingBar.complete();
             event.preventDefault();
             $state.go('upgrade');
           }
@@ -2834,7 +2844,7 @@
         ////////////////
 
         function activate() {
-          $scope.closeSecond = function () {
+          $scope.mCtrl.closeSecond = function () {
             ngDialog.close();
           };
         }

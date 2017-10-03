@@ -2,20 +2,32 @@
   <div class="col-md-12 col-xs-12 col-lg-12 col-md-12">
           <button ng-click="email.getGoogleContacts()" class="btn whiteBtn m-r-15">Get Gmail Contacts</button>
           <!-- <button ng-click="getOutlookContacts()" class="btn whiteBtn m-r-15" disabled>Get Outlook Contacts</button> -->
-          <button ng-click="email.uploadCSV()" class="btn whiteBtn m-r-15">Upload Email CSV</button>
+          <button ng-click="email.uploadCSV()" class="hide btn whiteBtn m-r-15">Upload Email CSV</button>
           <button ng-click="email.clearAll()" ng-if="email.patients_selected>0" class="btn whiteBtn m-r-15">Clear All</button>
           <!-- <button ng-click="manualChoose()" class="btn whiteBtn m-r-15" >Manually Choose</button> -->
+
+          <div class="col-md-4 col-lg-4 brd-4 pull-right">
+            <div class="btn-group pull-right" uib-dropdown="dropdown">
+              <button class="btn btn-default whiteBtn" uib-dropdown-toggle="">{{email.selectedTemplate}}<b class="caret"></b>
+              </button>
+              <ul class="dropdown-menu animated fadeInDown" role="menu">
+                <li ng-repeat="template in email.templates">
+                  <a ng-click="email.selectTemplate($index)">{{template.title}}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
           <input type="file" style="visibility: hidden;" class="upload csvUpload" name="profilePic" onchange="angular.element(this).scope().csvUpload(this.files)" id="fileInput" data-button-text="Single" uploader="uploader" accept=".csv ,.excel" />
-          <div dropdown="dropdown" class="col-lg-4 brd-4 pull-right">
+          <!-- <div dropdown="dropdown" class="col-lg-4 brd-4 pull-right">
               <button dropdown-toggle="" class="btn btn-group btn-default dropBtn" style="text-align:left">
-                  {{selectedTemplate}} <b class="fa fa-chevron-down pull-right"></b>
+                  {{email.selectedTemplate}} <b class="fa fa-chevron-down pull-right"></b>
               </button>
               <ul role="menu" class="dropdown-menu animated fadeIn">
-                  <li ng-repeat="template in templates">
+                  <li ng-repeat="template in email.templates">
                     <a ng-click="email.selectTemplate($index)">{{template.title}}</a>
                   </li>
               </ul>
-          </div>
+          </div> -->
         </div>
         <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 p-0">
 <!-- ng-show="manualEnter" -->
@@ -28,7 +40,7 @@
                     <h3 style="font-size: 20px;" ng-if="email.accountUsed"><strong>Emails fetched from : {{email.accountUsed}}</strong></h5>
                     <h5 style="font-size: 15px;">Selected Patients : </h5>
                     <p style="font-size: 16px;" ng-if="email.patients_selected.length==0">No patient selected yet</p>
-                    <button class="btn btn-primary m-5" style="text-transform:lowercase" type="button" ng-click="email.deleteEmail($index)" ng-repeat="patient in email.patients_selected track by $index">{{patient}}&nbsp;&nbsp;<i class="zmdi zmdi-close"></i></button>
+                    <button class="btn btn-primary m-5" style="text-transform:lowercase" type="button" ng-click="email.deleteEmail($index)" ng-repeat="patient in email.patients_selected track by $index">{{patient}}&nbsp;&nbsp;<i class="fa fa-close"></i></button>
                 </div>
 
 
@@ -45,11 +57,13 @@
                     <label>Email Message</label>
                     <!-- <textarea style="min-height:160px" class="form-control" placeholder="Message to be sent" ng-model="customEmails.message" ng-keyup="editMessage()" required></textarea> -->
                     <!-- <textarea ckeditor="options" style="min-height:160px" class="form-control" placeholder="Message to be sent" ng-model="customEmails.message" ng-change="editMessage()" required ready="onReady()"></textarea> -->
-                    <text-angular style="min-height:160px;display:table" class="form-control" placeholder="Message to be sent" ng-model="email.customEmails.message" ng-change="email.editMessage()" required></text-angular>
+                    <!-- <text-angular style="min-height:160px;display:table" class="form-control" placeholder="Message to be sent" ng-model="email.customEmails.message" ng-change="email.editMessage()" required></text-angular> -->
+                    <summernote class="summernote" height="280" ng-model="email.customEmails.message" required ng-change="email.editMessage()">
+                     <p>Message to be sent</p>
+                  </summernote>
                 </div>
                 <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                     <h5 style="margin:20px 0;font-size: 15px;">Preview : </h5>
-
                     <div style="background:#eeeeee;max-width:900px;">
                         <span style="max-width:900px;" ng-bind-html="email.trustedHtml(email.customEmails.template)"></span>
                     </div>
