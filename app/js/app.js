@@ -99,10 +99,9 @@
     angular
         .module('adminPanel').constant("api", {
             // Live
-            // "url": "https://apilive.denefits.com:3003/"
+            // "url": "http://54.71.169.186:3007/"
             // Dev
-            // "url": "http://34.213.160.134:3003/"
-            "url": "https://api.denefits.com:3003/"
+            "url": "http://54.71.169.186:3007/"
         })
 })();
 (function() {

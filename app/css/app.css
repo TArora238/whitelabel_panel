@@ -1669,12 +1669,12 @@ _:-ms-lang(x),
   left: 0;
   bottom: 0;
   right: 0;
-  width: 150px;
-  height: 30px;
+  width: 100px;
+  height: 34px;
   margin: auto;
   overflow: auto;
-  background-image: url(../img/PNG/denefits_opaque.png);
-  background-size: 150px 30px;
+  background-image: url(../img/preloader/preloader.empty.png);
+  background-size: 100px 34px;
 }
 /*preloader/preloader.empty.png*/
 /*preloader/preloader.full.png*/
@@ -1686,8 +1686,8 @@ _:-ms-lang(x),
   left: 0;
   bottom: 0;
   min-width: 10px;
-  background-image: url(../img/PNG/denefits.png);
-  background-size: 150px 30px;
+  background-image: url(../img/preloader/preloader.full.png);
+  background-size: 100px 34px;
 }
 .preloader-hidden {
   display: none;

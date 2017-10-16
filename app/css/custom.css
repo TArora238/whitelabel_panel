@@ -824,7 +824,7 @@ a,button{
     background-color: #ffffff;
     box-shadow: 0 8px 24px 0 rgba(0,0,0,0.3);
 }
-.denefitsLogin h4{
+.adminLogin h4{
   color: #909090;
 }
 .iconLabel{
@@ -839,16 +839,16 @@ a,button{
   background: #f7f9fb;
   margin-top: -50px;
 }
-.denefitsLogin md-checkbox.md-default-theme .md-icon,.denefitsLogin md-checkbox.md-default-theme.md-checked .md-icon{
+.adminLogin md-checkbox.md-default-theme .md-icon,.adminLogin md-checkbox.md-default-theme.md-checked .md-icon{
   border: 1px solid #fff!important;
 }
-.denefitsLogin md-checkbox.md-default-theme.md-checked .md-icon{
+.adminLogin md-checkbox.md-default-theme.md-checked .md-icon{
   background: white!important;
 }
-.denefitsLogin md-checkbox.md-default-theme.md-checked .md-icon:after {
+.adminLogin md-checkbox.md-default-theme.md-checked .md-icon:after {
     border-color: rgb(69, 130, 188);
 }
-.denefitsLogin md-autocomplete.md-default-theme button md-icon path{
+.adminLogin md-autocomplete.md-default-theme button md-icon path{
   fill:white!important;
 }
 .pageContent{
@@ -857,13 +857,13 @@ a,button{
 .pageFixedHeader{
   /*z-index: 100;*/
 }
-.denefitsLogin{
+.adminLogin{
   /*background: #f7f9fb url('../img/PNG/doc_bg.png') bottom left no-repeat;*/
   /*background: #ffffff;*/
   background-size: contain;
   height: 100%;
 }
-.denefitsLogin > .col-lg-4{
+.adminLogin > .col-lg-4{
     background: #4582BC url('../img/PNG/bg.jpg') top left / 100% 100% no-repeat;
     background-size: cover;
     height: 100vh;
@@ -907,27 +907,27 @@ md-input-container.md-icon-float > label{
 md-input-container .md-input.ng-invalid.ng-dirty, md-input-container.md-input-focused .md-input {
     padding-bottom: 1px!important;
 }
-.denefitsLogin md-input-container .md-input.ng-invalid.ng-dirty,.denefitsLogin md-input-container.md-input-focused .md-input {
+.adminLogin md-input-container .md-input.ng-invalid.ng-dirty,.adminLogin md-input-container.md-input-focused .md-input {
     padding-bottom: 0px!important;
 }
 
-.denefitsLogin md-autocomplete md-icon.md-default-theme{
+.adminLogin md-autocomplete md-icon.md-default-theme{
   color: white;
 }
 md-input-container.md-icon-float{
   margin-top: 0!important;
 }
-.denefitsLogin md-autocomplete-wrap{
+.adminLogin md-autocomplete-wrap{
   border-bottom: 1px solid white;
 }
-.denefitsLogin md-autocomplete input:not(.md-input){
+.adminLogin md-autocomplete input:not(.md-input){
   padding-left: 0!important;
   color: white;
 }
-.denefitsLogin md-autocomplete input::-webkit-input-placeholder{
+.adminLogin md-autocomplete input::-webkit-input-placeholder{
   color: rgba(255,255,255,0.7);
 }
-.denefitsLogin md-autocomplete.md-default-theme{
+.adminLogin md-autocomplete.md-default-theme{
   background: transparent;
   box-shadow: none;
   /*border-bottom: 1px solid white;*/
@@ -1005,44 +1005,44 @@ md-input-container.md-icon-float{
 .md-autocomplete-suggestions,.md-select-menu-container.md-active,.md-select-menu-container{
       z-index: 10000!important;
 }
-.denefitsLogin md-select.md-default-theme .md-select-label.md-placeholder,
-.denefitsLogin md-input-container{
+.adminLogin md-select.md-default-theme .md-select-label.md-placeholder,
+.adminLogin md-input-container{
   border-radius: 4px;
   background-color: #ffffff;
   border: solid 1px #dfe2e5;
   padding: 0px 10px 0px;
   margin: 10px 0;
 }
-.denefitsLogin md-input-container.md-default-theme .md-input{
+.adminLogin md-input-container.md-default-theme .md-input{
     color: #505050!important;
     font-family: 'Lato', sans-serif!important;
     font-weight: 400;
     font-size: 16px;
     border: none!important;
 }
-.denefitsLogin md-input-container.md-default-theme label,
-.denefitsLogin md-input-container.md-default-theme .md-placeholder,
-.denefitsLogin md-select.md-default-theme .md-select-label{
+.adminLogin md-input-container.md-default-theme label,
+.adminLogin md-input-container.md-default-theme .md-placeholder,
+.adminLogin md-select.md-default-theme .md-select-label{
     color: rgba(80,80,80,0.7)!important;
     font-weight: normal;
     font-size:16px;
     margin-bottom: 0;
     top: -12px;
 }
-.denefitsLogin md-input-container.md-default-theme.md-input-focused label{
+.adminLogin md-input-container.md-default-theme.md-input-focused label{
   top: 0px!important;
 }
 /*md-input-container label*/
-.denefitsLogin md-input-container.md-default-theme.md-input-has-value label,.denefitsLogin md-input-container.md-default-theme.md-input-invalid.md-input-has-value label{
+.adminLogin md-input-container.md-default-theme.md-input-has-value label,.adminLogin md-input-container.md-default-theme.md-input-invalid.md-input-has-value label{
   top: 0px!important;
 }
-.denefitsLogin md-input-container.md-default-theme.md-input-invalid label{
+.adminLogin md-input-container.md-default-theme.md-input-invalid label{
   top: -12px;
 }
-.denefitsLogin md-input-container.md-default-theme:not(.md-input-invalid).md-input-focused input,.denefitsLogin md-input-container.md-default-theme.md-input-focused input{
+.adminLogin md-input-container.md-default-theme:not(.md-input-invalid).md-input-focused input,.adminLogin md-input-container.md-default-theme.md-input-focused input{
     border:none!important;
 }
-.denefitsLogin md-input-container.md-default-theme:not(.md-input-invalid).md-input-focused label,.denefitsLogin md-input-container.md-default-theme.md-input-focused label{
+.adminLogin md-input-container.md-default-theme:not(.md-input-invalid).md-input-focused label,.adminLogin md-input-container.md-default-theme.md-input-focused label{
     color: #18add2!important;
 }
 .phoneLabel{
@@ -1052,7 +1052,7 @@ md-input-container.md-icon-float{
 .intl-tel-input .flag-container{
   top:-20px!important;
 }
-/*.denefitsLogin md-input-container.md-default-theme:not(.md-input-invalid).md-input-has-value label{
+/*.adminLogin md-input-container.md-default-theme:not(.md-input-invalid).md-input-has-value label{
     font-weight: normal;
     color: #505050 !important;
     /*color: rgba(255,255,255,0.94)!important;*/
@@ -1063,7 +1063,7 @@ md-input-container.md-icon-float{
 .largerTD{width: 190px!important;word-wrap: break-word;}
 .profileSelect md-select,
 .prospectDiv md-select,
-.denefitsLogin md-select{
+.adminLogin md-select{
     margin: 0;
     padding-top: 20px;
     padding-right: 0;
@@ -1147,15 +1147,15 @@ md-select.md-default-theme:not([disabled]):focus .md-select-label{
   padding: 2px!important;
   border: 1px solid #dce5eb;
 }
-.denefitsLogin md-input-container{
+.adminLogin md-input-container{
     /*height: 56px;*/
 }
-.denefitsLogin .md-select-label .md-select-icon
+.adminLogin .md-select-label .md-select-icon
 {
     width: 15px;
     margin: 0 10px 0 0;
 }
-.denefitsLogin md-select.md-default-theme .md-select-label{
+.adminLogin md-select.md-default-theme .md-select-label{
     border-bottom:1px solid #dce5eb!important;
     /*height: 56px;*/
 }
@@ -1174,7 +1174,7 @@ md-select.md-default-theme:not([disabled]):focus .md-select-label{
 .ngdialog-body md-input-container.md-default-theme.md-input-has-value .md-input{
     border-color: #4582BC!important;
 }
-.ngdialog-body md-input-container.md-default-theme label,.denefitsLogin md-input-container.md-default-theme .md-placeholder{
+.ngdialog-body md-input-container.md-default-theme label,.adminLogin md-input-container.md-default-theme .md-placeholder{
     color: #aaaaaa!important;
     font-weight: normal;
 }
@@ -1182,7 +1182,7 @@ md-select.md-default-theme:not([disabled]):focus .md-select-label{
     font-weight: normal;
     color: #4582BC!important;
 }
-.denefitsLogin .panel-dark{
+.adminLogin .panel-dark{
     border-radius: 0px;
     background-color: #ffffff;
     border: none;

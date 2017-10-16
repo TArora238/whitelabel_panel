@@ -26,7 +26,7 @@
       // Global Settings
       // -----------------------------------
       $rootScope.app = {
-        name: 'Taxi',
+        name: 'Jaunt',
         description: 'Admin Panel',
         year: ((new Date()).getFullYear()),
         layout: {
@@ -34,7 +34,7 @@
           isCollapsed: false,
           isBoxed: false,
           isRTL: false,
-          horizontal: true,
+          horizontal: false,
           isFloat: false,
           asideHover: false,
           theme: null,
